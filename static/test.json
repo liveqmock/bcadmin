@@ -1,0 +1,981 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "label": "系统管理",
+      "path": null,
+      "icon": "icon-shezhi",
+      "parentId": null,
+      "resourceId": 0,
+      "privilegeVOs": [
+        {
+          "id": 2,
+          "label": "员工管理",
+          "path": "/employee",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 1,
+          "privilegeVOs": null
+        },
+        {
+          "id": 3,
+          "label": "角色管理",
+          "path": "/role",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 2,
+          "privilegeVOs": null
+        },
+        {
+          "id": 4,
+          "label": "组织机构",
+          "path": "/organization",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 3,
+          "privilegeVOs": null
+        },
+        {
+          "id": 5,
+          "label": "门店管理",
+          "path": "/store",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 4,
+          "privilegeVOs": null
+        },
+        {
+          "id": 6,
+          "label": "数据字典",
+          "path": "/dictionary",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 5,
+          "privilegeVOs": null
+        },
+        {
+          "id": 6,
+          "label": "佣金管理",
+          "path": "/charges",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 5,
+          "privilegeVOs": null
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "label": "门店管理",
+      "path": null,
+      "icon": "icon-kaquan",
+      "parentId": null,
+      "resourceId": 0,
+      "privilegeVOs": [
+        {
+          "id": 8,
+          "label": "完善资料",
+          "path": "/storeMsg",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 10,
+          "privilegeVOs": null
+        },
+        {
+          "id": 9,
+          "label": "时间定义",
+          "path": "/storeopentime",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 11,
+          "privilegeVOs": null
+        },
+        {
+          "id": 10,
+          "label": "节假日设定",
+          "path": "/storeholiday",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 12,
+          "privilegeVOs": null
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "label": "卡券管理",
+      "path": null,
+      "icon": "icon-kaquan",
+      "parentId": null,
+      "resourceId": 0,
+      "privilegeVOs": [
+        {
+          "id": 8,
+          "label": "卡券列表",
+          "path": "/coupon",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 10,
+          "privilegeVOs": null
+        },
+        {
+          "id": 9,
+          "label": "发放卡券",
+          "path": "/putOutTicket",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 11,
+          "privilegeVOs": null
+        },
+        {
+          "id": 10,
+          "label": "批量制卡",
+          "path": "/lotsCoupon",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 12,
+          "privilegeVOs": null
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "label": "票务管理",
+      "path": null,
+      "icon": "icon-shoupiao",
+      "parentId": null,
+      "resourceId": 0,
+      "privilegeVOs": [
+        {
+          "id": 12,
+          "label": "单次票",
+          "path": "/produceTicket",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 13,
+          "privilegeVOs": null
+        },
+        {
+          "id": 12,
+          "label": "时段票",
+          "path": "/periodTicketList",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 13,
+          "privilegeVOs": null
+        },
+        {
+          "id": 12,
+          "label": "陪同票",
+          "path": "/companyTicketList",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 13,
+          "privilegeVOs": null
+        },
+        {
+          "id": 12,
+          "label": "练习票",
+          "path": "/exerciseTicketList",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 13,
+          "privilegeVOs": null
+        },
+        {
+          "id": 12,
+          "label": "购票",
+          "path": "/bookTicket",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 13,
+          "privilegeVOs": null
+        },
+        {
+          "id": 30,
+          "label": "退款单",
+          "path": "/refund",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 13,
+          "privilegeVOs": null
+        },
+        {
+          "id": 30,
+          "label": "延时续场费",
+          "path": "/renew",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 13,
+          "privilegeVOs": null
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "label": "会员管理",
+      "path": null,
+      "icon": "icon-huiyuan",
+      "parentId": null,
+      "resourceId": 0,
+      "privilegeVOs": [
+        {
+          "id": 14,
+          "label": "会员资料管理",
+          "path": "/memberInfo",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 14,
+          "privilegeVOs": null
+        },
+        {
+          "id": 15,
+          "label": "会员权益管理",
+          "path": "/memberBenefit",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 15,
+          "privilegeVOs": null
+        },
+        {
+          "id": 16,
+          "label": "积分配置规则",
+          "path": "/pointConfig",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 16,
+          "privilegeVOs": null
+        },
+        {
+          "id": 16,
+          "label": "会员手机号变更记录",
+          "path": "/memberMobileChange",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 16,
+          "privilegeVOs": null
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "label": "内容管理",
+      "path": null,
+      "icon": "icon-neirong",
+      "parentId": null,
+      "resourceId": 0,
+      "privilegeVOs": [
+        {
+          "id": 18,
+          "label": "资讯管理",
+          "path": "/information",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 17,
+          "privilegeVOs": null
+        },
+        {
+          "id": 19,
+          "label": "Banner管理",
+          "path": "/banner",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 18,
+          "privilegeVOs": null
+        },
+        {
+          "id": 20,
+          "label": "活动管理",
+          "path": "/activity",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 19,
+          "privilegeVOs": null
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "label": "消息管理",
+      "path": null,
+      "icon": "icon-xiaoxi",
+      "parentId": null,
+      "resourceId": 0,
+      "privilegeVOs": [
+        {
+          "id": 22,
+          "label": "消息列表",
+          "path": "/news",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 20,
+          "privilegeVOs": null
+        },
+        {
+          "id": 34,
+          "label": "消息记录",
+          "path": "/newsRecord",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 20,
+          "privilegeVOs": null
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "label": "请假管理",
+      "path": null,
+      "icon": "icon-qingjia",
+      "parentId": null,
+      "resourceId": 0,
+      "privilegeVOs": [
+        {
+          "id": 24,
+          "label": "请假列表",
+          "path": "/leaveList",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "label": "缴费管理",
+      "path": null,
+      "icon": "icon-shouyin",
+      "parentId": null,
+      "resourceId": 0,
+      "privilegeVOs": [
+        {
+          "id": 26,
+          "label": "缴费类目列表",
+          "path": "/payment",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 32,
+          "label": "缴费",
+          "path": "/shopCart",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 33,
+          "label": "缴费订单",
+          "path": "/paymentOrderList",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 34,
+          "label": "缴费退款",
+          "path": "/paymentRefund",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "label": "订单管理",
+      "path": null,
+      "icon": "icon-dingdan",
+      "parentId": null,
+      "resourceId": 0,
+      "privilegeVOs": [
+        {
+          "id": 29,
+          "label": "售票订单",
+          "path": "/ticketOrder",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 29,
+          "label": "售课订单",
+          "path": "/sellCourseOrder",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 29,
+          "label": "体验课订单",
+          "path": "/experienceCourseOrder",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 29,
+          "label": "商品订单",
+          "path": "/goodsOrder",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 29,
+          "label": "续场费订单",
+          "path": "/renewOrder",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 29,
+          "label": "缴费订单",
+          "path": "/paymentOrder",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "label": "课程管理",
+      "path": null,
+      "icon": "icon-kecheng",
+      "parentId": null,
+      "resourceId": 0,
+      "privilegeVOs": [
+        {
+          "id": 36,
+          "label": "课程类型",
+          "path": "/courseType",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 14,
+          "privilegeVOs": null
+        },
+        {
+          "id": 37,
+          "label": "课程管理",
+          "path": "/courseList",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 15,
+          "privilegeVOs": null
+        },
+        {
+          "id": 38,
+          "label": "课程评价管理",
+          "path": "/courseEvaluate-Coach",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 16,
+          "privilegeVOs": null
+        },
+        {
+          "id": 39,
+          "label": "课程订单",
+          "path": "/courseOrder",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 16,
+          "privilegeVOs": null
+        },
+        {
+          "id": 40,
+          "label": "学员课节管理",
+          "path": "/studentsCourse",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 16,
+          "privilegeVOs": null
+        },
+        {
+          "id": 41,
+          "label": "购课",
+          "path": "/courseBuyList",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 16,
+          "privilegeVOs": null
+        },
+        {
+          "id": 49,
+          "label": "体验课设置",
+          "path": "/tasteCourseSet",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 16,
+          "privilegeVOs": null
+        },
+        {
+          "id": 50,
+          "label": "体验课购买",
+          "path": "/tasteCourseBuy",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 16,
+          "privilegeVOs": null
+        },
+        {
+          "id": 50,
+          "label": "退款管理",
+          "path": "/courseRefund",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 16,
+          "privilegeVOs": null
+        },
+        {
+          "id": 50,
+          "label": "报表导出",
+          "path": "/courseExport",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 16,
+          "privilegeVOs": null
+        },
+        {
+          "id": 50,
+          "label": "购课须知",
+          "path": "/courseTip",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 16,
+          "privilegeVOs": null
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "label": "财务管理",
+      "path": null,
+      "icon": "icon-caiwu",
+      "parentId": null,
+      "resourceId": 0,
+      "privilegeVOs": [
+        {
+          "id": 42,
+          "label": "卡券统计",
+          "path": "/finance/couponCount",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 43,
+          "label": "售票统计",
+          "path": "/finance/ticketCount",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 44,
+          "label": "售票汇总统计",
+          "path": "/finance/ticketAmount",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 44,
+          "label": "支付方式统计",
+          "path": "/finance/payWay",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 44,
+          "label": "退款汇总",
+          "path": "/refund/payWay",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "label": "意见反馈",
+      "path": null,
+      "icon": "icon-yijian",
+      "parentId": null,
+      "resourceId": 0,
+      "privilegeVOs": [
+        {
+          "id": 46,
+          "label": "反馈列表",
+          "path": "/opinion",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "label": "版本管理",
+      "path": null,
+      "icon": "icon-banben",
+      "parentId": null,
+      "resourceId": 0,
+      "privilegeVOs": [
+        {
+          "id": 48,
+          "label": "版本列表",
+          "path": "/version",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "label": "现场管理",
+      "path": null,
+      "icon": "icon-xianchang",
+      "parentId": null,
+      "resourceId": 0,
+      "privilegeVOs": [
+        {
+          "id": 50,
+          "label": "借还管理",
+          "path": "/borrow",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 50,
+          "label": "借/还鞋",
+          "path": "/return",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 50,
+          "label": "过闸记录",
+          "path": "/enterRecord",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "label": "商品管理",
+      "path": null,
+      "icon": "icon-shangdian",
+      "parentId": null,
+      "resourceId": 0,
+      "privilegeVOs": [
+        {
+          "id": 52,
+          "label": "商品类型管理",
+          "path": "/goodsType",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 53,
+          "label": "商品列表",
+          "path": "/goods",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "label": "收银管理",
+      "path": null,
+      "icon": "icon-shouyin",
+      "parentId": null,
+      "resourceId": 0,
+      "privilegeVOs": [
+        {
+          "id": 52,
+          "label": "商品收银",
+          "path": "/goodsShopCart",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 60,
+          "label": "交接单",
+          "path": "/delivery",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 60,
+          "label": "交接单记录",
+          "path": "/deliveryList",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "label": "库存管理",
+      "path": null,
+      "icon": "icon-shangdian",
+      "parentId": null,
+      "resourceId": 0,
+      "privilegeVOs": [
+        {
+          "id": 56,
+          "label": "入库",
+          "path": "/putin",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 56,
+          "label": "出库",
+          "path": "/putout",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 57,
+          "label": "库存列表",
+          "path": "/stock",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 58,
+          "label": "库存盘点",
+          "path": "/inventory",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21
+        }
+      ]
+    },
+    {
+      "id": 101,
+      "label": "闸机扫描器管理",
+      "path": null,
+      "icon": "icon-shangdian",
+      "parentId": null,
+      "resourceId": 0,
+      "privilegeVOs": [
+        {
+          "id": 102,
+          "label": "扫描器列表",
+          "path": "/scanner",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 102,
+          "label": "过闸次数限定",
+          "path": "/countLimit",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        }
+      ]
+    },
+    {
+      "id": 111,
+      "label": "报表管理",
+      "path": null,
+      "icon": "icon-shangdian",
+      "parentId": null,
+      "resourceId": 0,
+      "privilegeVOs": [
+        {
+          "id": 102,
+          "label": "日销售汇总",
+          "path": "/daySell",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 102,
+          "label": "日销售明细",
+          "path": "/daySellDetail",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 102,
+          "label": "其他缴费明细",
+          "path": "/otherPaymentDetail",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 102,
+          "label": "时间包状态",
+          "path": "/periodState",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 102,
+          "label": "会员信息",
+          "path": "/memberReport",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 102,
+          "label": "会员课程",
+          "path": "/memberCourseReport",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 102,
+          "label": "教练当日学员入场情况",
+          "path": "/courseExport",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 102,
+          "label": "退款记录",
+          "path": "/refundRecord",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 102,
+          "label": "销量导出",
+          "path": "/sallCountReport",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 102,
+          "label": "佣金报表",
+          "path": "/chargeReport",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        }
+      ]
+    },
+    {
+      "id": 111,
+      "label": "供应商管理",
+      "path": null,
+      "icon": "icon-shangdian",
+      "parentId": null,
+      "resourceId": 0,
+      "privilegeVOs": [
+        {
+          "id": 102,
+          "label": "供应商列表",
+          "path": "/supply",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        }
+      ]
+    },
+    {
+      "id": 112,
+      "label": "退款管理",
+      "path": null,
+      "icon": "icon-shangdian",
+      "parentId": null,
+      "resourceId": 0,
+      "privilegeVOs": [
+        {
+          "id": 102,
+          "label": "退款",
+          "path": "/refund",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        },
+        {
+          "id": 102,
+          "label": "课程退款",
+          "path": "/courseRefund",
+          "icon": "1",
+          "parentId": null,
+          "resourceId": 21,
+          "privilegeVOs": null
+        }
+      ]
+    }
+  ],
+  "status": "success"
+}
+
