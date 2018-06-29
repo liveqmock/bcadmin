@@ -82,8 +82,8 @@
         <el-form-item label="付款时间：">
           {{ payTime }}
         </el-form-item>
-        <el-form-item label="学员签名：" v-if="order.order.signPicturePath">
-          <img :src="order.order.signPicturePath" class="sign-img">
+        <el-form-item label="学员签名：" v-if="order.signPicturePath">
+          <img :src="order.signPicturePath" class="sign-img">
         </el-form-item>
         <el-form-item label="终端：">
           {{ order.order.saleSource }}
@@ -165,6 +165,10 @@
           <span style="padding-left: 12px; padding-right: 5px;">备注:</span>
           <span style="flex-grow: 1">{{ order.order.description }}</span>
         </div>
+        <div style="display: flex; font-size: 10px; color: #000; padding-top: 5px; line-height: 20px;">
+          <span style="padding-left: 12px; padding-right: 5px;">签名图片:</span>
+          <img :src="order.signPicturePath" width="50" height="50">
+        </div>
         <div style="display: flex; justify-content: center; margin: 15px 0;">
           <qr-code :text="orderCode" :size="100"></qr-code>
         </div>
@@ -179,6 +183,7 @@
                  补录交易
       </el-button>
       <el-button type="primary" @click="myPrint('order')">打印</el-button>
+      <el-button type="primary" @click="print">clodop</el-button>
       <el-button @click="$router.go('-1')">返回</el-button>
     </div>
     <el-dialog title="校验订单号" :visible.sync="tradeDialog">
@@ -266,6 +271,13 @@
       }
     },
     methods: {
+      print () {
+        var LODOP = window.getLodop(document.getElementById('LODOP_OB'), document.getElementById('LODOP_EM'))
+        // LODOP.ADD_PRINT_RECT(70, 27, 634, 242, 0, 1)
+        LODOP.ADD_PRINT_HTM(0, 0, 321, 1000, document.getElementById('order').innerHTML)
+        LODOP.PREVIEW()
+        LODOP.PRINT()
+      },
       goToTrade () {
         if (this.tradeNo) {
           this.$router.push({
@@ -386,7 +398,7 @@
         newWindow.document.write(docStr)
         newWindow.document.close()
         newWindow.print()
-        newWindow.close()
+        // newWindow.close()
       },
       getOrderDetail () {
         let that = this
@@ -434,6 +446,6 @@
   }
   .sign-img{
     display: inline-block;
-    width: 100px;
+    width: 200px;
   }
 </style>

@@ -63,11 +63,11 @@
             <p>￥{{ formData.courseTotalPrice }}</p>
           </el-col>
         </el-form-item>
-        <el-form-item label="赠送陪同票张数：">
+        <!--<el-form-item label="赠送陪同票张数：">
           <el-col :span="12">
             <p>{{ formData.freeCompTicket }}张</p>
           </el-col>
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item label="系统折扣：">
           <el-col :span="4">
             <el-input v-model.number="discount" :disabled="hasAtuthory === 0" @keyup.enter.native="getSystemDiscount"></el-input>

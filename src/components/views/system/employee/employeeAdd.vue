@@ -217,7 +217,7 @@
         }
       }
       var checkEmail = (rule, value, callback) => {
-        let myreg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/
+        let myreg = /^(.+)@([\da-z\\.-]+)\.([a-z\\.]{2,6})$/
         if (value) {
           if (!myreg.test(value)) {
             return callback(new Error('邮箱格式有误'))

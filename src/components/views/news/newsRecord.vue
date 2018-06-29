@@ -9,7 +9,7 @@
     <div class="search-wrapper">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="消息类型">
-          <el-select v-model="formInline.messageType" clearable placeholder="请选择">
+          <el-select v-model="formInline.messageType" placeholder="请选择">
               <el-option :label="item.name"
                          :value="item.id"
                          v-for="(item, index) in searchTypes"

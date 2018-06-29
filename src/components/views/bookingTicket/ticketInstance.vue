@@ -244,8 +244,6 @@
         </el-row>
       </el-form>
     </div>
-    <!-- 打印票码 -->
-    <div id="printArea"></div>
   </div>
 </template>
 <script>
