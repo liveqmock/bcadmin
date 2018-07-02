@@ -183,7 +183,7 @@
                  补录交易
       </el-button>
       <el-button type="primary" @click="myPrint('order')">打印</el-button>
-      <el-button type="primary" @click="print">clodop</el-button>
+      <!--<el-button type="primary" @click="print">clodop</el-button>-->
       <el-button @click="$router.go('-1')">返回</el-button>
     </div>
     <el-dialog title="校验订单号" :visible.sync="tradeDialog">
