@@ -94,27 +94,27 @@
       </el-form>
     </div>
     <!-- 打印信息 -->
-    <div id="order" style="display: none">
-      <div style="font-family: '微软雅黑'">
-        <h1 style="font-size: 16px;color: #000;text-align: center; margin: 0;">{{ storeName }}</h1>
-        <h3 style="font-size: 14px; text-align: center; margin: 0;">WORLD ICE AREAN</h3>
+    <div style="display: none">
+      <div id="order" style="font-family: '微软雅黑'">
+        <h1 style="font-size: 16px;color: #000;margin: 0;padding-left: 20px;">{{ storeName }}</h1>
+        <h3 style="font-size: 14px; margin: 0;padding-left: 20px;">WORLD ICE AREAN</h3>
         <p style="font-size: 16px; margin-bottom: 1px;
-          color: #000; text-align: center; padding-bottom: 8px; border-bottom: 1px dashed #222;
-          margin-top: 12px;">收款票据</p>
-        <div style="display: flex; font-size: 8px; line-height: 22px; color: #000;">
-          <span style="padding-left: 12px; padding-right: 5px; font-size: 10px;">订单编号:</span>
+          color: #000; padding-bottom: 8px; border-bottom: 1px dashed #222;
+          margin-top: 12px;padding-left: 60px;">收款票据</p>
+        <div style="display: flex; font-size: 10px; line-height: 22px; color: #000;">
+          <span style="padding-left: 12px; padding-right: 5px;">订单编号:</span>
           <p style="flex-grow: 1; margin: 0;">{{ order.order.code }}</p>
         </div>
-        <div style="display: flex; font-size: 8px; line-height: 22px; color: #000;">
-          <span style="padding-left: 12px; padding-right: 5px; font-size: 10px;">订单状态:</span>
+        <div style="display: flex; font-size: 10px; line-height: 22px; color: #000;">
+          <span style="padding-left: 12px; padding-right: 5px;">订单状态:</span>
           <p style="flex-grow: 1; margin: 0;">{{ order.order.status }}</p>
         </div>
-        <div style="display: flex; font-size: 8px; line-height: 22px; color: #000;">
-          <span style="padding-left: 12px; padding-right: 5px; font-size: 10px;">创建时间:</span>
+        <div style="display: flex; font-size: 10px; line-height: 22px; color: #000;">
+          <span style="padding-left: 12px; padding-right: 5px;">创建时间:</span>
           <p style="flex-grow: 1; margin: 0;">{{ order.order.createTime }}</p>
         </div>
-        <div style="display: flex; font-size: 8px; line-height: 22px; color: #000; border-bottom: 1px dashed #000">
-          <span style="padding-left: 12px; padding-right: 5px; font-size: 10px;">收银编号:</span>
+        <div style="display: flex; font-size: 10px; line-height: 22px; color: #000; border-bottom: 1px dashed #000">
+          <span style="padding-left: 12px; padding-right: 5px;">收银编号:</span>
           <p style="flex-grow: 1; margin: 0;">{{ order.empNo }}</p>
         </div>
         <!-- 销售明细 -->
@@ -124,11 +124,11 @@
         <div v-for="(o, i) in order.items" :key="i">
           <div style="display: flex; font-size: 10px; color: #000; line-height: 24px;">
             <span style="padding-left: 12px; ">{{ o.itemDefName.split('-')[1] }}</span>
-            <span style="flex-grow: 1; padding-right: 12px; text-align: right">x{{ o.quantity }}</span>
+            <span style="flex-grow: 1; padding-left: 12px;">x{{ o.quantity }}</span>
           </div>
           <div style="display: flex; font-size: 10px; color: #000; line-height: 24px;">
-            <span style="padding-left: 12px; ">单价</span>
-            <span style="flex-grow: 1; padding-right: 12px; text-align: right">¥{{ o.price }}</span>
+            <span style="padding-left: 12px; ">单价：</span>
+            <span style="flex-grow: 1; padding-left: 12px;">¥{{ o.price }}</span>
           </div>
         </div>
         <!-- 分割线 -->
@@ -165,14 +165,12 @@
           <span style="padding-left: 12px; padding-right: 5px;">备注:</span>
           <span style="flex-grow: 1">{{ order.order.description }}</span>
         </div>
-        <div style="display: flex; font-size: 10px; color: #000; padding-top: 5px; line-height: 20px;">
-          <span style="padding-left: 12px; padding-right: 5px;">签名图片:</span>
-          <img :src="order.signPicturePath" width="50" height="50">
-        </div>
-        <div style="display: flex; justify-content: center; margin: 15px 0;">
+      </div>
+      <div id="qrcode">
+        <div style="margin: 15px 0; padding-left: 40px;">
           <qr-code :text="orderCode" :size="100"></qr-code>
         </div>
-        <p style="text-align: center; font-size: 12px;">请保留此票据,作为退换凭证</p>
+        <p style="font-size: 12px;padding-left: 20px;">请保留此票据,作为退换凭证</p>
         <!-- 分割线 -->
         <div style="border-top: 1px dashed #ebebeb; height: 10px;"></div>
       </div>
@@ -183,7 +181,7 @@
                  补录交易
       </el-button>
       <el-button type="primary" @click="myPrint('order')">打印</el-button>
-      <!--<el-button type="primary" @click="print">clodop</el-button>-->
+      <el-button type="primary" @click="print">clodop</el-button>
       <el-button @click="$router.go('-1')">返回</el-button>
     </div>
     <el-dialog title="校验订单号" :visible.sync="tradeDialog">
@@ -272,10 +270,15 @@
     },
     methods: {
       print () {
+        let imgUrl = this.order.signPicturePath
         var LODOP = window.getLodop(document.getElementById('LODOP_OB'), document.getElementById('LODOP_EM'))
         // LODOP.ADD_PRINT_RECT(70, 27, 634, 242, 0, 1)
-        LODOP.ADD_PRINT_HTM(0, 0, 321, 1000, document.getElementById('order').innerHTML)
-        LODOP.PREVIEW()
+        LODOP.ADD_PRINT_HTM(0, 0, 300, 370, document.getElementById('order').innerHTML)
+        LODOP.ADD_PRINT_HTM(360, 0, 80, 30, '<span style="font-size: 10px;padding-left: 12px;">签名图片：</span>')
+        LODOP.ADD_PRINT_IMAGE(360, 60, 100, 60, '<img src="' + imgUrl + '">')
+        LODOP.SET_PRINT_STYLEA(0, 'Stretch', 2)
+        LODOP.ADD_PRINT_HTM(420, 0, 300, 370, document.getElementById('qrcode').innerHTML)
+        // LODOP.PREVIEW()
         LODOP.PRINT()
       },
       goToTrade () {

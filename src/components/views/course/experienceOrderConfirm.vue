@@ -43,6 +43,7 @@
               <el-option label="请选择" value=""></el-option>
               <el-option v-for="item in moneyCounts"
                          :label="item.couponName"
+                         :key="item.id"
                          :value="item.id">
                 <span>{{item.couponName}}</span>
                 <span class="color_gray">(有效期至：{{ item.useEndTime }})</span>

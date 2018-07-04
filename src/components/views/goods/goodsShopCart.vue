@@ -71,7 +71,9 @@
             <div class="item">
               <span class="price">¥{{ c.nowPrice }}</span>
               <el-button @click="minus(c)" icon="minus" size="mini"></el-button>
-              <span class="count">{{ c.number }}</span>
+              <span class="count">
+                <input class="inputText" v-model="c.number" @change="textChange(c)" type="text"/>
+              </span>
               <el-button @click="plus(c)" icon="plus" size="mini"></el-button>
             </div>
           </li>
@@ -251,6 +253,11 @@
       }
     },
     methods: {
+      textChange (item) {
+        if (item.number > item.stock) {
+          this.$errMsg('商品' + item.name + '只剩' + item.stock + '件了')
+        }
+      },
       authorize (obj) {
         if (obj) {
           this.authorizer = obj.authorizer
@@ -692,7 +699,6 @@
     height: 20px;
     line-height: 20px;
     margin: 0 5px;
-    border: 1px solid #ebebeb;
   }
   .cal-btn{
     border-radius: 0;
@@ -705,4 +711,9 @@
     margin-bottom: 5px;
   }
   .x{ float: right; colr:#fff; margin-right:10px; cursor: pointer}
+  .inputText{
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
 </style>

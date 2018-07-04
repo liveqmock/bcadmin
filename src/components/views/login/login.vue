@@ -16,7 +16,6 @@
             <el-button :loading="isLogin" type="primary" class="login-btn" v-on:click="login('formData')">
               {{ isLogin ? '登录中' : '登录' }}
             </el-button>
-            <p class="el-form-item__error" v-if="errorMsg">登录失败</p>
           </el-form-item>
         </el-form>
       </div>
@@ -37,7 +36,6 @@
           name: '',
           password: ''
         },
-        errorMsg: null,
         rules: {
           name: [
             {required: true, message: '用户名不能为空', trigger: 'blur'}
