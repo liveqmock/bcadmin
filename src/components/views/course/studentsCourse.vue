@@ -9,9 +9,14 @@
     <!-- 课程顾问弹窗 -->
     <el-dialog :visible.sync="adviceDialog" :title="dialogTitle">
       <el-col :offset="5">
-        <el-radio-group v-model="adviser">
+        <el-radio-group v-model="adviser" v-show="dialogTitle.indexOf('顾问') > -1">
           <el-radio class="my-radio"
                     v-for="(a, i) in adviserList" :key="i"
+                    :label="a.id">{{ a.name }}</el-radio>
+        </el-radio-group>
+        <el-radio-group v-model="adviser" v-show="dialogTitle.indexOf('销售') > -1">
+          <el-radio class="my-radio"
+                    v-for="(a, i) in salesList" :key="i"
                     :label="a.id">{{ a.name }}</el-radio>
         </el-radio-group>
       </el-col>
@@ -38,7 +43,19 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="学员查询">
-          <el-input v-model="formInline.title" placeholder="学员手机号"></el-input>
+          <el-input v-model="formInline.name" placeholder="请输入学员手机号或姓名"></el-input>
+        </el-form-item>
+        <el-form-item label="销售顾问">
+          <el-select v-model="formInline.salesId">
+            <el-option label="全部" value=""></el-option>
+            <el-option v-for="a in salesList" :label="a.name" :value="a.id" :key="a.id"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="课程顾问">
+          <el-select v-model="formInline.consultantId">
+            <el-option label="全部" value=""></el-option>
+            <el-option v-for="a in adviserList" :label="a.name" :value="a.id" :key="a.id"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="search">查询</el-button>
@@ -114,6 +131,9 @@
       this.checkConsulantLimit()
       this.checkrefundLimit()
       this.checkarrangLimit()
+      // 加载销售或顾问列表
+      this.getSalerList()
+      this.getAdviserList()
     },
     data () {
       return {
@@ -124,6 +144,7 @@
         adviser: '',
         adviceDialog: false,
         adviserList: [],
+        salesList: [],
         tableData: [],
         storeId: JSON.parse(sessionStorage.getItem('store')).k,
         formInline: {
@@ -131,7 +152,9 @@
           usice: '',
           signupBegin: '',
           signupEnd: '',
-          title: ''
+          name: '',
+          consultantId: '',
+          salesId: ''
         },
         currentPage: 1,
         pageSize: 15,
@@ -142,7 +165,8 @@
         updateMemSale: false, // 销售按钮权限
         updateMemConsultant: false, // 顾问按钮权限
         arrangecourse: false, // 排课按钮权限
-        moneyrefund: false // 退款按钮权限
+        moneyrefund: false, // 退款按钮权限
+        memberIds: ''
       }
     },
     components: {
@@ -244,7 +268,7 @@
           }
         }).then(res => {
           if (res.data.status === 'success') {
-            that.adviserList = res.data.data
+            that.salesList = res.data.data
           }
         })
       },
@@ -431,31 +455,54 @@
         return moment(date).format('YYYY-MM-DD HH:mm:ss')
       },
       search () {
-        if (this.currentPage > 1) {
-          this.currentPage = 1
+        // 判断输入姓名
+        if (this.formInline.name.trim() !== '') {
+          axios.get(URL.api_name + 'memberapi/api/member/findMemberList.do', {
+            params: {
+              name: this.formInline.name
+            }
+          }).then(res => {
+            if (res.data.status === 'success') {
+              this.memberIds = res.data.data.memberIds
+              if (this.currentPage > 1) {
+                this.currentPage = 1
+              } else {
+                this.getListData(this.currentPage)
+              }
+            } else {
+              this.$errMsg(res.data.message)
+            }
+          })
         } else {
-          this.getListData(this.currentPage)
+          this.memberIds = ''
+          if (this.currentPage > 1) {
+            this.currentPage = 1
+          } else {
+            this.getListData(this.currentPage)
+          }
         }
       },
       getListData (num) {
         this.currentPage = num
         var that = this
         that.loading = true
-        axios.get(URL.api_name + 'backofficeapi/course/member/list.do', {
-          params: {
-            memberMobile: that.formInline.title,
-            createTimeBegin: that.signupBegin,
-            createTimeEnd: that.signupEnd,
-            storeId: that.storeId,
-            pageSize: that.pageSize,
-            pageNum: num
-          }
-        }).then(function (respose) {
+        axios.post(URL.api_name + 'backofficeapi/course/member/list.do', {
+          createTimeBegin: that.signupBegin,
+          createTimeEnd: that.signupEnd,
+          storeId: that.storeId,
+          pageSize: that.pageSize,
+          pageNum: num,
+          memberIds: this.memberIds,
+          consultantId: this.formInline.consultantId,
+          salesId: this.formInline.salesId
+        }).then((respose) => {
           let data = respose.data
           that.tableData = data.data.list
           that.loading = false
           that.totalCount = data.data.total
         }).catch((error) => {
+          that.loading = false
+          this.$errMsg('请求失败')
           console.log(error)
         })
       },

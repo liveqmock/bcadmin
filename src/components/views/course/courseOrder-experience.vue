@@ -18,11 +18,8 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="学员手机号">
-          <el-input type="text" v-model="formInline.memberMobile" placeholder="请输入会员手机号..."></el-input>
-        </el-form-item>
-        <el-form-item label="学员姓名：">
-          <el-input v-model="formInline.memberName" placeholder="请输入学员姓名..."></el-input>
+        <el-form-item label="学员信息：">
+          <el-input v-model="formInline.name" placeholder="请输入学员手机号或姓名"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="success" @click="search">查询</el-button>
@@ -115,7 +112,8 @@
         pageNum: 0,
         totalCount: 0,
         fetchCodeMsg: false,
-        loading: false
+        loading: false,
+        memberIds: ''
       }
     },
     computed: {
@@ -156,10 +154,30 @@
         })
       },
       search () {
-        if (this.currentPage > 1) {
-          this.currentPage = 1
+        if (this.formInline.name.trim() !== '') {
+          axios.get(URL.api_name + 'memberapi/api/member/findMemberList.do', {
+            params: {
+              name: this.formInline.name
+            }
+          }).then(res => {
+            if (res.data.status === 'success') {
+              this.memberIds = res.data.data.memberIds
+              if (this.currentPage > 1) {
+                this.currentPage = 1
+              } else {
+                this.getListData(this.currentPage)
+              }
+            } else {
+              this.$errMsg(res.data.message)
+            }
+          })
         } else {
-          this.getListData(this.currentPage)
+          this.memberIds = ''
+          if (this.currentPage > 1) {
+            this.currentPage = 1
+          } else {
+            this.getListData(this.currentPage)
+          }
         }
       },
       getCourseType () {
@@ -226,16 +244,13 @@
         this.currentPage = num
         var that = this
         that.loading = true
-        axios.get(URL.api_name + 'backofficeapi/course/order/experience/list.do', {
-          params: {
-            pageSize: that.pageSize,
-            pageNum: num,
-            courseLevel: this.formInline.coachLevel,
-            memberMobile: this.formInline.memberMobile,
-            storeId: JSON.parse(sessionStorage.getItem('store')).k,
-            memberName: this.formInline.memberName
-          }
-        }).then(function (respose) {
+        axios.post(URL.api_name + 'backofficeapi/course/order/experience/list.do', {
+          pageSize: that.pageSize,
+          pageNum: num,
+          courseLevel: this.formInline.coachLevel,
+          storeId: JSON.parse(sessionStorage.getItem('store')).k,
+          memberIdStr: this.memberIds
+        }).then((respose) => {
           let data = respose.data
           that.tableData = data.data.list
           that.loading = false

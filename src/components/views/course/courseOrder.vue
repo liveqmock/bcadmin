@@ -55,11 +55,20 @@
             placeholder="选择日期时间">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="学员手机号：">
-          <el-input v-model="formInline.memberMobile" placeholder="请输入学员手机号..."></el-input>
+        <el-form-item label="学员信息：">
+          <el-input v-model="formInline.name" placeholder="请输入学员手机号或姓名"></el-input>
         </el-form-item>
-        <el-form-item label="学员姓名：">
-          <el-input v-model="formInline.memberName" placeholder="请输入学员姓名..."></el-input>
+        <el-form-item label="销售顾问">
+          <el-select v-model="formInline.salesId">
+            <el-option label="全部" value=""></el-option>
+            <el-option v-for="a in salesList" :label="a.name" :value="a.id" :key="a.id"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="课程顾问">
+          <el-select v-model="formInline.consultantId">
+            <el-option label="全部" value=""></el-option>
+            <el-option v-for="a in adviserList" :label="a.name" :value="a.id" :key="a.id"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item>
           <el-button type="success" @click="search">查询</el-button>
@@ -173,6 +182,8 @@
       this.getCourseType()
       this.getCourseTime()
       this.getLeves()
+      this.getAdviserList()
+      this.getSalerList()
     },
     data () {
       return {
@@ -182,8 +193,9 @@
           signupBegin: '',
           signupEnd: '',
           isstart: '',
-          memberMobile: '',
-          memberName: ''
+          name: '',
+          consultantId: '',
+          salesId: ''
         },
         types: [{
           systemName: '未开课',
@@ -210,7 +222,10 @@
         totalCount: 0,
         fetchCodeMsg: false,
         loading: false,
-        timer: null
+        timer: null,
+        memberIds: '',
+        adviserList: [],
+        salesList: []
       }
     },
     computed: {
@@ -247,10 +262,30 @@
         clearInterval(this.timer)
       },
       search () {
-        if (this.currentPage > 1) {
-          this.currentPage = 1
+        if (this.formInline.name.trim() !== '') {
+          axios.get(URL.api_name + 'memberapi/api/member/findMemberList.do', {
+            params: {
+              name: this.formInline.name
+            }
+          }).then(res => {
+            if (res.data.status === 'success') {
+              this.memberIds = res.data.data.memberIds
+              if (this.currentPage > 1) {
+                this.currentPage = 1
+              } else {
+                this.getListData(this.currentPage)
+              }
+            } else {
+              this.$errMsg(res.data.message)
+            }
+          })
         } else {
-          this.getListData(this.currentPage)
+          this.memberIds = ''
+          if (this.currentPage > 1) {
+            this.currentPage = 1
+          } else {
+            this.getListData(this.currentPage)
+          }
         }
       },
       getCourseType () {
@@ -317,21 +352,20 @@
         this.currentPage = num
         var that = this
         that.loading = true
-        axios.get(URL.api_name + 'backofficeapi/course/order/list.do', {
-          params: {
-            storeId: that.storeId,
-            pageSize: that.pageSize,
-            pageNum: num,
-            coachLevel: this.formInline.coachLevel,
-            courseType: this.formInline.courseType,
-            isstart: this.formInline.isstart,
-            createTimeBegin: this.createTimeBegin,
-            createTimeEnd: this.createTimeEnd,
-            queryType: 'normal',
-            memberMobile: this.formInline.memberMobile,
-            memberName: this.formInline.memberName
-          }
-        }).then(function (respose) {
+        axios.post(URL.api_name + 'backofficeapi/course/order/list.do', {
+          storeId: that.storeId,
+          pageSize: that.pageSize,
+          pageNum: num,
+          coachLevel: this.formInline.coachLevel,
+          courseType: this.formInline.courseType,
+          isstart: this.formInline.isstart,
+          createTimeBegin: this.createTimeBegin,
+          createTimeEnd: this.createTimeEnd,
+          queryType: 'normal',
+          memberIdStr: this.memberIds,
+          consultantId: this.formInline.consultantId,
+          salesId: this.formInline.salesId
+        }).then((respose) => {
           let data = respose.data
           that.tableData = data.data.list
           that.loading = false
@@ -574,6 +608,34 @@
             console.log(error)
           })
         }).catch(() => {})
+      },
+      // 加载课程销售列表
+      getSalerList () {
+        let that = this
+        axios.get(URL.api_name + 'backofficeapi/sales/member/list.do', {
+          params: {
+            storeId: JSON.parse(sessionStorage.getItem('store')).k,
+            position: 'sales'
+          }
+        }).then(res => {
+          if (res.data.status === 'success') {
+            that.salesList = res.data.data
+          }
+        })
+      },
+      // 加载课程顾问列表
+      getAdviserList () {
+        let that = this
+        axios.get(URL.api_name + 'backofficeapi/employee/search/saleslist.do', {
+          params: {
+            storeId: JSON.parse(sessionStorage.getItem('store')).k,
+            position: 'sales_later'
+          }
+        }).then(res => {
+          if (res.data.status === 'success') {
+            that.adviserList = res.data.data
+          }
+        })
       }
     }
   }

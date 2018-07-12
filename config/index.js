@@ -29,7 +29,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/wx':{
-        // target:'http://192.168.31.13:8080/',
+        // target:'http://192.168.31.106:8080/',
         target:'https://wiadev.crland.com.cn/',
         changeOrigin:true,
         pathRewrite:{

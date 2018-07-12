@@ -209,7 +209,8 @@
         var that = this
         axios.get(URL.api_name + 'backofficeapi/role/list.do', {
           params: {
-            storeId: JSON.parse(sessionStorage.getItem('store')).k
+            storeId: JSON.parse(sessionStorage.getItem('store')).k,
+            pageSize: 1000
           }
         }).then((res) => {
           if (res.data.status === 'success') {
