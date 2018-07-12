@@ -274,12 +274,12 @@
         var LODOP = window.getLodop(document.getElementById('LODOP_OB'), document.getElementById('LODOP_EM'))
         // LODOP.ADD_PRINT_RECT(70, 27, 634, 242, 0, 1)
         LODOP.ADD_PRINT_HTM(0, 0, 300, 370, document.getElementById('order').innerHTML)
-        LODOP.ADD_PRINT_HTM(360, 0, 80, 30, '<span style="font-size: 10px;padding-left: 12px;">签名图片：</span>')
-        LODOP.ADD_PRINT_IMAGE(360, 60, 100, 60, '<img src="' + imgUrl + '">')
+        LODOP.ADD_PRINT_HTM(400, 0, 80, 30, '<span style="font-size: 10px;padding-left: 12px;">签名图片：</span>')
+        LODOP.ADD_PRINT_IMAGE(400, 60, 100, 60, '<img src="' + imgUrl + '">')
         LODOP.SET_PRINT_STYLEA(0, 'Stretch', 2)
-        LODOP.ADD_PRINT_HTM(420, 0, 300, 370, document.getElementById('qrcode').innerHTML)
-        // LODOP.PREVIEW()
-        LODOP.PRINT()
+        LODOP.ADD_PRINT_HTM(460, 0, 300, 370, document.getElementById('qrcode').innerHTML)
+        LODOP.PREVIEW()
+        // LODOP.PRINT()
       },
       goToTrade () {
         if (this.tradeNo) {
@@ -401,7 +401,7 @@
         newWindow.document.write(docStr)
         newWindow.document.close()
         newWindow.print()
-        // newWindow.close()
+        newWindow.close()
       },
       getOrderDetail () {
         let that = this

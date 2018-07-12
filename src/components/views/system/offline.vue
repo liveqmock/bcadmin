@@ -15,11 +15,13 @@
         </el-form-item>
         <el-form-item label="硬件类型:">
           <el-select v-model="formInline.deviceType">
+            <el-option label="全部" value=""></el-option>
             <el-option v-for="d in deviceTypes" :key="d.id" :label="d.systemName" :value="d.systemCode"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="预警状态:">
           <el-select v-model="formInline.warningType">
+            <el-option label="全部" value=""></el-option>
             <el-option v-for="w in warningStatus" :key="w.id" :label="w.systemName" :value="w.systemCode"></el-option>
           </el-select>
         </el-form-item>
@@ -35,7 +37,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="search">查询</el-button>
-          <el-button type="warning" @click="offlineDialog = true">预警配置</el-button>
+          <el-button type="warning" @click="configWarning">预警配置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -43,17 +45,17 @@
          v-loading="loading"
          element-loading-text="拼命加载中">
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column prop="storeId" label="门店名称">
+        <el-table-column prop="storeName" label="门店名称">
         </el-table-column>
         <el-table-column prop="warningTime" label="预警时间">
         </el-table-column>
         <el-table-column prop="deviceNo" label="硬件编号">
         </el-table-column>
-        <el-table-column prop="deviceType" label="硬件类型">
+        <el-table-column prop="deviceTypeName" label="硬件类型">
         </el-table-column>
         <el-table-column prop="ip" label="网络IP">
         </el-table-column>
-        <el-table-column prop="status" label="预警状态">
+        <el-table-column prop="warningTypeName" label="预警状态">
         </el-table-column>
         <el-table-column prop="reason" label="预警原因">
         </el-table-column>
@@ -70,7 +72,7 @@
                :show-close="false">
       <el-form label-width="100px">
         <el-form-item label="发送人员：">
-          <el-checkbox-group v-model="sendPerson">
+          <!--<el-checkbox-group v-model="sendPerson">
             <el-row>
               <el-checkbox label="门店经理"></el-checkbox>
             </el-row>
@@ -88,10 +90,14 @@
                 <el-input type="text"></el-input>
               </el-col>
             </el-row>
-          </el-checkbox-group>
+          </el-checkbox-group>-->
+          <el-input type="text" v-model="sendPerson" placeholder="请输入手机号..."></el-input>
+          <p class="inputTip">多个手机号请使用英文逗号分隔</p>
         </el-form-item>
         <el-form-item label="">
-          <el-button type="default" @click="confirm">确定</el-button>
+          <el-button type="default" @click="setNotifyPerson" :loading="notifyLoading">
+            {{ notifyLoading ? '正在提交' : '确定' }}
+          </el-button>
           <el-button type="default" @click="cancel">取消</el-button>
         </el-form-item>
       </el-form>
@@ -124,9 +130,10 @@
         totalCount: 0,
         loading: true,
         offlineDialog: false,
-        sendPerson: [],
+        sendPerson: '',
         deviceTypes: [],
-        warningStatus: []
+        warningStatus: [],
+        notifyLoading: false
       }
     },
     components: {
@@ -138,6 +145,38 @@
       }
     },
     methods: {
+      configWarning () {
+        this.offlineDialog = true
+        this.getNotifyList()
+      },
+      getNotifyList () {
+        axios.get(URL.api_name + 'backofficeapi/warning/getNotifyList.do')
+          .then(res => {
+            this.sendPerson = res.data.data.join(',')
+          })
+      },
+      setNotifyPerson () {
+        this.notifyLoading = true
+        axios.get(URL.api_name + 'backofficeapi/warning/setNotifyList.do', {
+          params: {
+            mobiles: this.sendPerson
+          }
+        }).then(res => {
+          if (res.data.status === 'success') {
+            if (res.data.status === 'success') {
+              this.$succssMsg(res.data.message)
+              this.notifyLoading = false
+              this.offlineDialog = false
+            }
+          } else {
+            this.notifyLoading = false
+            this.$errMsg(res.data.message)
+          }
+        }).catch(err => {
+          console.log(err)
+          this.notifyLoading = false
+        })
+      },
       fetchDeviceType () {
         axios.get(URL.api_name + 'backofficeapi/system/rict/obtainChild.do', {
           params: {
@@ -156,7 +195,6 @@
           this.warningStatus = res.data.data
         })
       },
-      confirm () {},
       cancel () {
         this.offlineDialog = false
         this.sendPerson = []
@@ -178,7 +216,7 @@
         this.currentPage = num
         var that = this
         that.loading = true
-        axios.get(URL.api_name + 'backofficeapi/warning/search', {
+        axios.get(URL.api_name + 'backofficeapi/warning/search.do', {
           params: {
             pageSize: this.pageSize,
             pageNum: num,
@@ -207,4 +245,8 @@
   }
 </script>
 <style lang="less" scoped>
+  .inputTip{
+    font-size: 12px;
+    color: red;
+  }
 </style>

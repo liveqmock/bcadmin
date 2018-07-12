@@ -39,7 +39,12 @@
             <el-option label="已退款" value="已退款"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item>
+        <el-form-item label="售课终端：">
+          <el-select v-model="formInline.saleSource" placeholder="请选择">
+            <el-option label="全部" value=""></el-option>
+            <el-option label="IOS PAD" value="ios ipad"></el-option>
+            <el-option label="PC端" value="web admin"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="search">查询</el-button>
@@ -195,6 +200,7 @@
             pageNum: num,
             storeId: JSON.parse(sessionStorage.getItem('store')).k,
             type: '课',
+            saleSource: this.formInline.saleSource,
             mobile: this.formInline.mobile
           }
         }).then(function (respose) {

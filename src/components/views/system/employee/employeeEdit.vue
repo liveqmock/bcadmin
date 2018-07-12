@@ -496,7 +496,8 @@
         var that = this
         axios.get(URL.api_name + 'backofficeapi/system/rict/obtainChild.do', {
           params: {
-            systemCode: 'employee_position'
+            systemCode: 'employee_position',
+            pageSize: 100
           }
         }).then((res) => {
           if (res.data.status === 'success') {

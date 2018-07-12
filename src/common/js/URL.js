@@ -16,10 +16,10 @@ if (protocol === 'https') {
   }
 } else {
   apiObj = {
-    // api_name: '/wx/'
+    api_name: '/wx/'
     // api_name: 'http://192.168.31.253/'
     // 测试环境
-    api_name: 'http://wiadev.crland.com.cn/'
+    // api_name: 'http://wiadev.crland.com.cn/'
     // 生产环境
     // api_name: 'http://wia.crland.com.cn/'
   }
