@@ -16,6 +16,7 @@
                     :label="a.id">{{ a.name }}</el-radio>
         </el-radio-group>
         <el-radio-group v-model="adviser" v-show="dialogTitle.indexOf('销售') > -1">
+          <el-radio class="my-radio" :label="0">无</el-radio>
           <el-radio class="my-radio"
                     v-for="(a, i) in salesList" :key="i"
                     :label="a.id">{{ a.name }}</el-radio>
