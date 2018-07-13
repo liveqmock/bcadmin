@@ -38,7 +38,7 @@
 <script>
   import URL from '@/common/js/URL.js'
   import axios from 'axios'
-  import MD5 from 'MD5'
+  import MD5 from 'md5'
   export default {
     data () {
       return {
