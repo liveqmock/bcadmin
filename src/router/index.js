@@ -301,6 +301,8 @@ import BaseCourseChangeListDetail from '@/components/views/course/baseCourseChan
 import MemberMobileChange from '@/components/views/member/memberMobileChange'
 // 添加短信验证码查询界面
 import SMS from '@/components/views/system/sms'
+// 脱机预警
+import Offline from '@/components/views/system/offline'
 Vue.use(Router)
 
 export default new Router({
@@ -312,7 +314,7 @@ export default new Router({
     },
     {
       path: '/login',
-      name: 'Logins',
+      name: 'Login',
       component: Login
     },
     {
@@ -1459,6 +1461,11 @@ export default new Router({
       path: '/sms',
       name: 'SMS',
       component: SMS
+    },
+    {
+      path: '/offline',
+      name: 'Offline',
+      component: Offline
     }
   ]
 })

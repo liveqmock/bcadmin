@@ -230,6 +230,7 @@
             supplierId: ''
           },
           productDetailList: [],
+          delStandardArr: [],
           typeList: [],
           supplyList: [],
           childTypeList: [],
@@ -289,8 +290,29 @@
           this.updateType = 0
         },
         delStandard (item) {
-          if (this.productDetailList.indexOf(item) > -1) {
-            this.productDetailList.splice(this.productDetailList.indexOf(item), 1)
+          if (item.id) {
+            axios.get(URL.api_name + 'merchandiseapi/product/delete.do', {
+              params: {
+                storeId: item.storeId,
+                productDetailId: item.id
+              }
+            }).then(res => {
+              if (res.data.status === 'success') {
+                // 可以删除, 在delStandardArr保存可以删除的数据
+                item.isdetel = true
+                this.delStandardArr.push(item)
+                if (this.productDetailList.indexOf(item) > -1) {
+                  this.productDetailList.splice(this.productDetailList.indexOf(item), 1)
+                }
+              } else {
+                // 不能删除
+                this.$errMsg(res.data.message)
+              }
+            })
+          } else {
+            if (this.productDetailList.indexOf(item) > -1) {
+              this.productDetailList.splice(this.productDetailList.indexOf(item), 1)
+            }
           }
         },
         updateStandard (item) {
@@ -324,11 +346,6 @@
             if (res.data.status === 'success') {
               that.formData = res.data.data.product
               that.productDetailList = res.data.data.productDetailList
-              // if (that.formData.picture && that.formData.picture !== '') {
-              //   that.fileList.push({
-              //     url: that.formData.picture
-              //   })
-              // }
             }
           })
         },
@@ -425,7 +442,7 @@
               that.loading = true
               axios.post(URL.api_name + 'merchandiseapi/product/update.do', {
                 product: that.formData,
-                productDetailList: that.productDetailList
+                productDetailList: that.productDetailList.concat(that.delStandardArr)
               }).then(res => {
                 if (res.data.status === 'success') {
                   that.$message({
@@ -440,11 +457,7 @@
                   })
                 } else {
                   that.loading = false
-                  that.$message({
-                    type: 'error',
-                    message: res.data.message,
-                    duration: 1000
-                  })
+                  that.$errMsg(res.data.message)
                 }
               }).catch(err => {
                 that.loading = false

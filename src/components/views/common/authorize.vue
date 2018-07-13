@@ -102,6 +102,7 @@
       authorize (name) {
         this.$refs[name].validate(valid => {
           if (valid) {
+            this.authorizing = true
             axios.post(URL.api_name + 'backofficeapi/employee/discount-authority/search.do', {
               mobile: this.form.mobile,
               password: MD5(this.form.password),
@@ -111,10 +112,11 @@
             }).then((res) => {
               if (res.data.status === 'success') {
                 if (res.data.data.discountAuthority === '0') {
+                  this.authorizing = false
                   this.$message({
                     type: 'error',
                     message: '该账户没有折扣权限',
-                    duration: 1500
+                    duration: 3000
                   })
                 } else if (res.data.data.discountAuthority === '1') {
                   if (this.exemption) {
@@ -135,11 +137,15 @@
                   })
                 }
               } else {
+                this.authorizing = false
                 this.$message({
                   type: 'error',
                   message: res.data.message
                 })
               }
+            }).catch(err => {
+              console.log(err)
+              this.authorizing = false
             })
           }
         })

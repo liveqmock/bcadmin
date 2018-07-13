@@ -10,6 +10,7 @@
     <el-dialog :visible.sync="adviceDialog" :title="dialogTitle">
       <el-col :offset="5">
         <el-radio-group v-model="adviser" v-show="dialogTitle.indexOf('顾问') > -1">
+          <el-radio class="my-radio" :label="0">无</el-radio>
           <el-radio class="my-radio"
                     v-for="(a, i) in adviserList" :key="i"
                     :label="a.id">{{ a.name }}</el-radio>

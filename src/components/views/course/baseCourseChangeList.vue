@@ -63,7 +63,7 @@
          v-loading="loading"
          element-loading-text="拼命加载中">
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column prop="" label="课程/活动名称"></el-table-column>
+        <el-table-column prop="courseName" label="课程/活动名称"></el-table-column>
         <el-table-column prop="memberName" label="会员姓名"></el-table-column>
         <el-table-column prop="memberMobile" label="会员手机号"></el-table-column>
         <el-table-column prop="beforeCourseNum" label="调整前基础课节">

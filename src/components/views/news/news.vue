@@ -39,7 +39,7 @@
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column prop="createTime" label="创建时间">
         </el-table-column>
-        <el-table-column prop="createBy" label="创建人">
+        <el-table-column prop="createName" label="创建人">
         </el-table-column>
         <el-table-column prop="newsTitle" label="消息标题">
         </el-table-column>
