@@ -9,10 +9,7 @@
     <div class="search-wrapper">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="姓名：">
-          <el-input v-model="formInline.memberName" placeholder="请输入学员姓名..."></el-input>
-        </el-form-item>
-        <el-form-item label="手机号：">
-          <el-input v-model="formInline.memberMobile" placeholder="请输入学员手机号..."></el-input>
+          <el-input v-model="formInline.name" placeholder="请输入学员姓名或手机号"></el-input>
         </el-form-item>
         <el-form-item label="操作时间">
           <el-date-picker
@@ -109,8 +106,7 @@
     data () {
       return {
         formInline: {
-          memberMobile: '',
-          memberName: '',
+          name: '',
           createTimeBegin: '',
           createTimeEnd: '',
           changeReason: '',
@@ -123,7 +119,8 @@
         pageNum: 0,
         totalCount: 0,
         loading: false,
-        causeTypeList: []
+        causeTypeList: [],
+        memberIds: []
       }
     },
     computed: {
@@ -131,7 +128,7 @@
         return URL.api_name + 'backofficeapi/course/member/coursenumlist/export.do' +
           '?authtoken=' + JSON.parse(sessionStorage.getItem('userInfo')).sessionId +
           '&createTimeBegin=' + this.createTimeBegin + '&createTimeEnd=' + this.createTimeEnd +
-          '&memberMobile=' + this.formInline.memberMobile + '&memberName=' + this.formInline.memberName +
+          '&memberIds=' + this.memberIds +
           '&storeId=' + this.storeId + '&causeType=' + this.formInline.causeType +
           '&changeReason=' + this.formInline.changeReason
       },
@@ -174,10 +171,31 @@
         window.open(this.exportLink, '_blank')
       },
       search () {
-        if (this.currentPage > 1) {
-          this.currentPage = 1
+        // 判断输入姓名
+        if (this.formInline.name.trim() !== '') {
+          axios.get(URL.api_name + 'memberapi/member/findMemberByName.do', {
+            params: {
+              name: this.formInline.name
+            }
+          }).then(res => {
+            if (res.data.status === 'success') {
+              this.memberIds = res.data.data.memberIds
+              if (this.currentPage > 1) {
+                this.currentPage = 1
+              } else {
+                this.getListData(this.currentPage)
+              }
+            } else {
+              this.$errMsg(res.data.message)
+            }
+          })
         } else {
-          this.getListData(this.currentPage)
+          this.memberIds = []
+          if (this.currentPage > 1) {
+            this.currentPage = 1
+          } else {
+            this.getListData(this.currentPage)
+          }
         }
       },
       beginTimeRules (val) {
@@ -208,18 +226,15 @@
         this.currentPage = num
         var that = this
         that.loading = true
-        axios.get(URL.api_name + 'backofficeapi/course/member/coursenumlist.do', {
-          params: {
-            storeId: this.storeId,
-            pageSize: this.pageSize,
-            pageNum: num,
-            createTimeBegin: this.createTimeBegin,
-            createTimeEnd: this.createTimeEnd,
-            memberMobile: this.formInline.memberMobile,
-            memberName: this.formInline.memberName,
-            changeReason: this.formInline.changeReason,
-            causeType: this.formInline.causeType
-          }
+        axios.post(URL.api_name + 'backofficeapi/course/member/coursenumlist.do', {
+          storeId: this.storeId,
+          pageSize: this.pageSize,
+          pageNum: num,
+          createTimeBegin: this.createTimeBegin,
+          createTimeEnd: this.createTimeEnd,
+          memberIds: this.memberIds,
+          changeReason: this.formInline.changeReason,
+          causeType: this.formInline.causeType
         }).then(function (respose) {
           let data = respose.data
           that.tableData = data.data.list

@@ -165,6 +165,9 @@
           <span style="padding-left: 12px; padding-right: 5px;">备注:</span>
           <span style="flex-grow: 1">{{ order.order.description }}</span>
         </div>
+        <div style="display: flex; font-size: 10px; color: #000; padding-top: 5px; line-height: 20px;">
+          <span style="padding-left: 12px; font-weight: bold">我已阅读并认同购课须知</span>
+        </div>
       </div>
       <div id="qrcode">
         <div style="margin: 15px 0; padding-left: 40px;">
@@ -273,11 +276,11 @@
         let imgUrl = this.order.signPicturePath
         var LODOP = window.getLodop(document.getElementById('LODOP_OB'), document.getElementById('LODOP_EM'))
         // LODOP.ADD_PRINT_RECT(70, 27, 634, 242, 0, 1)
-        LODOP.ADD_PRINT_HTM(0, 0, 300, 370, document.getElementById('order').innerHTML)
-        LODOP.ADD_PRINT_HTM(400, 0, 80, 30, '<span style="font-size: 10px;padding-left: 12px;">签名图片：</span>')
-        LODOP.ADD_PRINT_IMAGE(400, 60, 100, 60, '<img src="' + imgUrl + '">')
+        LODOP.ADD_PRINT_HTM(0, 0, 300, 440, document.getElementById('order').innerHTML)
+        LODOP.ADD_PRINT_HTM(420, 0, 80, 30, '<span style="font-size: 10px;padding-left: 12px;">签名图片：</span>')
+        LODOP.ADD_PRINT_IMAGE(420, 60, 100, 60, '<img src="' + imgUrl + '">')
         LODOP.SET_PRINT_STYLEA(0, 'Stretch', 2)
-        LODOP.ADD_PRINT_HTM(460, 0, 300, 370, document.getElementById('qrcode').innerHTML)
+        LODOP.ADD_PRINT_HTM(480, 0, 300, 370, document.getElementById('qrcode').innerHTML)
         LODOP.PREVIEW()
         // LODOP.PRINT()
       },

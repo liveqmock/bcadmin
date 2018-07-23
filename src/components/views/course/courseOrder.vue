@@ -223,7 +223,7 @@
         fetchCodeMsg: false,
         loading: false,
         timer: null,
-        memberIds: '',
+        memberIds: [],
         adviserList: [],
         salesList: []
       }
@@ -263,7 +263,7 @@
       },
       search () {
         if (this.formInline.name.trim() !== '') {
-          axios.get(URL.api_name + 'memberapi/api/member/findMemberList.do', {
+          axios.get(URL.api_name + 'memberapi/member/findMemberByName.do', {
             params: {
               name: this.formInline.name
             }
@@ -280,7 +280,7 @@
             }
           })
         } else {
-          this.memberIds = ''
+          this.memberIds = []
           if (this.currentPage > 1) {
             this.currentPage = 1
           } else {
@@ -362,7 +362,7 @@
           createTimeBegin: this.createTimeBegin,
           createTimeEnd: this.createTimeEnd,
           queryType: 'normal',
-          memberIdStr: this.memberIds,
+          memberIds: this.memberIds,
           consultantId: this.formInline.consultantId,
           salesId: this.formInline.salesId
         }).then((respose) => {

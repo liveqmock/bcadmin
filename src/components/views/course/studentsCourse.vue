@@ -168,7 +168,7 @@
         updateMemConsultant: false, // 顾问按钮权限
         arrangecourse: false, // 排课按钮权限
         moneyrefund: false, // 退款按钮权限
-        memberIds: ''
+        memberIds: []
       }
     },
     components: {
@@ -459,7 +459,7 @@
       search () {
         // 判断输入姓名
         if (this.formInline.name.trim() !== '') {
-          axios.get(URL.api_name + 'memberapi/api/member/findMemberList.do', {
+          axios.get(URL.api_name + 'memberapi/member/findMemberByName.do', {
             params: {
               name: this.formInline.name
             }
@@ -476,7 +476,7 @@
             }
           })
         } else {
-          this.memberIds = ''
+          this.memberIds = []
           if (this.currentPage > 1) {
             this.currentPage = 1
           } else {

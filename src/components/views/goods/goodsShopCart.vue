@@ -12,7 +12,7 @@
           <el-input v-model="formInline.name" placeholder="请输入商品名称"></el-input>
         </el-form-item>
         <el-form-item label="商品编码">
-          <el-input v-model="formInline.productCode" placeholder="请输入商品编码"></el-input>
+          <el-input @keyup.enter.native="searchCode(formInline.productCode)" v-model="formInline.productCode" placeholder="请输入商品编码"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="search">查询</el-button>
@@ -253,6 +253,22 @@
       }
     },
     methods: {
+      searchCode (code) {
+        axios.get(URL.api_name + 'merchandiseapi/commodity/search.do', {
+          params: {
+            productCode: code,
+            storeId: JSON.parse(sessionStorage.getItem('store')).k
+          }
+        }).then(res => {
+          if (res.data.status === 'success') {
+            if (res.data.data.list.length > 0) {
+              this.addCart(res.data.data.list[0])
+            } else {
+              this.$errMsg('未查询到该商品！')
+            }
+          }
+        })
+      },
       textChange (item) {
         if (item.number > item.stock) {
           this.$errMsg('商品' + item.name + '只剩' + item.stock + '件了')

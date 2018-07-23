@@ -40,7 +40,8 @@
                 border>
                 <el-table-column label="序号" width="88" type="index">
                 </el-table-column>
-                <el-table-column label="规格名称">
+                <el-table-column label="商品条码"></el-table-column>
+                <el-table-column label="商品规格名称">
                   <template scope="scope">
                     <span>{{ scope.row.standard }}</span>
                   </template>

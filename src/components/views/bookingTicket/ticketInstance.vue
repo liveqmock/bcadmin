@@ -299,7 +299,7 @@
             hour = '全天有效'
           }
           LODOP.PRINT_INIT('')
-          LODOP.ADD_PRINT_HTM(142, 20, 200, 20, '<p style="font-size: 12px;"><span>票名称：</span>' + '<span>' + t.ticketDefName + '元' + '</span>' + '</p>')
+          LODOP.ADD_PRINT_HTM(142, 20, 200, 20, '<p style="font-size: 12px;"><span>票名称：</span>' + '<span>' + t.ticketDefName + '</span>' + '</p>')
           LODOP.ADD_PRINT_HTM(156, 20, 200, 20, '<p style="font-size: 12px;"><span>票价：</span>' + '<span>' + t.price + '元' + '</span>' + '</p>')
           LODOP.ADD_PRINT_HTM(170, 20, 200, 20, '<p style="font-size: 12px;"><span>时长：</span>' + hour + '</p>')
           LODOP.ADD_PRINT_HTM(184, 20, 200, 20, '<p style="font-size: 12px;"><span>使用日期：</span>' + t.useDate + '</p>')

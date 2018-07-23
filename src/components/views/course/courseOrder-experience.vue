@@ -113,7 +113,7 @@
         totalCount: 0,
         fetchCodeMsg: false,
         loading: false,
-        memberIds: ''
+        memberIds: []
       }
     },
     computed: {
@@ -155,7 +155,7 @@
       },
       search () {
         if (this.formInline.name.trim() !== '') {
-          axios.get(URL.api_name + 'memberapi/api/member/findMemberList.do', {
+          axios.get(URL.api_name + 'memberapi/member/findMemberByName.do', {
             params: {
               name: this.formInline.name
             }
@@ -172,7 +172,7 @@
             }
           })
         } else {
-          this.memberIds = ''
+          this.memberIds = []
           if (this.currentPage > 1) {
             this.currentPage = 1
           } else {
@@ -249,7 +249,7 @@
           pageNum: num,
           courseLevel: this.formInline.coachLevel,
           storeId: JSON.parse(sessionStorage.getItem('store')).k,
-          memberIdStr: this.memberIds
+          memberIds: this.memberIds
         }).then((respose) => {
           let data = respose.data
           that.tableData = data.data.list
