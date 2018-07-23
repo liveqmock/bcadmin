@@ -96,6 +96,7 @@
       <el-form :model="standard"
                label-width="100px"
                ref="standard"
+               :close-on-click-modal="false"
                :rules="standardRules">
         <el-form-item label="条码" prop="productCode">
           <el-col :span="16">
@@ -112,16 +113,32 @@
             <el-input v-model.number="standard.buyingPrice" auto-complete="off"></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item label="出售价" prop="sellingPrice">
+        <el-form-item label="进项税率">
           <el-col :span="16">
-            <el-input v-model.number="standard.sellingPrice"></el-input>
+            <el-input auto-complete="off"></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item label="折扣" prop="discount">
+        <el-form-item label="建议零售价" prop="sellingPrice">
           <el-col :span="16">
-            <el-input v-model.number="standard.discount"></el-input>
+            <el-input v-model.number="standard.sellingPrice" auto-complete="off"></el-input>
           </el-col>
         </el-form-item>
+        <el-row>
+          <el-radio v-model="standard.useType" :label="1" class="before-label">&nbsp;</el-radio>
+          <el-form-item label="实售价">
+            <el-col :span="16">
+              <el-input v-model.number="standard.price" :disabled="standard.useType !== 1"></el-input>
+            </el-col>
+          </el-form-item>
+        </el-row>
+        <el-row>
+          <el-radio v-model="standard.useType" :label="2" class="before-label">&nbsp;</el-radio>
+          <el-form-item label="折扣" prop="discount">
+            <el-col :span="16">
+              <el-input v-model.number="standard.discount" :disabled="standard.useType !== 2"></el-input>
+            </el-col>
+          </el-form-item>
+        </el-row>
         <el-form-item label="商品税率" prop="taxRate">
           <el-col :span="16">
             <el-input v-model.number="standard.taxRate"></el-input>
@@ -215,6 +232,9 @@
             sellingPrice: '',
             standard: '',
             taxRate: '',
+            inputRate: '',
+            price: '',
+            useType: 1,
             storeId: JSON.parse(sessionStorage.getItem('store')).k
           },
           formData: {
@@ -507,4 +527,9 @@
     text-align: center;
   }
   .color-gry{ color:#999; font-size:12px; margin-left:10px;}
+  .before-label{
+    position: absolute;
+    top: 15%;
+    left: 3%;
+  }
 </style>

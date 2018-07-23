@@ -258,6 +258,7 @@ import PutOutAddDetail from '@/components/views/stock/putoutAddDetail'
 import Stock from '@/components/views/stock/stock'
 import Inventory from '@/components/views/stock/inventory'
 import InventoryDetail from '@/components/views/stock/inventoryDetail'
+import TaskAdd from '@/components/views/stock/taskAdd'
 // 交接单
 import Delivery from '@/components/views/goods/delivery'
 import DeliveryList from '@/components/views/goods/deliveryList'
@@ -1466,6 +1467,11 @@ export default new Router({
       path: '/offline',
       name: 'Offline',
       component: Offline
+    },
+    {
+      path: '/taskAdd',
+      name: 'TaskAdd',
+      component: TaskAdd
     }
   ]
 })

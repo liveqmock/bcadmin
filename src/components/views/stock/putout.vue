@@ -8,7 +8,7 @@
     </div>
     <div class="search-wrapper">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
-        <el-form-item label="类型">
+        <el-form-item label="出库方式">
           <el-select v-model="formInline.type">
             <el-option label="全部出库" :value="-2"></el-option>
             <el-option label="销售出库" :value="3"></el-option>
@@ -17,7 +17,13 @@
             <el-option label="部门领用" :value="6"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item>
+        <el-form-item label="出库单号">
+          <el-input></el-input>
+        </el-form-item>
+        <el-form-item label="负责人">
+          <el-input></el-input>
+        </el-form-item>
+        <el-form-item label="时间">
           <el-date-picker v-model="formInline.startTime" type="date" placeholder="开始时间"></el-date-picker>
           至
           <el-date-picker v-model="formInline.endTime" type="date" placeholder="结束时间"></el-date-picker>
@@ -33,22 +39,16 @@
          element-loading-text="拼命加载中">
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column label="编号" width="100">
-          <template scope="scope">
-            {{ (scope.$index + 1) + (currentPage - 1) * 15 }}
-          </template>
         </el-table-column>
-        <el-table-column prop="orderNumber" label="单号">
+        <el-table-column prop="orderNumber" label="出库单号">
         </el-table-column>
-         <el-table-column label="类型">
+         <el-table-column label="出库方式">
            <template scope="scope">
              {{ scope.row.type | formatStockType }}
            </template>
         </el-table-column>
         <el-table-column label="领用部门" prop="useDepartment"></el-table-column>
         <el-table-column label="仓库">
-          <template scope="scope">
-            默认仓库
-          </template>
         </el-table-column>
         <el-table-column prop="time" label="出库日期">
         </el-table-column>

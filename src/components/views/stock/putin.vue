@@ -10,12 +10,18 @@
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="类型">
           <el-select v-model="formInline.type">
-            <el-option label="全部入库" :value="-1"></el-option>
             <el-option label="商品入库" :value="1"></el-option>
+            <el-option label="赠品入库" :value="-1"></el-option>
             <el-option label="其他入库" :value="2"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item>
+        <el-form-item label="入库单号">
+          <el-input v-model="formInline.number"></el-input>
+        </el-form-item>
+        <el-form-item label="经办人">
+          <el-input v-model="formInline.person"></el-input>
+        </el-form-item>
+        <el-form-item label="时间">
           <el-date-picker v-model="formInline.startTime" type="date" placeholder="开始时间"></el-date-picker>
           至
           <el-date-picker v-model="formInline.endTime" type="date" placeholder="结束时间"></el-date-picker>
@@ -31,13 +37,10 @@
          element-loading-text="拼命加载中">
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column label="编号" width="100">
-          <template scope="scope">
-            {{ (scope.$index + 1) + (currentPage - 1) * 15 }}
-          </template>
         </el-table-column>
-        <el-table-column prop="orderNumber" label="单号">
+        <el-table-column prop="orderNumber" label="入库单号">
         </el-table-column>
-         <el-table-column label="类型">
+         <el-table-column label="入库方式">
            <template scope="scope">
              {{ scope.row.type | formatStockType }}
            </template>
@@ -75,7 +78,9 @@
         formInline: {
           startTime: '',
           endTime: '',
-          type: -1
+          type: -1,
+          person: '',
+          number: ''
         },
         storeId: JSON.parse(sessionStorage.getItem('store')).k,
         tableData: [],
@@ -128,7 +133,9 @@
             pageSize: 15,
             pageNum: num,
             startTime: this.startTimeA,
-            endTime: this.endTimeA
+            endTime: this.endTimeA,
+            number: this.formInline.number,
+            person: this.formInline.person
           }
         }).then(function (respose) {
           let data = respose.data

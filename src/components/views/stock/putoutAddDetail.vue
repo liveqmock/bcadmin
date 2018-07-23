@@ -9,24 +9,29 @@
     </div>
     <div class="search-wrapper">
       <el-form :inline="true" class="demo-form-inline">
-        <el-form-item label="单号:">
+        <el-form-item label="出库单号:">
           <p class="text" v-if="tableData.stockRecord">
             {{ tableData.stockRecord.orderNumber }}
+          </p>
+        </el-form-item>
+        <el-form-item label="出库仓库:">
+          <p class="text" v-if="tableData.stockRecord">
+            {{ tableData.stockRecord.orderNumber }}
+          </p>
+        </el-form-item>
+        <el-form-item label="出库方式:">
+          <p class="text" v-if="tableData.stockRecord">
+            {{ tableData.stockRecord.type | formatStockType }}
+          </p>
+        </el-form-item>
+        <el-form-item label="负责人:">
+          <p class="text">
+            {{ tableData.stockRecord.operator }}
           </p>
         </el-form-item>
         <el-form-item label="出库日期:">
           <p class="text" v-if="tableData.stockRecord">
             {{ tableData.stockRecord.time }}
-          </p>
-        </el-form-item>
-        <el-form-item label="出库类型:">
-          <p class="text" v-if="tableData.stockRecord">
-            {{ tableData.stockRecord.type | formatStockType }}
-          </p>
-        </el-form-item>
-        <el-form-item label="领用部门:" v-if="tableData.stockRecord && tableData.stockRecord.type === 6">
-          <p class="text">
-            {{ tableData.stockRecord.useDepartment }}
           </p>
         </el-form-item>
         <el-form-item>
@@ -38,17 +43,28 @@
          v-loading="loading"
          element-loading-text="拼命加载中">
       <el-table :data="tableData.stockDetailDtoList" border style="width: 100%">
-        <el-table-column prop="productCode" label="商品编码">
+        <el-table-column prop="productCode" label="商品条码">
         </el-table-column>
-        <el-table-column prop="productName" label="商品名称">
+        <el-table-column prop="productName" label="商品规格名称">
         </el-table-column>
-        <el-table-column prop="standard" label="商品规格">
+        <el-table-column prop="standard" label="商品名称">
         </el-table-column>
-        <el-table-column prop="typeName" label="类型">
+        <el-table-column prop="typeName" label="二级类型">
+        </el-table-column>
+        <el-table-column prop="typeName" label="一级类型">
+        </el-table-column>
+        <el-table-column prop="unit" label="单位">
         </el-table-column>
         <el-table-column prop="number" label="数量">
         </el-table-column>
-        <el-table-column prop="unit" label="单位">
+        <el-table-column prop="number" label="仓库">
+        </el-table-column>
+        <el-table-column prop="number" label="备注">
+        </el-table-column>
+        <el-table-column>
+          <template scope="scope">
+            <el-button type="primary" size="small">查看明细</el-button>
+          </template>
         </el-table-column>
       </el-table>
     </div>
@@ -61,9 +77,9 @@
       </el-col>
     </el-row>
     <el-row class="putin-footer" v-if="tableData.stockRecord">
-      <el-col :span="2" class="label">经办人:</el-col>
+      <el-col :span="2" class="label">附件:</el-col>
       <el-col :span="10" class="text">
-        {{ tableData.stockRecord.operator }}
+        无
       </el-col>
     </el-row>
     <div class="putin-btns">

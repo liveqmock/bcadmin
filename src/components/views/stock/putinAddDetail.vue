@@ -9,7 +9,12 @@
     </div>
     <div class="search-wrapper">
       <el-form :inline="true" class="demo-form-inline">
-        <el-form-item label="单号:">
+        <el-form-item label="入库单号:">
+          <p class="text" v-if="tableData.stockRecord">
+            {{ tableData.stockRecord.orderNumber }}
+          </p>
+        </el-form-item>
+        <el-form-item label="入库方式:">
           <p class="text" v-if="tableData.stockRecord">
             {{ tableData.stockRecord.orderNumber }}
           </p>
@@ -19,8 +24,23 @@
             {{ tableData.stockRecord.time }}
           </p>
         </el-form-item>
+        <el-form-item label="经办人:">
+          <p class="text" v-if="tableData.stockRecord">
+            {{ tableData.stockRecord.orderNumber }}
+          </p>
+        </el-form-item>
+        <el-form-item label="供应商名称:">
+          <p class="text" v-if="tableData.stockRecord">
+            {{ tableData.stockRecord.orderNumber }}
+          </p>
+        </el-form-item>
+        <el-form-item label="仓库名称:">
+          <p class="text" v-if="tableData.stockRecord">
+            {{ tableData.stockRecord.orderNumber }}
+          </p>
+        </el-form-item>
         <el-form-item>
-          <a :href="exportLink" class="btn-link">导出到EXCEL</a>
+          <a :href="exportLink" class="btn-link">导出入库验收单</a>
         </el-form-item>
       </el-form>
     </div>

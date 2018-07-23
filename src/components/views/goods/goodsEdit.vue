@@ -11,7 +11,7 @@
       <el-form label-width="120px" :model="formData" :rules="rules" ref="formData">
         <el-form-item label="商品名称:" prop="name">
           <el-col :span="12">
-            <el-input type="text" v-model="formData.name"></el-input>
+            <el-input type="text" v-model="formData.name" :disabled="formData.isStock === true"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="类 别:" prop="typeId">
@@ -98,29 +98,45 @@
                :rules="standardRules">
         <el-form-item label="条码" prop="productCode">
           <el-col :span="16">
-            <el-input v-model="standard.productCode"></el-input>
+            <el-input v-model="standard.productCode" disabled></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="规格名称" prop="standard">
           <el-col :span="16">
-            <el-input v-model="standard.standard"></el-input>
+            <el-input v-model="standard.standard" :disabled="standard.flag === true"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="进货价" prop="buyingPrice">
           <el-col :span="16">
-            <el-input v-model.number="standard.buyingPrice" auto-complete="off"></el-input>
+            <el-input v-model.number="standard.buyingPrice" auto-complete="off" :disabled="standard.flag === true"></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item label="出售价" prop="sellingPrice">
+        <el-form-item label="进项税率" prop="inputRate">
           <el-col :span="16">
-            <el-input v-model.number="standard.sellingPrice"></el-input>
+            <el-input v-model.number="standard.inputRate" auto-complete="off" :disabled="standard.flag === true"></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item label="折扣" prop="discount">
+        <el-form-item label="建议零售价" prop="sellingPrice">
           <el-col :span="16">
-            <el-input v-model.number="standard.discount"></el-input>
+            <el-input v-model.number="standard.sellingPrice" auto-complete="off"></el-input>
           </el-col>
         </el-form-item>
+        <el-row>
+          <el-radio v-model="standard.useType" :label="1" class="before-label">&nbsp;</el-radio>
+          <el-form-item label="实售价">
+            <el-col :span="16">
+              <el-input v-model.number="standard.price" :disabled="standard.useType !== 1"></el-input>
+            </el-col>
+          </el-form-item>
+        </el-row>
+        <el-row>
+          <el-radio v-model="standard.useType" :label="2" class="before-label">&nbsp;</el-radio>
+          <el-form-item label="折扣" prop="discount">
+            <el-col :span="16">
+              <el-input v-model.number="standard.discount" :disabled="standard.useType !== 2"></el-input>
+            </el-col>
+          </el-form-item>
+        </el-row>
         <el-form-item label="商品税率" prop="taxRate">
           <el-col :span="16">
             <el-input v-model.number="standard.taxRate"></el-input>
@@ -215,6 +231,9 @@
             sellingPrice: '',
             standard: '',
             taxRate: '',
+            inputRate: '',
+            price: '',
+            useType: 1,
             storeId: JSON.parse(sessionStorage.getItem('store')).k
           },
           formData: {
@@ -345,6 +364,7 @@
           }).then(res => {
             if (res.data.status === 'success') {
               that.formData = res.data.data.product
+              this.$set(this.formData, 'isStock', res.data.data.stock)
               that.productDetailList = res.data.data.productDetailList
             }
           })
@@ -540,4 +560,9 @@
     text-align: center;
   }
   .color-gry{ color:#999; font-size:12px; margin-left:10px;}
+  .before-label{
+    position: absolute;
+    top: 15%;
+    left: 3%;
+  }
 </style>

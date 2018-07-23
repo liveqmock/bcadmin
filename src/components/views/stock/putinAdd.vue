@@ -10,14 +10,17 @@
       <el-form :inline="true" :model="stockRecord" :rules="rules" ref="stockRecord"
                label-width="100px"
                class="demo-form-inline">
-        <el-form-item label="经办人" required>
-          <el-input v-model="operator" disabled type="text"></el-input>
-        </el-form-item>
-        <el-form-item label="入库类型" prop="type">
+        <el-form-item label="仓库"></el-form-item>
+
+        <el-form-item label="入库方式" prop="type">
           <el-select v-model="stockRecord.type">
             <el-option label="商品入库" :value="1"></el-option>
+            <el-option label="赠品入库" :value="1"></el-option>
             <el-option label="其他入库" :value="2"></el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="经办人" required>
+          <el-input v-model="operator" disabled type="text"></el-input>
         </el-form-item>
         <!--<el-form-item label="供应商:" prop="supplierId">
           <el-select v-model="stockRecord.supplierId">
@@ -47,7 +50,7 @@
             ></el-input>
           </template>
         </el-table-column>
-        <el-table-column label="商品名称" width="88">
+        <el-table-column label="商品规格名称" width="88">
           <template scope="scope">
             {{ scope.row.productDetail.pName }}
           </template>
@@ -57,17 +60,37 @@
             {{ scope.row.productDetail.pUnit }}
           </template>
         </el-table-column>
+        <el-table-column prop="" label="数量">
+          <template scope="scope">
+            <el-input v-model.number="scope.row.number"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column prop="" label="二级类型">
+          <template scope="scope">
+            <el-input v-model.number="scope.row.number"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column prop="" label="一级类型">
+          <template scope="scope">
+            <el-input v-model.number="scope.row.number"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column prop="" label="过期日期">
+          <template scope="scope">
+            <el-input v-model.number="scope.row.number"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column prop="" label="进项税率">
+          <template scope="scope">
+            <el-input v-model.number="scope.row.number"></el-input>
+          </template>
+        </el-table-column>
         <el-table-column prop="" label="进货价">
           <template scope="scope">
             {{ scope.row.productDetail.pBuyingPrice }}
           </template>
         </el-table-column>
-        <el-table-column label="备注">
-          <template scope="scope">
-            <el-input v-model="scope.row.remark"></el-input>
-          </template>
-        </el-table-column>
-        <el-table-column prop="" label="入库数量">
+        <el-table-column prop="" label="进货总价">
           <template scope="scope">
             <el-input v-model.number="scope.row.number"></el-input>
           </template>
@@ -81,12 +104,32 @@
             </el-select>
           </template>
         </el-table-column>
+        <el-table-column label="备注">
+          <template scope="scope">
+            <el-input v-model="scope.row.remark"></el-input>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
     <el-row class="putin-footer">
       <el-col :span="2" class="label">填写备注:</el-col>
       <el-col :span="10">
         <el-input v-model="stockRecord.remarks" type="text"></el-input>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="6">
+        <el-upload
+          class="upload-demo"
+          :action="imgUploadUrl"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :on-success="handleSuccess"
+          :on-error="uporr"
+          :headers="uploadHeader"
+          :file-list="fileList">
+          <el-button size="small" type="primary">添加附件</el-button>
+       </el-upload>
       </el-col>
     </el-row>
     <div class="putin-btns">
@@ -122,6 +165,8 @@
       }
       return {
         operator: JSON.parse(sessionStorage.getItem('userInfo')).userName,
+        imgUploadUrl: URL.api_name + 'backofficeapi/information/banner/upload.do',
+        fileList: [],
         initList: [
           {
             number: 0,
@@ -150,7 +195,35 @@
         supplyList: []
       }
     },
+    computed: {
+      uploadHeader () {
+        return {
+          authtoken: JSON.parse(sessionStorage.getItem('userInfo')).sessionId
+        }
+      }
+    },
     methods: {
+      handleRemove (file, fileList) {
+        this.fileList = fileList
+      },
+      handlePreview (file) {
+      },
+      handleSuccess (response, file, fileList) {
+        this.fileList = fileList
+      },
+      uporr (err, file, fileList) {
+        if (err.status === 'failed') {
+          this.$message({
+            message: err.message,
+            type: 'error'
+          })
+        } else {
+          this.$message({
+            message: '上传失败',
+            type: 'error'
+          })
+        }
+      },
       getSupplierList () {
         let that = this
         axios.get(URL.api_name + 'merchandiseapi/product/findSupplierByStoreId.do', {

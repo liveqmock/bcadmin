@@ -132,10 +132,6 @@
   .el-button+.el-button{
     margin-left: 0;
   }
-  .el-table__row .cell{
-    max-height: 100px;
-    overflow: auto;
-  }
   .el-table__row .el-table__expand-column .cell {
     overflow: hidden;
   }
