@@ -9,24 +9,28 @@
     <div class="search-wrapper">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="盘点任务编码">
-          <el-input></el-input>
+          <el-input v-model="formInline.taskCode"></el-input>
         </el-form-item>
         <el-form-item label="盘点任务名称">
-          <el-input></el-input>
+          <el-input v-model="formInline.taskName"></el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item label="时间">
           <el-date-picker v-model="formInline.startTime" type="date" placeholder="请输入盘点开始日期"></el-date-picker>
           至
           <el-date-picker v-model="formInline.endTime" type="date" placeholder="请输入盘点结束日期"></el-date-picker>
         </el-form-item>
         <el-form-item label="经办人">
-          <el-input></el-input>
+          <el-input v-model="formInline.personLiable"></el-input>
         </el-form-item>
         <el-form-item label="仓库">
           <el-input></el-input>
         </el-form-item>
         <el-form-item label="状态">
-          <el-input></el-input>
+          <el-select v-model="formInline.taskStatus">
+            <el-option label="草稿" value="草稿"></el-option>
+            <el-option label="已启动" value="已启动"></el-option>
+            <el-option label="已完成" value="已完成"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="search">查询</el-button>
@@ -38,23 +42,23 @@
          v-loading="loading"
          element-loading-text="拼命加载中">
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column label="任务创建日期" prop="productDetailId">
+        <el-table-column label="任务创建日期" prop="createTime">
         </el-table-column>
-        <el-table-column label="盘点任务编码" prop="productName">
+        <el-table-column label="盘点任务编码" prop="taskCode">
         </el-table-column>
-        <el-table-column label="盘点任务名称" prop="standard">
+        <el-table-column label="盘点任务名称" prop="taskName">
         </el-table-column>
-        <el-table-column label="盘点分店" prop="storage">
+        <el-table-column label="盘点分店" prop="storeId">
         </el-table-column>
-        <el-table-column label="仓库" prop="storagePrice" >
+        <el-table-column label="仓库" prop="storeId" >
         </el-table-column>
-        <el-table-column label="经办人" prop="library">
+        <el-table-column label="经办人" prop="warehouse">
         </el-table-column>
-        <el-table-column label="盘点开始时间" prop="libraryPrice">
+        <el-table-column label="盘点开始时间" prop="startTime">
         </el-table-column>
-        <el-table-column label="盘点结束时间" prop="stock">
+        <el-table-column label="盘点结束时间" prop="endTime">
         </el-table-column>
-        <el-table-column label="状态" prop="sale">
+        <el-table-column label="状态" prop="taskStatus">
         </el-table-column>
         <el-table-column label="完成日期" prop="note">
         </el-table-column>
@@ -93,7 +97,10 @@
         formInline: {
           startTime: '',
           endTime: '',
-          type: ''
+          personLiable: '',
+          taskCode: '',
+          taskName: '',
+          taskStatus: ''
         },
         storeId: JSON.parse(sessionStorage.getItem('store')).k,
         tableData: [],
@@ -144,14 +151,16 @@
       getListData (num) {
         var that = this
         that.loading = true
-        axios.get(URL.api_name + 'merchandiseapi/stock/product/stock/inventory.do', {
-          params: {
-            storeId: that.storeId,
-            pageSize: 15,
-            pageNum: num,
-            startTime: this.startTimeA,
-            endTime: this.endTimeA
-          }
+        axios.post(URL.api_name + 'merchandiseapi/task/search.do', {
+          storeId: that.storeId,
+          pageSize: 15,
+          pageNum: num,
+          startTime: this.startTimeA,
+          endTime: this.endTimeA,
+          personLiable: this.formInline.personLiable,
+          taskCode: this.formInline.taskCode,
+          taskName: this.formInline.taskName,
+          taskStatus: this.formInline.taskStatus
         }).then(function (respose) {
           let data = respose.data
           that.tableData = data.data.list

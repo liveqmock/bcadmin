@@ -12,7 +12,7 @@
         <!--<el-form-item label="盘点任务编码："></el-form-item>-->
         <el-form-item label="盘点任务名称：">
           <el-col :span="12">
-            <el-input></el-input>
+            <el-input v-model="formData.taskName"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="盘点分店：">
@@ -25,11 +25,11 @@
           {{ operator }}
         </el-form-item>
         <el-form-item label="盘点开始时间：">
-          <el-date-picker v-model="formData.startTime" type="datetime"></el-date-picker>
-          <el-button>选择历史任务时间</el-button>
+          <el-date-picker v-model="formData.startTime" type="datetime" @change="startTime"></el-date-picker>
+          <el-button @click="showDialog = true">选择历史任务时间</el-button>
         </el-form-item>
         <el-form-item label="盘点结束时间：">
-          <el-date-picker v-model="formData.endTime" type="datetime"></el-date-picker>
+          <el-date-picker v-model="formData.endTime" type="datetime" @change="endTime"></el-date-picker>
         </el-form-item>
         <el-form-item label="备注：">
           <el-col :span="12">
@@ -44,6 +44,24 @@
         </el-form-item>
       </el-form>
     </div>
+    <el-dialog title="选择开始时间"
+               :close-on-click-modal="false"
+               :show-close="false"
+               :visible.sync="showDialog">
+      <el-row type="flex" :gutter="10" justify="center">
+        <el-col :span="4">
+          历史任务名称
+        </el-col>
+        <el-col :span="8">
+          已盘时间范围
+        </el-col>
+      </el-row>
+      <el-row type="flex" :gutter="10" justify="center">
+        <el-col :span="4"></el-col>
+        <el-col :span="8"></el-col>
+      </el-row>
+
+    </el-dialog>
   </div>
 </template>
 
@@ -61,9 +79,10 @@
           startTime: '',
           storeId: JSON.parse(sessionStorage.getItem('store')).k,
           taskName: '',
-          warehouse: ''
+          warehouse: this.operator
         },
-        loading: false
+        loading: false,
+        showDialog: false
       }
     },
     computed: {
@@ -75,13 +94,20 @@
       }
     },
     methods: {
+      startTime (val) {
+        this.formData.startTime = val
+      },
+      endTime (val) {
+        this.formData.endTime = val
+      },
       saveData () {
         this.loading = true
-        axios.post(URL.api_name + 'merchandiseapi/task/create.do', {
-          formData: this.formData
-        }).then(res => {
+        this.formData.warehouse = this.operator
+        axios.post(URL.api_name + 'merchandiseapi/task/create.do', this.formData).then(res => {
           if (res.data.status === 'success') {
-
+            this.$router.push({
+              path: '/inventory'
+            })
           } else {
             this.$errMsg(res.data.message)
           }
