@@ -82,7 +82,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="2" style="margin-left: 10px;">
-            <el-button type="default" @click="getSystemDiscount">确定</el-button>
+            <el-button :disabled="discount === ''" type="default" @click="getSystemDiscount">确定</el-button>
           </el-col>
         </el-row>
         <el-row v-show="hasAtuthory === 1">
@@ -95,7 +95,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="2" style="margin-left: 10px;">
-            <el-button type="default" @click="getSystemDiscount">确定</el-button>
+            <el-button :disabled="discountPrice === ''" type="default" @click="getSystemDiscount">确定</el-button>
           </el-col>
         </el-row>
         <el-form-item label="现金券：">
@@ -250,6 +250,10 @@
               type: '系统'
             }
           } else {
+            // if (this.discountPrice < 0 || this.discountPrice > this.formData.orderPaidPrice) {
+            //   this.$errMsg('折扣金额不能大于订单实付金额且不能小于0')
+            //   return
+            // }
             systemD = {
               paid: that.discountPrice,
               type: '系统'

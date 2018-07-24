@@ -51,7 +51,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="2" style="margin-left: 10px;">
-            <el-button type="default" @click="calPrice">确定</el-button>
+            <el-button :disabled="discount === ''" type="default" @click="calPrice">确定</el-button>
           </el-col>
         </el-row>
         <el-row v-show="hasAtuthory === 1">
@@ -64,14 +64,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="2" style="margin-left: 10px;">
-            <el-button type="default" @click="calDiscount">确定</el-button>
-          </el-col>
-        </el-row>
-        <el-row v-for="(d, i) in formData.discounts" :key="i" class="discount-info cal-price">
-          <el-col :span="12">
-            <el-form-item :label="d.type + '：'">
-              <p>{{ d.discount * 10 }}折</p>
-            </el-form-item>
+            <el-button :disabled="discountPrice === ''" type="default" @click="calDiscount">确定</el-button>
           </el-col>
         </el-row>
         <el-row class="discount-info cal-price">
@@ -122,6 +115,10 @@
     },
     methods: {
       calDiscount () {
+        // if (this.discountPrice < 0 || this.discountPrice >= this.formData.order.price) {
+        //   this.$errMsg('折扣金额不能大于订单总金额且不能小于0')
+        //   return
+        // }
         this.formData.discounts.push({
           paid: this.discountPrice,
           discount: null,
@@ -132,6 +129,8 @@
         axios.post(URL.api_name + 'backofficeapi/order/discount.do', this.formData).then((res) => {
           if (res.data.status === 'success') {
             this.formData = res.data.data
+          } else {
+            this.$errMsg(res.data.message)
           }
         }).catch((err) => {
           console.log(err)
@@ -190,18 +189,19 @@
               message: '折扣比例应介于0~10'
             })
             return
-          } else if (!this.checkDiscount()) {
-            that.formData.discounts.push({
-              discount: that.discount / 10,
-              orderId: that.formData.order.id,
-              type: '系统',
-              endorser: that.authorizer
-            })
           }
+          that.formData.discounts.push({
+            discount: that.discount / 10,
+            orderId: that.formData.order.id,
+            type: '系统',
+            endorser: that.authorizer
+          })
         }
         axios.post(URL.api_name + 'backofficeapi/order/discount.do', that.formData).then((res) => {
           if (res.data.status === 'success') {
             that.formData = res.data.data
+          } else {
+            this.$errMsg(res.data.message)
           }
         }).catch((err) => {
           console.log(err)
