@@ -60,7 +60,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="系统折后(金额)">
-              <el-input :disabled="radioType !== 2" v-model.number="discount" placeholder="请输入折后金额"></el-input>
+              <el-input :disabled="radioType !== 2" v-model.number="discountPrice" placeholder="请输入折后金额"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="2" style="margin-left: 10px;">
@@ -123,7 +123,8 @@
     methods: {
       calDiscount () {
         this.formData.discounts.push({
-          discountPrice: this.discountPrice / 10,
+          paid: this.discountPrice,
+          discount: null,
           orderId: this.formData.order.id,
           type: '系统',
           endorser: this.authorizer

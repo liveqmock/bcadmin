@@ -241,8 +241,20 @@
       },
       getSystemDiscount () {
         let that = this
+        let systemD = null
         // 获取系统折扣
         if (that.discount >= 0 && that.discount <= 10) {
+          if (this.radioType === 1) {
+            systemD = {
+              discount: that.discount,
+              type: '系统'
+            }
+          } else {
+            systemD = {
+              paid: that.discountPrice,
+              type: '系统'
+            }
+          }
           // 计算折扣
           that.isLoading = true
           axios.post(URL.api_name + 'backofficeapi/course/buy/discount.do', {
@@ -254,10 +266,7 @@
             courseLevel: that.$route.params.courseLevel,
             memberId: that.$route.params.memberId,
             storeId: that.storeId,
-            systemDiscount: {
-              discount: that.discount,
-              type: '系统'
-            },
+            systemDiscount: systemD,
             authorizer: that.authorizer
           }).then((res) => {
             if (res.data.status === 'success') {
