@@ -66,7 +66,7 @@
           <template scope="scope">
             <div class="s-line">
               <el-button type="info" size="small" @click="goDetail(scope.row.id)">修改</el-button>
-              <el-button type="info" size="small" @click="goDetail(scope.row.id)">删除</el-button>
+              <el-button type="info" size="small" @click="delTask(scope.row.id)">删除</el-button>
             </div>
             <div class="s-line">
               <el-button type="info" size="small" @click="goDetail(scope.row.id)">查看总库存</el-button>
@@ -131,6 +131,24 @@
       Pager: Pager
     },
     methods: {
+      delTask (id) {
+        this.$confirm('确定删除此盘点任务？', '提示', {
+          confirmButton: '确定',
+          cancelButton: '取消',
+          type: 'warning'
+        }).then(() => {
+          axios.post(URL.api_name + 'merchandiseapi/task/delete.do', {
+            id: id
+          }).then(res => {
+            if (res.data.status === 'success') {
+              this.$succssMsg(res.data.message)
+              this.getListData(this.currentPage)
+            } else {
+              this.$errMsg(res.data.message)
+            }
+          })
+        }).catch(() => {})
+      },
       createTask () {
         this.$router.push({
           path: '/taskAdd'
