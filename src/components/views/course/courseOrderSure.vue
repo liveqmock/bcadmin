@@ -297,7 +297,19 @@
       },
       submitOrder () {
         let that = this
+        let systemD = null
         // 计算折扣
+        if (this.radioType === 1) {
+          systemD = {
+            discount: that.discount,
+            type: '系统'
+          }
+        } else {
+          systemD = {
+            paid: that.discountPrice,
+            type: '系统'
+          }
+        }
         that.submitLoading = true
         axios.post(URL.api_name + 'backofficeapi/course/buy/purchase.do', {
           cashCouponDiscount: {
@@ -309,10 +321,7 @@
           courseLevel: that.$route.params.courseLevel,
           memberId: that.$route.params.memberId,
           storeId: that.storeId,
-          systemDiscount: {
-            discount: that.discount,
-            type: '系统'
-          },
+          systemDiscount: systemD,
           authorizer: that.authorizer,
           description: this.description
         }).then((res) => {
