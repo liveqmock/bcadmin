@@ -69,12 +69,35 @@
           </el-col>
         </el-form-item>-->
         <el-form-item label="系统折扣：">
-          <el-col :span="4">
+          <!--<el-col :span="4">
             <el-input v-model.number="discount" :disabled="hasAtuthory === 0" @keyup.enter.native="getSystemDiscount"></el-input>
-          </el-col>
+          </el-col>-->
           <el-button @click="authorizeDialog = true" :loading="isLoading">{{ isLoading ? '授权操作中...' : '授权' }}</el-button>
-          <small v-show="hasAtuthory === 1">输入完折扣按回车键</small>
         </el-form-item>
+        <el-row v-show="hasAtuthory === 1">
+          <el-col :span="8">
+            <el-radio v-model="radioType" class="f-radio" :label="1">&nbsp;</el-radio>
+            <el-form-item label="系统折扣(比例)">
+              <el-input v-model.number="discount" :disabled="hasAtuthory === 0"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="2" style="margin-left: 10px;">
+            <el-button type="default" @click="getSystemDiscount">确定</el-button>
+          </el-col>
+        </el-row>
+        <el-row v-show="hasAtuthory === 1">
+          <el-col :span="2">
+            <el-radio v-model="radioType" class="f-radio" :label="2">&nbsp;</el-radio>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="系统折后(金额)">
+              <el-input :disabled="radioType !== 2" v-model.number="discountPrice" placeholder="请输入折后金额"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="2" style="margin-left: 10px;">
+            <el-button type="default" @click="getSystemDiscount">确定</el-button>
+          </el-col>
+        </el-row>
         <el-form-item label="现金券：">
           <el-col :span="12">
             <el-select v-model="formInline.money" placeholder="请选择">
@@ -165,7 +188,9 @@
         storeId: JSON.parse(sessionStorage.getItem('store')).k,
         authorizer: '',
         submitLoading: false,
-        description: ''
+        description: '',
+        discountPrice: '',
+        radioType: 1
       }
     },
     components: {
@@ -339,4 +364,9 @@
   }
 .stepsss{text-align: center;}
 .color_gray{color:#B1B1B1; font-size:12px; margin:0 10px 0 5px;}
+  .f-radio{
+    position: absolute;
+    top: 15%;
+    left: 3%;
+  }
 </style>

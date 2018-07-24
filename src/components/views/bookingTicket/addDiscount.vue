@@ -8,7 +8,7 @@
       </el-breadcrumb>
     </div>
     <div class="form-data">
-      <el-form label-width="100px">
+      <el-form label-width="150px">
         <el-form-item class="no-margin" label="订单号：">
           {{ formData.order.code }}
         </el-form-item>
@@ -33,16 +33,38 @@
           </el-form-item>
         </div>
       </el-form>
-      <el-form label-width="100px">
+      <el-form label-width="150px">
         <el-row>
           <el-col :span="12">
             <el-form-item label="系统折扣：">
-              <el-col :span="12">
-                <el-input :disabled="hasAtuthory === 0" v-model.number="discount" placeholder="请输入0~10的数字"></el-input>
-              </el-col>
               <el-button type="info" @click="showDialog" class="ml">授 权</el-button>
-              <el-button type="info" @click="calPrice">计算折扣</el-button>
             </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row v-show="hasAtuthory === 1">
+          <el-col :span="2">
+            <el-radio v-model="radioType" class="f-radio" :label="1">&nbsp;</el-radio>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="系统折扣(比例)">
+              <el-input :disabled="radioType !== 1" v-model.number="discount" placeholder="请输入0~10的数字"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="2" style="margin-left: 10px;">
+            <el-button type="default" @click="calPrice">确定</el-button>
+          </el-col>
+        </el-row>
+        <el-row v-show="hasAtuthory === 1">
+          <el-col :span="2">
+            <el-radio v-model="radioType" class="f-radio" :label="2">&nbsp;</el-radio>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="系统折后(金额)">
+              <el-input :disabled="radioType !== 2" v-model.number="discount" placeholder="请输入折后金额"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="2" style="margin-left: 10px;">
+            <el-button type="default" @click="calDiscount">确定</el-button>
           </el-col>
         </el-row>
         <el-row v-for="(d, i) in formData.discounts" :key="i" class="discount-info cal-price">
@@ -67,6 +89,7 @@
         </el-row>
         <el-form-item>
           <el-button type="success" @click="goToPay">支付</el-button>
+          <el-button type="default" @click="$router.go('-1')">取消</el-button>
         </el-form-item>
       </el-form>
       <authorize-page :authorizeDialog="dialogFormVisible"
@@ -89,13 +112,34 @@
         dialogFormVisible: false,
         discount: '',
         hasAtuthory: 0,
-        authorizer: ''
+        authorizer: '',
+        radioType: 1,
+        discountPrice: ''
       }
     },
     components: {
       AuthorizePage
     },
     methods: {
+      calDiscount () {
+        this.formData.discounts.push({
+          discountPrice: this.discountPrice / 10,
+          orderId: this.formData.order.id,
+          type: '系统',
+          endorser: this.authorizer
+        })
+        axios.post(URL.api_name + 'backofficeapi/order/discount.do', this.formData).then((res) => {
+          if (res.data.status === 'success') {
+            this.formData = res.data.data
+          }
+        }).catch((err) => {
+          console.log(err)
+          this.$message({
+            type: 'error',
+            message: '计算失败'
+          })
+        })
+      },
       showDialog () {
         this.dialogFormVisible = !this.dialogFormVisible
       },
@@ -203,5 +247,10 @@
   }
   .w-btn{
     width: 100px;
+  }
+  .f-radio{
+    position: absolute;
+    top: 15%;
+    left: 20px;
   }
 </style>

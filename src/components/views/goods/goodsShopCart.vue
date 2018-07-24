@@ -105,6 +105,9 @@
           <el-form-item label="兑换积分：" v-show="checkedData.length > 0 && checkedData[0].changeIntegral">
             {{ check.changeIntegral * check.number }}积分
           </el-form-item>
+          <el-form-item label="订单总金额：">
+            ¥{{ totalPrice }}
+          </el-form-item>
         </div>
         <el-form-item label="系统折扣：">
           <el-col :span="4">
@@ -127,9 +130,6 @@
           </el-form-item>
         </div>
         <div>
-          <el-form-item label="订单总金额：">
-            ¥{{ totalPrice }}
-          </el-form-item>
           <!--<el-form-item label="折扣：">
             {{ discountObj.effect ? discountObj.effect : 0 }}¥
           </el-form-item>-->

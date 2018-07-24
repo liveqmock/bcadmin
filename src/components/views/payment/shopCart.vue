@@ -86,8 +86,11 @@
           <el-form-item label="数量：">
             {{ check.number }}
           </el-form-item>
-          <el-form-item label="总金额：">
-            ¥{{ check.price * check.number }}
+          <!--<el-form-item label="总金额：">-->
+            <!--¥{{ check.price * check.number }}-->
+          <!--</el-form-item>-->
+          <el-form-item label="订单总金额：">
+            ¥{{ totalPrice }}
           </el-form-item>
         </div>
         <el-form-item label="输入手机号：">
@@ -101,9 +104,6 @@
           </el-col>
           <el-button :disabled="fetchCodeMsg" @click="setCode">{{ timerCodeMsg }}</el-button>
           回车验证会员信息
-        </el-form-item>
-        <el-form-item label="订单总金额：">
-          ¥{{ totalPrice }}
         </el-form-item>
         <el-form-item label="应付金额：">
           ¥{{ discountObj.amountPayable ? discountObj.amountPayable : totalPrice }}
