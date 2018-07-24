@@ -48,19 +48,29 @@
                :close-on-click-modal="false"
                :show-close="false"
                :visible.sync="showDialog">
-      <el-row type="flex" :gutter="10" justify="center">
-        <el-col :span="4">
+      <el-row :gutter="15" class="f-table-h">
+        <el-col :span="6">
           历史任务名称
         </el-col>
-        <el-col :span="8">
+        <el-col :span="16">
           已盘时间范围
         </el-col>
       </el-row>
-      <el-row type="flex" :gutter="10" justify="center">
-        <el-col :span="4"></el-col>
-        <el-col :span="8"></el-col>
+      <el-row :gutter="15" class="f-table-h" v-for="old in oldTaskList" :key="old.id">
+        <el-col :span="6">
+          {{ old.taskName }}
+        </el-col>
+        <el-col :span="16">
+          {{ old.startTime }} 至 {{ old.endTime }}
+        </el-col>
+        <el-col :span="1">
+          <el-radio v-model="radioType" :label="old.id">&nbsp;</el-radio>
+        </el-col>
       </el-row>
-
+      <el-row type="flex" justify="center" style="margin-top: 10px;">
+        <el-button style="margin-right: 10px;" type="primary" @click="confirmDialog">确定</el-button>
+        <el-button type="default" @click="cancelDialog">取消</el-button>
+      </el-row>
     </el-dialog>
   </div>
 </template>
@@ -70,6 +80,9 @@
   import URL from '@/common/js/URL.js'
   export default {
     name: 'TaskAdd',
+    created () {
+      this.fetchOldTask()
+    },
     data () {
       return {
         formData: {
@@ -82,7 +95,9 @@
           warehouse: this.operator
         },
         loading: false,
-        showDialog: false
+        showDialog: false,
+        oldTaskList: [],
+        radioType: ''
       }
     },
     computed: {
@@ -94,6 +109,30 @@
       }
     },
     methods: {
+      cancelDialog () {
+        this.showDialog = false
+      },
+      confirmDialog () {
+        this.formData.beforeTaskId = this.radioType
+        for (let old of this.oldTaskList) {
+          if (this.radioType === old.id) {
+            this.formData.startTime = old.endTime
+            break
+          }
+        }
+        this.showDialog = false
+      },
+      fetchOldTask () {
+        axios.post(URL.api_name + 'merchandiseapi/task/search.do', {
+          storeId: JSON.parse(sessionStorage.getItem('store')).k
+        }).then(res => {
+          if (res.data.status === 'success') {
+            this.oldTaskList = res.data.data.list
+          } else {
+            this.$errMsg(res.data.message)
+          }
+        })
+      },
       startTime (val) {
         this.formData.startTime = val
       },
@@ -119,3 +158,10 @@
     }
   }
 </script>
+
+<style lang="less" scoped>
+  .f-table-h{
+    height: 30px;
+    line-height: 30px;
+  }
+</style>
