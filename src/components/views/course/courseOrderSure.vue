@@ -72,13 +72,13 @@
           <!--<el-col :span="4">
             <el-input v-model.number="discount" :disabled="hasAtuthory === 0" @keyup.enter.native="getSystemDiscount"></el-input>
           </el-col>-->
-          <el-button @click="authorizeDialog = true" :loading="isLoading">{{ isLoading ? '授权操作中...' : '授权' }}</el-button>
+          <el-button @click="authorizeDialog = true">授权</el-button>
         </el-form-item>
         <el-row v-show="hasAtuthory === 1">
           <el-col :span="8">
             <el-radio v-model="radioType" class="f-radio" :label="1">&nbsp;</el-radio>
             <el-form-item label="系统折扣(比例)">
-              <el-input v-model.number="discount" :disabled="hasAtuthory === 0"></el-input>
+              <el-input v-model.number="discount" :disabled="radioType !== 1"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="2" style="margin-left: 10px;">

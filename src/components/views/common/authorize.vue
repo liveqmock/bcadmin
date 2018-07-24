@@ -123,6 +123,7 @@
                     // 免单
                     this.exemptionAction()
                   } else {
+                    this.authorizing = false
                     // 只授权
                     this.$message({
                       type: 'success',
