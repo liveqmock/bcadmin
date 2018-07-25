@@ -29,7 +29,7 @@
     <div class="table-data"
          v-loading="loading"
          element-loading-text="拼命加载中">
-      <el-table :data="data.inventories"
+      <el-table :data="selectData"
                 border style="width: 100%">
         <el-table-column label="商品条码" prop="productCode">
         </el-table-column>
@@ -76,18 +76,22 @@
       return {
         data: {},
         loading: true,
-        confirmLoading: false
+        confirmLoading: false,
+        selectData: JSON.parse(sessionStorage.getItem('selectData'))
       }
     },
     methods: {
       confirm () {
         this.confirmLoading = true
         axios.post(URL.api_name + 'merchandiseapi/taskInventory/update.do', {
-          inventories: this.data.inventories
+          inventories: this.selectData,
+          taskStatus: '已启用'
         }).then(res => {
           if (res.data.status === 'success') {
             this.$succssMsg(res.data.message)
-            this.$router.go('-1')
+            this.$router.push({
+              path: '/inventory'
+            })
           } else {
             this.confirmLoading = false
             this.$errMsg(res.data.message)

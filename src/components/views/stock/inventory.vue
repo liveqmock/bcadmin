@@ -60,7 +60,7 @@
         </el-table-column>
         <el-table-column label="状态" prop="taskStatus">
         </el-table-column>
-        <el-table-column label="完成日期" prop="note">
+        <el-table-column label="完成日期" prop="finishTime">
         </el-table-column>
         <el-table-column label="操作" width="180">
           <template scope="scope">

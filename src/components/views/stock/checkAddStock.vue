@@ -30,30 +30,64 @@
          v-loading="loading"
          element-loading-text="拼命加载中">
       <el-table :data="data.inventories"
+                ref="checkAddStockTable"
                 @selection-change="handleSelectionChange"
                 border style="width: 100%">
         <el-table-column type="selection" width="35"></el-table-column>
-        <el-table-column label="商品条码" prop="productCode">
+        <el-table-column label="商品条码">
+          <template scope="scope">
+            <span :class="{red: scope.row.beforeTarget === 2, blue: scope.row.beforeTarget === 1}">{{scope.row.productCode}}</span>
+          </template>
         </el-table-column>
-        <el-table-column label="商品规格名称" prop="productName">
+        <el-table-column label="商品规格名称">
+          <template scope="scope">
+            <span :class="{red: scope.row.beforeTarget === 2, blue: scope.row.beforeTarget === 1}">{{scope.row.productName}}</span>
+          </template>
         </el-table-column>
         <el-table-column label="商品名称" prop="standardName">
+          <template scope="scope">
+            <span :class="{red: scope.row.beforeTarget === 2, blue: scope.row.beforeTarget === 1}">{{scope.row.productName}}</span>
+          </template>
         </el-table-column>
         <el-table-column label="单位" prop="storeId">
+          <template scope="scope">
+            <span :class="{red: scope.row.beforeTarget === 2, blue: scope.row.beforeTarget === 1}">{{scope.row.productName}}</span>
+          </template>
         </el-table-column>
         <el-table-column label="本期结存(账面数量)" prop="storeId" >
+          <template scope="scope">
+            <span :class="{red: scope.row.beforeTarget === 2, blue: scope.row.beforeTarget === 1}">{{scope.row.productName}}</span>
+          </template>
         </el-table-column>
         <el-table-column label="进项税率" prop="warehouse">
+          <template scope="scope">
+            <span :class="{red: scope.row.beforeTarget === 2, blue: scope.row.beforeTarget === 1}">{{scope.row.productName}}</span>
+          </template>
         </el-table-column>
         <el-table-column label="进货价" prop="startTime">
+          <template scope="scope">
+            <span :class="{red: scope.row.beforeTarget === 2, blue: scope.row.beforeTarget === 1}">{{scope.row.productName}}</span>
+          </template>
         </el-table-column>
         <el-table-column label="不含税单价" prop="endTime">
+          <template scope="scope">
+            <span :class="{red: scope.row.beforeTarget === 2, blue: scope.row.beforeTarget === 1}">{{scope.row.productName}}</span>
+          </template>
         </el-table-column>
         <el-table-column label="不含税总价" prop="taskStatus">
+          <template scope="scope">
+            <span :class="{red: scope.row.beforeTarget === 2, blue: scope.row.beforeTarget === 1}">{{scope.row.productName}}</span>
+          </template>
         </el-table-column>
         <el-table-column label="账面金额" prop="note">
+          <template scope="scope">
+            <span :class="{red: scope.row.beforeTarget === 2, blue: scope.row.beforeTarget === 1}">{{scope.row.productName}}</span>
+          </template>
         </el-table-column>
         <el-table-column label="备注" prop="note">
+          <template scope="scope">
+            <span :class="{red: scope.row.beforeTarget === 2, blue: scope.row.beforeTarget === 1}">{{scope.row.productName}}</span>
+          </template>
         </el-table-column>
       </el-table>
     </div>
@@ -80,10 +114,14 @@
       }
     },
     methods: {
-      saveToTarget () {},
+      saveToTarget () {
+        sessionStorage.setItem('selectData', JSON.stringify(this.selectData))
+        this.$router.push({
+          path: '/targetGoods/' + this.$route.params.taskId
+        })
+      },
       handleSelectionChange (val) {
         this.selectData = val
-        console.log(val)
       },
       fetchData () {
         axios.post(URL.api_name + 'merchandiseapi/taskInventory/search.do', {
@@ -92,6 +130,12 @@
           this.loading = false
           if (res.data.status === 'success') {
             this.data = res.data.data
+            // 如果isTarget字段为1，则选中
+            for (let obj of res.data.data.inventories) {
+              if (obj.isTarget === 1) {
+                this.selectData.push(obj)
+              }
+            }
           } else {
             this.$errMsg(res.data.message)
           }
@@ -100,3 +144,12 @@
     }
   }
 </script>
+
+<style lang="less" scoped>
+  .red{
+    color: red;
+  }
+  .blue{
+    color: blue;
+  }
+</style>
