@@ -259,10 +259,13 @@ import Stock from '@/components/views/stock/stock'
 import Inventory from '@/components/views/stock/inventory'
 import InventoryDetail from '@/components/views/stock/inventoryDetail'
 import TaskAdd from '@/components/views/stock/taskAdd'
+import TaskEdit from '@/components/views/stock/taskEdit'
 // 查看总库存
 import CheckAddStock from '@/components/views/stock/checkAddStock'
 // 目标商品
 import TargetGoods from '@/components/views/stock/targetGoods'
+// 盘点
+import InventoryAdd from '@/components/views/stock/inventoryAdd'
 // 交接单
 import Delivery from '@/components/views/goods/delivery'
 import DeliveryList from '@/components/views/goods/deliveryList'
@@ -1478,6 +1481,11 @@ export default new Router({
       component: TaskAdd
     },
     {
+      path: '/taskEdit/:taskId',
+      name: 'TaskEdit',
+      component: TaskEdit
+    },
+    {
       path: '/checkAddStock/:taskId',
       name: 'CheckAddStock',
       component: CheckAddStock
@@ -1486,6 +1494,11 @@ export default new Router({
       path: '/targetGoods/:taskId',
       name: 'TargetGoods',
       component: TargetGoods
+    },
+    {
+      path: '/inventoryAdd',
+      name: 'InventoryAdd',
+      component: InventoryAdd
     }
   ]
 })

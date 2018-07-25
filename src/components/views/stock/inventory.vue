@@ -65,7 +65,7 @@
         <el-table-column label="操作" width="180">
           <template scope="scope">
             <div class="s-line">
-              <el-button type="info" size="small" @click="goDetail(scope.row.id)">修改</el-button>
+              <el-button type="info" size="small" @click="taskEdit(scope.row.id)">修改</el-button>
               <el-button type="info" size="small" @click="delTask(scope.row.id)">删除</el-button>
             </div>
             <div class="s-line">
@@ -73,7 +73,7 @@
               <el-button type="info" size="small" @click="targetGoods(scope.row.id)">目标商品</el-button>
             </div>
             <div class="s-line">
-              <el-button type="info" size="small" @click="goDetail(scope.row.id)">盘点</el-button>
+              <el-button type="info" size="small" @click="inventoryAdd(scope.row)">盘点</el-button>
               <el-button type="info" size="small" @click="goDetail(scope.row.id)">盘点报告</el-button>
             </div>
           </template>
@@ -131,6 +131,21 @@
       Pager: Pager
     },
     methods: {
+      inventoryAdd (item) {
+        this.$router.push({
+          path: '/inventoryAdd',
+          query: {
+            startTime: item.startTime,
+            endTime: item.endTime,
+            taskId: item.id
+          }
+        })
+      },
+      taskEdit (taskId) {
+        this.$router.push({
+          path: '/taskEdit/' + taskId
+        })
+      },
       checkTask (taskId) {
         this.$router.push({
           path: '/checkAddStock/' + taskId

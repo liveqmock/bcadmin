@@ -4,7 +4,7 @@
       <el-breadcrumb separator="/">
         <el-breadcrumb-item><i class="el-icon-date"></i> 库存管理</el-breadcrumb-item>
         <el-breadcrumb-item>库存盘点</el-breadcrumb-item>
-        <el-breadcrumb-item>新建盘点任务</el-breadcrumb-item>
+        <el-breadcrumb-item>修改</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="form-data">
@@ -81,6 +81,7 @@
   export default {
     name: 'TaskAdd',
     created () {
+      this.fetchTaskDetail()
       this.fetchOldTask()
     },
     data () {
@@ -134,6 +135,15 @@
           }
         })
       },
+      fetchTaskDetail () {
+        axios.post(URL.api_name + 'merchandiseapi/task/findTaskById.do', {
+          id: this.$route.params.taskId
+        }).then(res => {
+          if (res.data.status === 'success') {
+            this.formData = res.data.data
+          }
+        })
+      },
       startTime (val) {
         this.formData.startTime = val
       },
@@ -142,8 +152,7 @@
       },
       saveData () {
         this.loading = true
-        this.formData.personLiable = this.operator
-        axios.post(URL.api_name + 'merchandiseapi/task/create.do', this.formData).then(res => {
+        axios.post(URL.api_name + 'merchandiseapi/task/update.do', this.formData).then(res => {
           if (res.data.status === 'success') {
             this.$router.push({
               path: '/inventory'
