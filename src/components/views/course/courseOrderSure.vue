@@ -301,12 +301,14 @@
         if (this.radioType === 1) {
           systemD = {
             discount: that.discount,
-            type: '系统'
+            type: '系统',
+            afterMemberDiscount: (that.formData.orderTotalPrice - that.formData.memberDiscountPrice).toFixed(2)
           }
         } else {
           systemD = {
             paid: that.discountPrice,
-            type: '系统'
+            type: '系统',
+            afterMemberDiscount: (that.formData.orderTotalPrice - that.formData.memberDiscountPrice).toFixed(2)
           }
         }
         that.submitLoading = true
