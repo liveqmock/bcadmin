@@ -41,6 +41,13 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="会员折扣：">
+              ¥{{memberDiscount}}
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-row v-show="hasAtuthory === 1">
           <el-col :span="2">
             <el-radio v-model="radioType" class="f-radio" :label="1">&nbsp;</el-radio>
@@ -113,15 +120,31 @@
     components: {
       AuthorizePage
     },
+    computed: {
+      memberDiscount () {
+        for (let d of this.formData.discounts) {
+          if (d.type === '会员权益') {
+            return d.effect
+          }
+        }
+        return 0
+      }
+    },
     methods: {
       calDiscount () {
-        this.formData.discounts.length = 0
+        if (this.formData.order.userId && this.formData.order.userId !== null) {
+          // 如果有会员折扣
+          this.formData.discounts.length = 1
+        } else {
+          this.formData.discounts.length = 0
+        }
         this.formData.discounts.push({
           paid: this.discountPrice,
           discount: null,
           orderId: this.formData.order.id,
           type: '系统',
-          endorser: this.authorizer
+          endorser: this.authorizer,
+          afterMemberDiscount: (this.formData.order.price - this.memberDiscount).toFixed(2)
         })
         axios.post(URL.api_name + 'backofficeapi/order/discount.do', this.formData).then((res) => {
           if (res.data.status === 'success') {
@@ -187,12 +210,18 @@
             })
             return
           }
-          this.formData.discounts.length = 0
+          if (this.formData.order.userId && this.formData.order.userId !== null) {
+            // 如果有会员折扣
+            this.formData.discounts.length = 1
+          } else {
+            this.formData.discounts.length = 0
+          }
           that.formData.discounts.push({
             discount: that.discount / 10,
             orderId: that.formData.order.id,
             type: '系统',
-            endorser: that.authorizer
+            endorser: that.authorizer,
+            afterMemberDiscount: (this.formData.order.price - this.memberDiscount).toFixed(2)
           })
         }
         axios.post(URL.api_name + 'backofficeapi/order/discount.do', that.formData).then((res) => {
