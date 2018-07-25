@@ -115,10 +115,7 @@
     },
     methods: {
       calDiscount () {
-        // if (this.discountPrice < 0 || this.discountPrice >= this.formData.order.price) {
-        //   this.$errMsg('折扣金额不能大于订单总金额且不能小于0')
-        //   return
-        // }
+        this.formData.discounts.length = 0
         this.formData.discounts.push({
           paid: this.discountPrice,
           discount: null,
@@ -190,6 +187,7 @@
             })
             return
           }
+          this.formData.discounts.length = 0
           that.formData.discounts.push({
             discount: that.discount / 10,
             orderId: that.formData.order.id,

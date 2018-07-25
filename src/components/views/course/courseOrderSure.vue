@@ -250,10 +250,6 @@
               type: '系统'
             }
           } else {
-            // if (this.discountPrice < 0 || this.discountPrice > this.formData.orderPaidPrice) {
-            //   this.$errMsg('折扣金额不能大于订单实付金额且不能小于0')
-            //   return
-            // }
             systemD = {
               paid: that.discountPrice,
               type: '系统'
@@ -285,10 +281,7 @@
               })
             } else {
               that.isLoading = false
-              that.$message({
-                type: 'error',
-                message: res.data.message
-              })
+              that.$errMsg(res.data.message)
             }
           })
         } else {
