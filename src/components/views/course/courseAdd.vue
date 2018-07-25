@@ -233,6 +233,7 @@
         let that = this
         that.$refs[formName].validate((valid) => {
           if (valid) {
+            that.isLoading = true
             if (that.fileList.length <= 0) {
               that.$message({
                 message: '课程图片不能为空',

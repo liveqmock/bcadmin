@@ -4,7 +4,7 @@
       <el-breadcrumb separator="/">
         <el-breadcrumb-item><i class="el-icon-date"></i> 库存管理</el-breadcrumb-item>
         <el-breadcrumb-item>库存盘点</el-breadcrumb-item>
-        <el-breadcrumb-item>查看总库存</el-breadcrumb-item>
+        <el-breadcrumb-item>目标商品</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="search-wrapper">
@@ -30,9 +30,7 @@
          v-loading="loading"
          element-loading-text="拼命加载中">
       <el-table :data="data.inventories"
-                @selection-change="handleSelectionChange"
                 border style="width: 100%">
-        <el-table-column type="selection" width="35"></el-table-column>
         <el-table-column label="商品条码" prop="productCode">
         </el-table-column>
         <el-table-column label="商品规格名称" prop="productName">
@@ -58,7 +56,9 @@
       </el-table>
     </div>
     <el-row type="flex" justify="center" style="margin-top: 20px;">
-      <el-button style="margin-right: 10px;" type="primary" @click="saveToTarget">保存到目标商品</el-button>
+      <el-button style="margin-right: 10px;" type="primary" :loading="confirmLoading" @click="confirm">
+        {{confirmLoading ? '正在提交' : '确认'}}
+      </el-button>
       <el-button @click="$router.go('-1')">返回</el-button>
     </el-row>
   </div>
@@ -76,17 +76,30 @@
       return {
         data: {},
         loading: true,
-        selectData: []
+        confirmLoading: false
       }
     },
     methods: {
-      saveToTarget () {},
-      handleSelectionChange (val) {
-        this.selectData = val
-        console.log(val)
+      confirm () {
+        this.confirmLoading = true
+        axios.post(URL.api_name + 'merchandiseapi/taskInventory/update.do', {
+          inventories: this.data.inventories
+        }).then(res => {
+          if (res.data.status === 'success') {
+            this.$succssMsg(res.data.message)
+            this.$router.go('-1')
+          } else {
+            this.confirmLoading = false
+            this.$errMsg(res.data.message)
+          }
+        }).catch(err => {
+          console.log(err)
+          this.confirmLoading = false
+        })
       },
       fetchData () {
         axios.post(URL.api_name + 'merchandiseapi/taskInventory/search.do', {
+          isTarget: 1,
           taskId: this.$route.params.taskId
         }).then(res => {
           this.loading = false

@@ -218,6 +218,7 @@
         let that = this
         that.$refs[formName].validate((valid) => {
           if (valid) {
+            that.isLoading = true
             if (that.fileList.length <= 0) {
               that.$message({
                 message: '课程图片不能为空',
@@ -234,7 +235,6 @@
             }
             that.formData.isrecommended = that.checked ? 0 : 1
             axios.post(URL.api_name + 'backofficeapi/course/update.do', that.formData).then((res) => {
-              that.isLoading = false
               if (res.data.status === 'success') {
                 that.$message({
                   message: res.data.message,
@@ -244,6 +244,7 @@
                   path: '/courseList'
                 })
               } else {
+                that.isLoading = false
                 that.$message({
                   type: 'error',
                   message: res.data.message

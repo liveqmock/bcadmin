@@ -69,8 +69,8 @@
               <el-button type="info" size="small" @click="delTask(scope.row.id)">删除</el-button>
             </div>
             <div class="s-line">
-              <el-button type="info" size="small" @click="goDetail(scope.row.id)">查看总库存</el-button>
-              <el-button type="info" size="small" @click="goDetail(scope.row.id)">目标商品</el-button>
+              <el-button type="info" size="small" @click="checkTask(scope.row.id)">查看总库存</el-button>
+              <el-button type="info" size="small" @click="targetGoods(scope.row.id)">目标商品</el-button>
             </div>
             <div class="s-line">
               <el-button type="info" size="small" @click="goDetail(scope.row.id)">盘点</el-button>
@@ -131,6 +131,16 @@
       Pager: Pager
     },
     methods: {
+      checkTask (taskId) {
+        this.$router.push({
+          path: '/checkAddStock/' + taskId
+        })
+      },
+      targetGoods (taskId) {
+        this.$router.push({
+          path: '/targetGoods/' + taskId
+        })
+      },
       delTask (id) {
         this.$confirm('确定删除此盘点任务？', '提示', {
           confirmButton: '确定',
