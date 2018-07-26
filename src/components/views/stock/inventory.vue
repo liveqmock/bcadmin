@@ -50,9 +50,9 @@
         </el-table-column>
         <el-table-column label="盘点分店" prop="storeId">
         </el-table-column>
-        <el-table-column label="仓库" prop="storeId" >
+        <el-table-column label="仓库" prop="warehouse" >
         </el-table-column>
-        <el-table-column label="经办人" prop="warehouse">
+        <el-table-column label="经办人" prop="personLiable">
         </el-table-column>
         <el-table-column label="盘点开始时间" prop="startTime">
         </el-table-column>
@@ -65,16 +65,16 @@
         <el-table-column label="操作" width="180">
           <template scope="scope">
             <div class="s-line">
-              <el-button type="info" size="small" @click="taskEdit(scope.row.id)">修改</el-button>
+              <el-button :disabled="scope.row.taskStatus !== '草稿'" type="info" size="small" @click="taskEdit(scope.row.id)">修改</el-button>
               <el-button type="info" size="small" @click="delTask(scope.row.id)">删除</el-button>
             </div>
             <div class="s-line">
               <el-button type="info" size="small" @click="checkTask(scope.row.id)">查看总库存</el-button>
-              <el-button type="info" size="small" @click="targetGoods(scope.row.id)">目标商品</el-button>
+              <el-button :disabled="scope.row.taskStatus === '草稿'" type="info" size="small" @click="targetGoods(scope.row.id)">目标商品</el-button>
             </div>
             <div class="s-line">
-              <el-button type="info" size="small" @click="inventoryAdd(scope.row)">盘点</el-button>
-              <el-button type="info" size="small" @click="goDetail(scope.row.id)">盘点报告</el-button>
+              <el-button :disabled="scope.row.taskStatus !== '已启用'" type="info" size="small" @click="inventoryAdd(scope.row)">盘点</el-button>
+              <el-button :disabled="scope.row.taskStatus !== '已完成'" type="info" size="small" @click="exportReport(scope.row.id)">盘点报告</el-button>
             </div>
           </template>
         </el-table-column>
@@ -131,6 +131,10 @@
       Pager: Pager
     },
     methods: {
+      exportReport (id) {
+        let url = URL.api + 'merchandiseapi/taskInventory/search/export.do?taskId=' + id
+        window.open(url, '_blank')
+      },
       inventoryAdd (item) {
         this.$router.push({
           path: '/inventoryAdd',
