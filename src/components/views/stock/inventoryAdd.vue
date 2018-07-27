@@ -19,7 +19,7 @@
           {{data.startTime}} 至 {{data.endTime}}
         </el-form-item>
         <el-form-item label="盘点分店：">
-          {{data.storeId}}
+          {{data.storeName}}
         </el-form-item>
         <el-form-item label="盘点仓库：">
           {{data.warehouse}}
@@ -63,14 +63,14 @@
         </el-table-column>
         <el-table-column label="不含税总金额" prop="exclusiveTaxSumprice">
         </el-table-column>
-        <el-table-column label="实盘数量">
+        <el-table-column label="实盘数量" prop="realNumber">
           <template scope="scope">
-            <el-input v-model.number="scope.row.realNumber" @change="textChange"></el-input>
+            <el-input :min="0" v-model.number="scope.row.realNumber" @change="textChange"></el-input>
           </template>
         </el-table-column>
         <el-table-column label="盘盈数量" prop="amountProfit">
         </el-table-column>
-        <el-table-column label="盘盈金额" prop="amountPice">
+        <el-table-column label="盘盈金额" prop="amountPrice">
         </el-table-column>
         <el-table-column label="盘亏数量" prop="deficitNumber">
         </el-table-column>
@@ -122,16 +122,27 @@
         this.deBounceCal()
       },
       calNumber () {
-        var sum = 0
-        var a = document.querySelectorAll('.el-table__footer-wrapper .is-leaf')[14]
-        var c = a.getElementsByTagName('div')
+        // var sum = 0
+        // var a = document.querySelectorAll('.el-table__footer-wrapper .is-leaf')[14]
+        // var c = a.getElementsByTagName('div')
 
         for (let obj of this.data.inventories) {
-          if (obj.realNumber && typeof obj.realNumber === 'number') {
-            sum += obj.realNumber
+          // if (obj.realNumber && typeof obj.realNumber === 'number') {
+          //   sum += obj.realNumber
+          // }
+          // 计算盘盈盘亏金额与数量
+          if (obj.realNumber > obj.accountsNumber) {
+            obj.amountProfit = obj.realNumber - obj.accountsNumber
+            obj.deficitNumber = 0
+            obj.amountPrice = obj.buyingPrice * obj.amountProfit
+          } else {
+            obj.deficitNumber = obj.accountsNumber - obj.realNumber
+            obj.amountProfit = 0
+            obj.deficitPrice = obj.buyingPrice * obj.deficitNumber
           }
         }
-        c[0].innerText = sum
+        // 实盘数量合计
+        // c[0].innerText = sum
       },
       saveToTarget () {
         this.confirmLoading = true
@@ -160,7 +171,8 @@
       },
       fetchData () {
         axios.post(URL.api_name + 'merchandiseapi/taskInventory/search.do', {
-          taskId: this.$route.query.taskId
+          taskId: this.$route.query.taskId,
+          isTarget: 1
         }).then(res => {
           this.loading = false
           if (res.data.status === 'success') {

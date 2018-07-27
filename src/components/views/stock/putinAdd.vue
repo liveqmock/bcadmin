@@ -12,11 +12,11 @@
                class="demo-form-inline">
         <el-form-item label="仓库"></el-form-item>
 
-        <el-form-item label="入库方式" prop="stockType">
+        <el-form-item label="入库方式" prop="type">
           <el-select v-model="stockRecord.stockType">
             <el-option label="商品入库" :value="1"></el-option>
-            <el-option label="赠品入库" :value="2"></el-option>
-            <el-option label="其他入库" :value="3"></el-option>
+            <el-option label="赠品入库" :value="6"></el-option>
+            <el-option label="其他入库" :value="2"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="经办人" required>
@@ -80,9 +80,9 @@
             {{scope.row.productDetail.parentName}}
           </template>
         </el-table-column>
-        <el-table-column prop="" label="过期日期">
+        <el-table-column width="200" label="过期日期">
           <template scope="scope">
-            <el-input v-model.number="scope.row.productDetail.expirationDate"></el-input>
+            <el-date-picker type="date" v-model.number="scope.row.expirationDate"></el-date-picker>
           </template>
         </el-table-column>
         <el-table-column label="进项税率">
@@ -97,10 +97,10 @@
         </el-table-column>
         <el-table-column prop="" label="进货总价">
           <template scope="scope">
-            {{scope.row.productDetail.totalBuyingPrice}}
+            {{scope.row.productDetail.pBuyingPrice * scope.row.number}}
           </template>
         </el-table-column>
-        <el-table-column prop="" label="供应商">
+        <el-table-column width="150" label="供应商">
           <template scope="scope">
             <el-select v-model="scope.row.supplierId">
               <el-option v-for="(t, i) in supplyList" :key="i"
@@ -178,15 +178,20 @@
             number: 0,
             remark: '',
             productDetail: {},
-            supplierId: ''
+            supplierId: '',
+            expirationDate: ''
           }
         ],
         stockRecord: {
           remarks: '',
           time: moment().format('YYYY-MM-DD'),
           stockType: 1,
-          supplierId: '',
-          storeId: JSON.parse(sessionStorage.getItem('store')).k
+          storeId: JSON.parse(sessionStorage.getItem('store')).k,
+          fileName: '',
+          fileUrl: '',
+          type: 1,
+          orderNumber: '',
+          operator: JSON.parse(sessionStorage.getItem('userInfo')).userName
         },
         tableData: [],
         loading: false,
@@ -222,6 +227,8 @@
       },
       handleSuccess (response, file, fileList) {
         this.fileList = fileList
+        this.stockRecord.fileName = this.fileList[0].response.data.fileName
+        this.stockRecord.fileUrl = this.fileList[0].response.data.fileUrl
       },
       uporr (err, file, fileList) {
         if (err.status === 'failed') {
@@ -253,6 +260,7 @@
         axios.get(URL.api_name + 'merchandiseapi/product/findByProductCode.do', {
           params: {
             productCode: prodCode,
+            type: 1,
             storeId: JSON.parse(sessionStorage.getItem('store')).k
           }
         }).then(res => {
@@ -302,25 +310,21 @@
             for (let p of this.initList) {
               submitList.push({
                 buyingPrice: p.productDetail.pBuyingPrice,
+                childName: p.productDetail.childName,
+                expirationDate: p.expirationDate,
                 number: p.number,
+                parentName: p.productDetail.parentName,
                 productDetailId: p.productDetail.pId,
                 remark: p.remark,
                 supplierId: p.supplierId,
+                totalBuyingPrice: p.productDetail.pBuyingPrice * p.number,
                 storeId: JSON.parse(sessionStorage.getItem('store')).k
               })
-            }
-            // 附件
-            let fileName, fileUrl
-            if (that.fileList.length > 0) {
-              fileName = that.fileList[0].response.data.fileName
-              fileUrl = that.fileList[0].response.data.fileUrl
             }
             that.loading = true
             axios.post(URL.api_name + 'merchandiseapi/stock/create.do', {
               stockDetailList: submitList,
-              stockRecord: this.stockRecord,
-              fileName: fileName,
-              fileUrl: fileUrl
+              stockRecord: this.stockRecord
             }).then(res => {
               if (res.data.status === 'success') {
                 that.$message({

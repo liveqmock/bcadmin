@@ -48,7 +48,7 @@
         </el-table-column>
         <el-table-column label="盘点任务名称" prop="taskName">
         </el-table-column>
-        <el-table-column label="盘点分店" prop="storeId">
+        <el-table-column label="盘点分店" prop="storeName">
         </el-table-column>
         <el-table-column label="仓库" prop="warehouse" >
         </el-table-column>
@@ -132,7 +132,8 @@
     },
     methods: {
       exportReport (id) {
-        let url = URL.api + 'merchandiseapi/taskInventory/search/export.do?taskId=' + id
+        let url = URL.api_name + 'merchandiseapi/taskInventory/search/export.do?taskId=' + id +
+          '&authtoken=' + JSON.parse(sessionStorage.getItem('userInfo')).sessionId
         window.open(url, '_blank')
       },
       inventoryAdd (item) {
@@ -157,7 +158,7 @@
       },
       targetGoods (taskId) {
         this.$router.push({
-          path: '/targetGoods/' + taskId
+          path: '/targetGoodsDetail/' + taskId
         })
       },
       delTask (id) {

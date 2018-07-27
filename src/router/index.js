@@ -264,6 +264,7 @@ import TaskEdit from '@/components/views/stock/taskEdit'
 import CheckAddStock from '@/components/views/stock/checkAddStock'
 // 目标商品
 import TargetGoods from '@/components/views/stock/targetGoods'
+import TargetGoodsDetail from '@/components/views/stock/targetGoodsDetail'
 // 盘点
 import InventoryAdd from '@/components/views/stock/inventoryAdd'
 // 交接单
@@ -1494,6 +1495,11 @@ export default new Router({
       path: '/targetGoods/:taskId',
       name: 'TargetGoods',
       component: TargetGoods
+    },
+    {
+      path: '/targetGoodsDetail/:taskId',
+      name: 'TargetGoodsDetail',
+      component: TargetGoodsDetail
     },
     {
       path: '/inventoryAdd',

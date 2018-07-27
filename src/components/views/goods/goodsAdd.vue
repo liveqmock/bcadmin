@@ -115,7 +115,7 @@
         </el-form-item>
         <el-form-item label="进项税率">
           <el-col :span="16">
-            <el-input auto-complete="off"></el-input>
+            <el-input auto-complete="off" v-model="standard.inputRate"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="建议零售价" prop="sellingPrice">

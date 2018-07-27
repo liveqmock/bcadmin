@@ -32,7 +32,7 @@
     <div class="table-data"
          v-loading="loading"
          element-loading-text="拼命加载中">
-      <el-table :data="selectData"
+      <el-table :data="data.inventories"
                 border style="width: 100%">
         <el-table-column label="商品条码">
           <template scope="scope">
@@ -128,24 +128,25 @@
     },
     methods: {
       confirm () {
-        this.confirmLoading = true
-        axios.post(URL.api_name + 'merchandiseapi/taskInventory/update.do', {
-          inventories: this.selectData,
-          taskStatus: '已启用'
-        }).then(res => {
-          if (res.data.status === 'success') {
-            this.$succssMsg(res.data.message)
-            this.$router.push({
-              path: '/inventory'
-            })
-          } else {
-            this.confirmLoading = false
-            this.$errMsg(res.data.message)
-          }
-        }).catch(err => {
-          console.log(err)
-          this.confirmLoading = false
-        })
+        this.$router.go('-1')
+        // this.confirmLoading = true
+        // axios.post(URL.api_name + 'merchandiseapi/taskInventory/update.do', {
+        //   inventories: this.data.inventories,
+        //   taskStatus: '已启用'
+        // }).then(res => {
+        //   if (res.data.status === 'success') {
+        //     this.$succssMsg(res.data.message)
+        //     this.$router.push({
+        //       path: '/inventory'
+        //     })
+        //   } else {
+        //     this.confirmLoading = false
+        //     this.$errMsg(res.data.message)
+        //   }
+        // }).catch(err => {
+        //   console.log(err)
+        //   this.confirmLoading = false
+        // })
       },
       fetchData () {
         axios.post(URL.api_name + 'merchandiseapi/taskInventory/search.do', {

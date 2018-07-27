@@ -25,7 +25,7 @@
           {{ operator }}
         </el-form-item>
         <el-form-item label="盘点开始时间：">
-          <el-date-picker v-model="formData.startTime" type="datetime" @change="startTime"></el-date-picker>
+          <el-date-picker disabled v-model="formData.startTime" type="datetime" @change="startTime"></el-date-picker>
           <el-button @click="showDialog = true">选择历史任务时间</el-button>
         </el-form-item>
         <el-form-item label="盘点结束时间：">
