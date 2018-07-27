@@ -18,10 +18,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="出库单号">
-          <el-input></el-input>
+          <el-input v-model="formInline.orderNumber"></el-input>
         </el-form-item>
-        <el-form-item label="负责人">
-          <el-input></el-input>
+        <el-form-item label="经办人">
+          <el-input v-model="formInline.operator"></el-input>
         </el-form-item>
         <el-form-item label="时间">
           <el-date-picker v-model="formInline.startTime" type="date" placeholder="开始时间"></el-date-picker>
@@ -38,7 +38,7 @@
          v-loading="loading"
          element-loading-text="拼命加载中">
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column label="编号" width="100">
+        <el-table-column label="编号" width="100" prop="id">
         </el-table-column>
         <el-table-column prop="orderNumber" label="出库单号">
         </el-table-column>
@@ -48,7 +48,7 @@
            </template>
         </el-table-column>
         <el-table-column label="领用部门" prop="useDepartment"></el-table-column>
-        <el-table-column label="仓库">
+        <el-table-column label="仓库" prop="warehouse">
         </el-table-column>
         <el-table-column prop="time" label="出库日期">
         </el-table-column>
@@ -78,7 +78,9 @@
         formInline: {
           startTime: '',
           endTime: '',
-          type: -2
+          type: -2,
+          operator: '',
+          orderNumber: ''
         },
         storeId: JSON.parse(sessionStorage.getItem('store')).k,
         tableData: [],
@@ -131,7 +133,9 @@
             pageSize: 15,
             pageNum: num,
             startTime: this.startTimeA,
-            endTime: this.endTimeA
+            endTime: this.endTimeA,
+            operator: this.formInline.operator,
+            orderNumber: this.formInline.orderNumber
           }
         }).then(function (respose) {
           let data = respose.data

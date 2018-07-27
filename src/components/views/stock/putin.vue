@@ -36,7 +36,7 @@
          v-loading="loading"
          element-loading-text="拼命加载中">
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column label="编号" width="100">
+        <el-table-column label="编号" width="100" prop="id">
         </el-table-column>
         <el-table-column prop="orderNumber" label="入库单号">
         </el-table-column>
@@ -45,10 +45,7 @@
              {{ scope.row.type | formatStockType }}
            </template>
         </el-table-column>
-        <el-table-column label="仓库">
-          <template scope="scope">
-            默认仓库
-          </template>
+        <el-table-column label="仓库" prop="warehouse">
         </el-table-column>
         <el-table-column prop="time" label="入库日期">
         </el-table-column>
@@ -134,8 +131,8 @@
             pageNum: num,
             startTime: this.startTimeA,
             endTime: this.endTimeA,
-            number: this.formInline.number,
-            person: this.formInline.person
+            orderNumber: this.formInline.number,
+            operator: this.formInline.person
           }
         }).then(function (respose) {
           let data = respose.data

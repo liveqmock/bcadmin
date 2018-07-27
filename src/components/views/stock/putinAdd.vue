@@ -10,7 +10,9 @@
       <el-form :inline="true" :model="stockRecord" :rules="rules" ref="stockRecord"
                label-width="100px"
                class="demo-form-inline">
-        <el-form-item label="仓库"></el-form-item>
+        <el-form-item label="仓库">
+          {{house}}
+        </el-form-item>
 
         <el-form-item label="入库方式" prop="type">
           <el-select v-model="stockRecord.stockType">
@@ -171,6 +173,7 @@
       }
       return {
         operator: JSON.parse(sessionStorage.getItem('userInfo')).userName,
+        house: JSON.parse(sessionStorage.getItem('store')).v + '仓库',
         imgUploadUrl: URL.api_name + 'merchandiseapi/stock/upload.do',
         fileList: [],
         initList: [

@@ -94,11 +94,16 @@
     <!-- 分页 -->
     <!--<pager :current-page="currentPage" :total-count="totalCount" v-on:handleCurrentChange="getListData"></pager>-->
     <el-row class="putin-footer" v-if="tableData.stockRecord">
+      <el-col class="text">
+        备注：{{ tableData.stockRecord.remarks }}
+      </el-col>
+    </el-row>
+    <el-row class="putin-footer" v-if="tableData.stockRecord">
       <el-col style="width: 300px; white-space: nowrap; overflow: hidden;text-overflow: ellipsis" class="text">
-        附件：{{ tableData.stockRecord.fileName }}
+        附件：{{ tableData.stockRecord.fileName ? tableData.stockRecord.fileName : '无' }}
       </el-col>
       <el-col :span="2" class="label">
-        <el-button size="small" type="primary" @click="download(tableData.stockRecord.fileUrl)">下载附件</el-button>
+        <el-button tableData.stockRecord.fileName size="small" type="primary" @click="download(tableData.stockRecord.fileUrl)">下载附件</el-button>
       </el-col>
     </el-row>
     <div class="putin-btns">

@@ -23,7 +23,7 @@
           <el-input v-model="formInline.personLiable"></el-input>
         </el-form-item>
         <el-form-item label="仓库">
-          <el-input></el-input>
+          <el-input v-model="wareHouse"></el-input>
         </el-form-item>
         <el-form-item label="状态">
           <el-select v-model="formInline.taskStatus">
@@ -100,7 +100,8 @@
           personLiable: '',
           taskCode: '',
           taskName: '',
-          taskStatus: ''
+          taskStatus: '',
+          wareHouse: ''
         },
         storeId: JSON.parse(sessionStorage.getItem('store')).k,
         tableData: [],
@@ -208,7 +209,8 @@
           personLiable: this.formInline.personLiable,
           taskCode: this.formInline.taskCode,
           taskName: this.formInline.taskName,
-          taskStatus: this.formInline.taskStatus
+          taskStatus: this.formInline.taskStatus,
+          wareHouse: this.formInline.wareHouse
         }).then(function (respose) {
           let data = respose.data
           that.tableData = data.data.list
