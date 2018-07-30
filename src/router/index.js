@@ -267,6 +267,7 @@ import TargetGoods from '@/components/views/stock/targetGoods'
 import TargetGoodsDetail from '@/components/views/stock/targetGoodsDetail'
 // 盘点
 import InventoryAdd from '@/components/views/stock/inventoryAdd'
+import GoodsDetailStock from '@/components/views/stock/goodsDetail'
 // 交接单
 import Delivery from '@/components/views/goods/delivery'
 import DeliveryList from '@/components/views/goods/deliveryList'
@@ -1505,6 +1506,11 @@ export default new Router({
       path: '/inventoryAdd',
       name: 'InventoryAdd',
       component: InventoryAdd
+    },
+    {
+      path: '/goodsDetailStock/:gid',
+      name: 'GoodsDetailStock',
+      component: GoodsDetailStock
     }
   ]
 })

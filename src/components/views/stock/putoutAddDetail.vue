@@ -5,6 +5,7 @@
         <el-breadcrumb-item><i class="el-icon-date"></i> 库存管理</el-breadcrumb-item>
         <el-breadcrumb-item>出库</el-breadcrumb-item>
         <el-breadcrumb-item>查看明细</el-breadcrumb-item>
+        <el-breadcrumb-item>查看明细</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="search-wrapper">
@@ -84,6 +85,11 @@
         </el-table-column>
         <el-table-column prop="remark" label="备注">
         </el-table-column>
+        <el-table-column label="操作">
+          <template scope="scope">
+            <el-button size="small" type="primary" @click="seeDetail(scope.row.id)">查看明细</el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
     <!-- 分页 -->
@@ -137,6 +143,11 @@
       Pager: Pager
     },
     methods: {
+      seeDetail (id) {
+        this.$router.push({
+          path: '/goodsDetailStock/' + id
+        })
+      },
       search () {
         if (this.currentPage > 1) {
           this.currentPage = 1

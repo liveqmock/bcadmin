@@ -52,7 +52,7 @@
                 </el-table-column>
                 <el-table-column label="销售价" width="150">
                   <template scope="scope">
-                    <span>{{ scope.row.sellingPrice }}</span>
+                    {{ scope.row.useType === 1 ? scope.row.price : (scope.row.discount / 10 * scope.row.sellingPrice).toFixed(2) }}
                   </template>
                 </el-table-column>
                 <el-table-column label="操作" width="130">
