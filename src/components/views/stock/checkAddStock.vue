@@ -44,7 +44,7 @@
         </el-table-column>
         <el-table-column label="商品规格名称">
           <template scope="scope">
-            <span :class="{red: scope.row.lastTarget === 2, blue: scope.row.lastTarget === 1}">{{scope.row.standardName}}</span>
+            <span :class="{red: scope.row.lastTarget === 2, blue: scope.row.lastTarget === 1}">{{scope.row.standard}}</span>
           </template>
         </el-table-column>
         <el-table-column label="商品名称">

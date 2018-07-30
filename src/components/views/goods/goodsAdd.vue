@@ -358,6 +358,9 @@
             sellingPrice: '',
             standard: '',
             taxRate: '',
+            inputRate: '',
+            price: '',
+            useType: 1,
             storeId: JSON.parse(sessionStorage.getItem('store')).k
           }
           this.fileList = []

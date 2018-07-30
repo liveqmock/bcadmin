@@ -23,7 +23,7 @@
           <el-input v-model="formInline.personLiable"></el-input>
         </el-form-item>
         <el-form-item label="仓库">
-          <el-input v-model="wareHouse"></el-input>
+          <el-input v-model="formInline.wareHouse"></el-input>
         </el-form-item>
         <el-form-item label="状态">
           <el-select v-model="formInline.taskStatus">

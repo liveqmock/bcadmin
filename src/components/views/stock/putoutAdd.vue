@@ -92,7 +92,7 @@
             {{scope.row.productDetail.pInputRate}}
           </template>
         </el-table-column>
-        <el-table-column prop="" label="进货单价价">
+        <el-table-column prop="" label="进货单价">
           <template scope="scope">
             {{ scope.row.productDetail.pBuyingPrice }}
           </template>
@@ -103,10 +103,19 @@
           </template>
         </el-table-column>
         <el-table-column width="150" label="销项税率">
+          <template scope="scope">
+            {{ scope.row.productDetail.pTaxRate }}
+          </template>
         </el-table-column>
-        <el-table-column width="150" label="出库单价">
+        <el-table-column width="150" label="销项税率">
+          <template scope="scope">
+            {{ scope.row.productDetail.salePrice }}
+          </template>
         </el-table-column>
         <el-table-column width="150" label="出库总价">
+          <template scope="scope">
+            {{scope.row.productDetail.salePrice * scope.row.number}}
+          </template>
         </el-table-column>
         <el-table-column width="150" label="备注">
           <template scope="scope">
