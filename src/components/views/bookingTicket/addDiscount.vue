@@ -132,7 +132,7 @@
     },
     methods: {
       calDiscount () {
-        if (this.formData.order.userId && this.formData.order.userId !== null) {
+        if (this.formData.order.userId && this.formData.discounts.length > 0) {
           // 如果有会员折扣
           this.formData.discounts.length = 1
         } else {
