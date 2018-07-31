@@ -16,7 +16,7 @@
         </el-form-item>
         <el-form-item label="入库方式:">
           <p class="text" v-if="tableData.stockRecord">
-            {{ tableData.stockRecord.orderNumber }}
+            {{ tableData.stockRecord.type }}
           </p>
         </el-form-item>
         <el-form-item label="入库日期:">
@@ -29,14 +29,9 @@
             {{ tableData.stockRecord.orderNumber }}
           </p>
         </el-form-item>
-        <el-form-item label="供应商名称:">
-          <p class="text" v-if="tableData.stockRecord">
-            {{ tableData.stockRecord.orderNumber }}
-          </p>
-        </el-form-item>
         <el-form-item label="仓库名称:">
           <p class="text" v-if="tableData.stockRecord">
-            {{ tableData.stockRecord.orderNumber }}
+            {{ tableData.stockRecord.werehouses }}
           </p>
         </el-form-item>
         <el-form-item>
@@ -102,7 +97,7 @@
       <el-col style="width: 300px; white-space: nowrap; overflow: hidden;text-overflow: ellipsis" class="text">
         附件：{{ tableData.stockRecord.fileName ? tableData.stockRecord.fileName : '无' }}
       </el-col>
-      <el-col :span="2" class="label">
+      <el-col :span="2" class="label" v-show="tableData.stockRecord.fileName">
         <el-button tableData.stockRecord.fileName size="small" type="primary" @click="download(tableData.stockRecord.fileUrl)">下载附件</el-button>
       </el-col>
     </el-row>

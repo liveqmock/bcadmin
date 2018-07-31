@@ -142,7 +142,7 @@
             <el-input v-model.number="standard.taxRate"></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item label="商品图片:" prop="picture">
+        <el-form-item label="商品图片:">
           <el-col :span="16">
             <el-upload
               class="upload-demo"

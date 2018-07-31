@@ -34,18 +34,18 @@
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column prop="productCode" label="商品条码">
         </el-table-column>
-        <el-table-column prop="productStandardsName" label="商品规格名称">
+        <el-table-column prop="standard" label="商品规格名称">
         </el-table-column>
-        <el-table-column prop="standard" label="商品编码">
+        <el-table-column prop="id" label="商品编码">
         </el-table-column>
-         <el-table-column prop="productName" label="商品名称">
+         <el-table-column prop="name" label="商品名称">
         </el-table-column>
         <el-table-column prop="warehouse" label="仓库"></el-table-column>
         <el-table-column prop="childName" label="二级类型"></el-table-column>
         <el-table-column prop="parentName" label="一级类型"></el-table-column>
         <el-table-column prop="unit" label="单位">
         </el-table-column>
-        <el-table-column prop="" label="数量"></el-table-column>
+        <el-table-column prop="stock" label="数量"></el-table-column>
         <el-table-column prop="inputRate" label="进项税率"></el-table-column>
         <el-table-column prop="buyingPrice" label="进货价">
         </el-table-column>
@@ -65,7 +65,7 @@
   export default {
     created () {
       this.getListData(this.currentPage)
-      this.getTypes()
+      // this.getTypes()
     },
     data () {
       return {

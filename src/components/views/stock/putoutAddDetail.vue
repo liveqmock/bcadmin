@@ -4,8 +4,7 @@
       <el-breadcrumb separator="/">
         <el-breadcrumb-item><i class="el-icon-date"></i> 库存管理</el-breadcrumb-item>
         <el-breadcrumb-item>出库</el-breadcrumb-item>
-        <el-breadcrumb-item>查看明细</el-breadcrumb-item>
-        <el-breadcrumb-item>查看明细</el-breadcrumb-item>
+        <el-breadcrumb-item>出库明细</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="search-wrapper">
@@ -17,12 +16,12 @@
         </el-form-item>
         <el-form-item label="出库仓库:">
           <p class="text" v-if="tableData.stockRecord">
-            {{ tableData.stockRecord.orderNumber }}
+            {{ tableData.stockRecord.werehouses }}
           </p>
         </el-form-item>
         <el-form-item label="出库方式:">
           <p class="text" v-if="tableData.stockRecord">
-            {{ tableData.stockRecord.type | formatStockType }}
+            {{ tableData.stockRecord.type }}
           </p>
         </el-form-item>
         <el-form-item label="负责人:">

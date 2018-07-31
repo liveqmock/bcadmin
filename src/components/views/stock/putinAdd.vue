@@ -17,7 +17,7 @@
         <el-form-item label="入库方式" prop="type">
           <el-select v-model="stockRecord.stockType">
             <el-option label="商品入库" :value="1"></el-option>
-            <el-option label="赠品入库" :value="6"></el-option>
+            <el-option label="赠品入库" :value="8"></el-option>
             <el-option label="其他入库" :value="2"></el-option>
           </el-select>
         </el-form-item>
