@@ -22,11 +22,11 @@
         </el-form-item>
         <el-form-item label="出库类型" prop="type">
           <el-select v-model="stockRecord.type">
-            <el-option label="退货出库" :value="2"></el-option>
             <el-option label="销售出库" :value="3"></el-option>
             <el-option label="报废出库" :value="4"></el-option>
             <el-option label="其他出库" :value="5"></el-option>
             <el-option label="部门领用" :value="6"></el-option>
+            <el-option label="退货出库" :value="7"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="领用部门" prop="useDepartment" v-show="stockRecord.type === 6">
@@ -59,17 +59,17 @@
         </el-table-column>
         <el-table-column label="商品规格名称">
           <template scope="scope">
-            {{ scope.row.productDetail.pStandard }}
+            {{ scope.row.productDetail.standard }}
           </template>
         </el-table-column>
         <el-table-column label="商品名称">
           <template scope="scope">
-            {{ scope.row.productDetail.pName }}
+            {{ scope.row.productDetail.name }}
           </template>
         </el-table-column>
         <el-table-column label="单位">
           <template scope="scope">
-            {{ scope.row.productDetail.pUnit }}
+            {{ scope.row.productDetail.unit }}
           </template>
         </el-table-column>
         <el-table-column label="数量">
@@ -89,27 +89,22 @@
         </el-table-column>
         <el-table-column label="进项税率">
           <template scope="scope">
-            {{scope.row.productDetail.pInputRate}}
+            {{scope.row.productDetail.inputRate}}
           </template>
         </el-table-column>
         <el-table-column prop="" label="进货单价">
           <template scope="scope">
-            {{ scope.row.productDetail.pBuyingPrice }}
+            {{ scope.row.productDetail.buyingPrice }}
           </template>
         </el-table-column>
         <el-table-column prop="" label="进货总价">
           <template scope="scope">
-            {{scope.row.productDetail.pBuyingPrice * scope.row.number}}
+            {{scope.row.productDetail.buyingPrice * scope.row.number}}
           </template>
         </el-table-column>
         <el-table-column width="150" label="销项税率">
           <template scope="scope">
-            {{ scope.row.productDetail.pTaxRate }}
-          </template>
-        </el-table-column>
-        <el-table-column width="150" label="销项税率">
-          <template scope="scope">
-            {{ scope.row.productDetail.salePrice }}
+            {{ scope.row.productDetail.taxRate }}
           </template>
         </el-table-column>
         <el-table-column width="150" label="出库总价">
@@ -186,7 +181,7 @@
             remark: '',
             productDetail: {},
             supplierId: '',
-            expirationDate: ''
+            productCode: ''
           }
         ],
         stockRecord: {
@@ -305,9 +300,9 @@
             const submitList = []
             for (let p of this.initList) {
               submitList.push({
-                buyingPrice: p.productDetail.pBuyingPrice,
+                buyingPrice: p.productDetail.buyingPrice,
                 number: p.number,
-                productDetailId: p.productDetail.pId,
+                productDetailId: p.productDetail.id,
                 remark: p.remark,
                 storeId: JSON.parse(sessionStorage.getItem('store')).k
               })

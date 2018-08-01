@@ -146,7 +146,7 @@
     },
     methods: {
       fetchData () {
-        axios.get(URL.api_name + 'stock/see/stockProduct/detail.do', {
+        axios.get(URL.api_name + 'merchandiseapi/stock/see/stockProduct/detail.do', {
           params: {
             stockDetailId: this.$route.params.gid
           }

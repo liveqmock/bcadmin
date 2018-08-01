@@ -8,10 +8,11 @@
     </div>
     <div class="search-wrapper">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
-        <el-form-item label="类型">
+        <el-form-item label="入库方式">
           <el-select v-model="formInline.type">
+            <el-option label="全部" value=""></el-option>
             <el-option label="商品入库" :value="1"></el-option>
-            <el-option label="赠品入库" :value="-1"></el-option>
+            <el-option label="赠品入库" :value="8"></el-option>
             <el-option label="其他入库" :value="2"></el-option>
           </el-select>
         </el-form-item>
@@ -75,7 +76,7 @@
         formInline: {
           startTime: '',
           endTime: '',
-          type: -1,
+          type: 1,
           person: '',
           number: ''
         },

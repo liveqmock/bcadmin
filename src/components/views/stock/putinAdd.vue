@@ -54,17 +54,17 @@
         </el-table-column>
         <el-table-column label="商品规格名称">
           <template scope="scope">
-            {{ scope.row.productDetail.pStandard }}
+            {{ scope.row.productDetail.standard }}
           </template>
         </el-table-column>
         <el-table-column label="商品名称">
           <template scope="scope">
-            {{ scope.row.productDetail.pName }}
+            {{ scope.row.productDetail.name }}
           </template>
         </el-table-column>
         <el-table-column label="单位">
           <template scope="scope">
-            {{ scope.row.productDetail.pUnit }}
+            {{ scope.row.productDetail.unit }}
           </template>
         </el-table-column>
         <el-table-column label="数量">
@@ -84,22 +84,22 @@
         </el-table-column>
         <el-table-column width="200" label="过期日期">
           <template scope="scope">
-            <el-date-picker type="date" v-model.number="scope.row.expirationDate"></el-date-picker>
+            <el-date-picker :picker-options="pickerOptions" type="date" v-model="scope.row.expirationDate"></el-date-picker>
           </template>
         </el-table-column>
         <el-table-column label="进项税率">
           <template scope="scope">
-            {{scope.row.productDetail.pInputRate}}
+            {{scope.row.productDetail.inputRate}}
           </template>
         </el-table-column>
         <el-table-column prop="" label="进货价">
           <template scope="scope">
-            {{ scope.row.productDetail.pBuyingPrice }}
+            {{ scope.row.productDetail.buyingPrice }}
           </template>
         </el-table-column>
         <el-table-column prop="" label="进货总价">
           <template scope="scope">
-            {{scope.row.productDetail.pBuyingPrice * scope.row.number}}
+            {{scope.row.productDetail.buyingPrice * scope.row.number}}
           </template>
         </el-table-column>
         <el-table-column width="150" label="供应商">
@@ -172,6 +172,11 @@
         }
       }
       return {
+        pickerOptions: {
+          disabledDate (time) {
+            return time.getTime() < Date.now() - 8.64e7
+          }
+        },
         operator: JSON.parse(sessionStorage.getItem('userInfo')).userName,
         house: JSON.parse(sessionStorage.getItem('store')).v + '仓库',
         imgUploadUrl: URL.api_name + 'merchandiseapi/stock/upload.do',
@@ -182,7 +187,8 @@
             remark: '',
             productDetail: {},
             supplierId: '',
-            expirationDate: ''
+            expirationDate: '',
+            productCode: ''
           }
         ],
         stockRecord: {
@@ -281,11 +287,11 @@
       addStockItem () {
         this.initList.push({
           number: 0,
-          buyingPrice: '',
           remark: '',
-          productCode: '',
+          productDetail: {},
           supplierId: '',
-          productDetail: {}
+          expirationDate: '',
+          productCode: ''
         })
       },
       minusStockItem (item) {
@@ -312,16 +318,19 @@
             const submitList = []
             for (let p of this.initList) {
               submitList.push({
-                buyingPrice: p.productDetail.pBuyingPrice,
+                buyingPrice: p.productDetail.buyingPrice,
                 childName: p.productDetail.childName,
                 expirationDate: p.expirationDate,
                 number: p.number,
                 parentName: p.productDetail.parentName,
-                productDetailId: p.productDetail.pId,
+                productDetailId: p.productDetail.id,
                 remark: p.remark,
                 supplierId: p.supplierId,
-                totalBuyingPrice: p.productDetail.pBuyingPrice * p.number,
-                storeId: JSON.parse(sessionStorage.getItem('store')).k
+                totalBuyingPrice: p.productDetail.buyingPrice * p.number,
+                storeId: JSON.parse(sessionStorage.getItem('store')).k,
+                inputRate: p.productDetail.inputRate,
+                taxRate: p.productDetail.taxRate,
+                salePrice: p.productDetail.salePrice
               })
             }
             that.loading = true
