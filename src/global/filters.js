@@ -93,6 +93,10 @@ Vue.filter('formatStockType', function (val) {
     return '其他出库'
   } else if (val === 6) {
     return '部门领用'
+  } else if (val === 7) {
+    return '退货出库'
+  } else if (val === 8) {
+    return '赠品入库'
   } else {
     return ''
   }

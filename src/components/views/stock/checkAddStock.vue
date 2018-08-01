@@ -150,7 +150,8 @@
             // 如果isTarget字段为1，则选中
             this.$nextTick(function () {
               this.data.inventories.forEach(row => {
-                if (row.isTarget === 1) {
+                // 如果是目标商品则默认选中
+                if (row.isTarget === 1 || row.lastTarget === 1) {
                   this.$refs['multipleTable'].toggleRowSelection(row, true)
                 }
               })

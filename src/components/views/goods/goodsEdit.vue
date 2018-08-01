@@ -52,7 +52,7 @@
                 </el-table-column>
                 <el-table-column label="销售价" width="150">
                   <template scope="scope">
-                    {{ scope.row.useType === 1 ? scope.row.price : (scope.row.discount / 10 * scope.row.sellingPrice).toFixed(2) }}
+                    {{scope.row.sellingPrice}}
                   </template>
                 </el-table-column>
                 <el-table-column label="操作" width="130">
@@ -438,23 +438,6 @@
                   return
                 }
               }
-              // 商品规格所有字段不能为空
-              let reg = /^(\d+\.?\d+)|\d$/
-              for (let p of this.productDetailList) {
-                if (p.sellingPrice === '' || p.standard === '') {
-                  this.$message({
-                    type: 'error',
-                    message: '所有规格字段不能为空'
-                  })
-                  return
-                } else if (!reg.test(p.sellingPrice) || p.sellingPrice < 0) {
-                  this.$message({
-                    type: 'error',
-                    message: '销售价格输入有误'
-                  })
-                  return
-                }
-              }
               // 如果选择了一级节点，二级节点不能为空
               if (this.childTypeList.length > 0 && !this.formData.childTypeId) {
                 this.$message({
@@ -463,7 +446,12 @@
                 })
                 return
               }
-              // 商品规格字段名称不能重复
+              // 判断是否提交折扣
+              for (let p of this.productDetailList) {
+                if (p.useType !== 2) {
+                  p.discount = ''
+                }
+              }
               that.loading = true
               axios.post(URL.api_name + 'merchandiseapi/product/update.do', {
                 product: that.formData,
