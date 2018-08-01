@@ -30,14 +30,12 @@
           </el-select>
         </el-form-item>
         <el-form-item label="领用部门" prop="useDepartment" v-show="stockRecord.type === 6">
-          <el-select>
-            <el-option label="部门1" value="1"></el-option>
-            <el-option label="部门2" value="2"></el-option>
-            <el-option label="部门3" value="3"></el-option>
+          <el-select v-model="stockRecord.useDepartment">
+            <el-option v-for="d in departmentList" :key="d.id" :label="d.systemName" :value="d.systemCode"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="入库单号" v-show="stockRecord.type === 2">
-          <el-input></el-input>
+        <el-form-item label="入库单号" v-show="stockRecord.type === 7">
+          <el-input v-model="stockRecord.orderNumber"></el-input>
         </el-form-item>
       </el-form>
     </div>
@@ -109,7 +107,7 @@
         </el-table-column>
         <el-table-column width="150" label="出库总价">
           <template scope="scope">
-            {{scope.row.productDetail.salePrice * scope.row.number}}
+            {{scope.row.productDetail.treasuryPrice * scope.row.number}}
           </template>
         </el-table-column>
         <el-table-column width="150" label="备注">
@@ -155,6 +153,9 @@
   import moment from 'moment'
 
   export default {
+    created () {
+      this.fetchDeparentment()
+    },
     data () {
       var checkType = (rule, value, callback) => {
         if (!value) {
@@ -175,6 +176,7 @@
         house: JSON.parse(sessionStorage.getItem('store')).v + '仓库',
         imgUploadUrl: URL.api_name + 'merchandiseapi/stock/upload.do',
         fileList: [],
+        departmentList: [],
         initList: [
           {
             number: 0,
@@ -216,6 +218,17 @@
       }
     },
     methods: {
+      fetchDeparentment () {
+        axios.get(URL.api_name + 'backofficeapi/system/rict/obtainChild.do', {
+          params: {
+            systemCode: 'departmentName'
+          }
+        }).then(res => {
+          if (res.data.status === 'success') {
+            this.departmentList = res.data.data
+          }
+        })
+      },
       beforeUpload (file) {
         if (this.fileList.length > 0) {
           this.$errMsg('最多上传一个附件')
@@ -301,10 +314,18 @@
             for (let p of this.initList) {
               submitList.push({
                 buyingPrice: p.productDetail.buyingPrice,
+                childName: p.productDetail.childName,
+                expirationDate: p.productDetail.expirationDate,
                 number: p.number,
+                parentName: p.productDetail.parentName,
                 productDetailId: p.productDetail.id,
                 remark: p.remark,
-                storeId: JSON.parse(sessionStorage.getItem('store')).k
+                supplierId: p.supplierId,
+                totalBuyingPrice: p.productDetail.buyingPrice * p.number,
+                storeId: JSON.parse(sessionStorage.getItem('store')).k,
+                inputRate: p.productDetail.inputRate.split('%')[0],
+                taxRate: p.productDetail.taxRate.split('%')[0],
+                treasuryPrice: p.productDetail.treasuryPrice
               })
             }
             that.loading = true

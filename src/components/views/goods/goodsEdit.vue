@@ -98,7 +98,7 @@
                :rules="standardRules">
         <el-form-item label="条码" prop="productCode">
           <el-col :span="16">
-            <el-input v-model="standard.productCode" disabled></el-input>
+            <el-input v-model="standard.productCode" :disabled="standard.flag === true"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="规格名称" prop="standard">
@@ -337,9 +337,11 @@
         updateStandard (item) {
           tempStandardIndex = this.productDetailList.indexOf(item)
           this.standard = item
-          this.fileList.push({
-            url: item.picture
-          })
+          if (item.picture) {
+            this.fileList.push({
+              url: item.picture
+            })
+          }
           this.dialogFormVisible = true
           this.updateType = 1
         },

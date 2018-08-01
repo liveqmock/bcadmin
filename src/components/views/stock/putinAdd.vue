@@ -328,9 +328,9 @@
                 supplierId: p.supplierId,
                 totalBuyingPrice: p.productDetail.buyingPrice * p.number,
                 storeId: JSON.parse(sessionStorage.getItem('store')).k,
-                inputRate: p.productDetail.inputRate,
-                taxRate: p.productDetail.taxRate,
-                salePrice: p.productDetail.salePrice
+                inputRate: p.productDetail.inputRate.split('%')[0],
+                taxRate: p.productDetail.taxRate.split('%')[0],
+                treasuryPrice: p.productDetail.treasuryPrice
               })
             }
             that.loading = true

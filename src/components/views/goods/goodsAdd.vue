@@ -99,34 +99,34 @@
                :close-on-click-modal="false"
                :rules="standardRules">
         <el-form-item label="条码" prop="productCode">
-          <el-col :span="16">
+          <el-col>
             <el-input v-model="standard.productCode"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="规格名称" prop="standard">
-          <el-col :span="16">
+          <el-col>
             <el-input v-model="standard.standard"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="进货价" prop="buyingPrice">
-          <el-col :span="16">
+          <el-col>
             <el-input v-model.number="standard.buyingPrice" auto-complete="off"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="进项税率">
-          <el-col :span="16">
+          <el-col>
             <el-input auto-complete="off" v-model="standard.inputRate"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="建议零售价" prop="sellingPrice">
-          <el-col :span="16">
+          <el-col>
             <el-input v-model.number="standard.sellingPrice" auto-complete="off"></el-input>
           </el-col>
         </el-form-item>
         <el-row>
           <el-radio v-model="standard.useType" :label="1" class="before-label">&nbsp;</el-radio>
           <el-form-item label="实售价">
-            <el-col :span="16">
+            <el-col>
               <el-input v-model.number="standard.price" :disabled="standard.useType !== 1"></el-input>
             </el-col>
           </el-form-item>
@@ -134,18 +134,18 @@
         <el-row>
           <el-radio v-model="standard.useType" :label="2" class="before-label">&nbsp;</el-radio>
           <el-form-item label="折扣" prop="discount">
-            <el-col :span="16">
+            <el-col>
               <el-input v-model.number="standard.discount" :disabled="standard.useType !== 2"></el-input>
             </el-col>
           </el-form-item>
         </el-row>
         <el-form-item label="商品税率" prop="taxRate">
-          <el-col :span="16">
+          <el-col>
             <el-input v-model.number="standard.taxRate"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="商品图片:">
-          <el-col :span="16">
+          <el-col>
             <el-upload
               class="upload-demo"
               :action="imgUploadUrl"
@@ -163,7 +163,7 @@
           </el-col>
         </el-form-item>
         <el-form-item label="描述" prop="describes">
-          <el-col :span="16">
+          <el-col>
             <el-input v-model="standard.describes" type="textarea"></el-input>
           </el-col>
         </el-form-item>
