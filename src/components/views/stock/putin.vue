@@ -10,7 +10,7 @@
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="入库方式">
           <el-select v-model="formInline.type">
-            <el-option label="全部" value=""></el-option>
+            <el-option label="全部" :value="-1"></el-option>
             <el-option label="商品入库" :value="1"></el-option>
             <el-option label="赠品入库" :value="8"></el-option>
             <el-option label="其他入库" :value="2"></el-option>
@@ -43,7 +43,7 @@
         </el-table-column>
          <el-table-column label="入库方式">
            <template scope="scope">
-             {{ scope.row.type | formatStockType }}
+             {{ scope.row.stockType | formatStockType }}
            </template>
         </el-table-column>
         <el-table-column label="仓库" prop="warehouse">

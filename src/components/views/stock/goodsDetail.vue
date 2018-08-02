@@ -151,7 +151,9 @@
             stockDetailId: this.$route.params.gid
           }
         }).then(res => {
-          if (res.data.status === 'success') {} else {
+          if (res.data.status === 'success') {
+            this.data = res.data.data
+          } else {
             this.$errMsg(res.data.message)
           }
         })

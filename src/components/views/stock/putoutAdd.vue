@@ -320,12 +320,12 @@
                 parentName: p.productDetail.parentName,
                 productDetailId: p.productDetail.id,
                 remark: p.remark,
-                supplierId: p.supplierId,
                 totalBuyingPrice: p.productDetail.buyingPrice * p.number,
                 storeId: JSON.parse(sessionStorage.getItem('store')).k,
                 inputRate: p.productDetail.inputRate.split('%')[0],
                 taxRate: p.productDetail.taxRate.split('%')[0],
-                treasuryPrice: p.productDetail.treasuryPrice
+                treasuryPrice: p.productDetail.treasuryPrice,
+                supplierId: p.productDetail.supplierId
               })
             }
             that.loading = true

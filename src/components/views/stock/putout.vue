@@ -44,7 +44,7 @@
         </el-table-column>
          <el-table-column label="出库方式">
            <template scope="scope">
-             {{ scope.row.type | formatStockType }}
+             {{ scope.row.stockType | formatStockType }}
            </template>
         </el-table-column>
         <el-table-column label="领用部门" prop="useDepartment"></el-table-column>
