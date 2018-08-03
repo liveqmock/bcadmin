@@ -43,9 +43,7 @@
          v-loading="loading"
          element-loading-text="拼命加载中">
       <el-table :data="tableData.stockDetailDtoList" border style="width: 100%">
-        <el-table-column prop="id" label="商品编号">
-        </el-table-column>
-        <el-table-column prop="productCode" label="商品编码">
+        <el-table-column prop="productCode" label="商品条码">
         </el-table-column>
         <el-table-column prop="standard" label="商品规格名称">
         </el-table-column>
@@ -59,28 +57,7 @@
         </el-table-column>
         <el-table-column prop="number" label="数量">
         </el-table-column>
-        <el-table-column prop="expirationDate" label="过期日期">
-        </el-table-column>
-
         <el-table-column prop="werehouse" label="仓库">
-        </el-table-column>
-        <el-table-column prop="buyingPrice" label="进货价">
-        </el-table-column>
-        <el-table-column prop="inputRate" label="进项税率">
-        </el-table-column>
-        <el-table-column prop="totalBuyingPrice" label="进价小计">
-        </el-table-column>
-        <el-table-column prop="ratePrice" label="税费单价">
-        </el-table-column>
-        <el-table-column prop="totalRatePrice" label="税费总价">
-        </el-table-column>
-        <el-table-column prop="withoutRatePrice" label="不含税单价">
-        </el-table-column>
-        <el-table-column prop="totalWithoutRatePrice" label="不含税总价">
-        </el-table-column>
-        <el-table-column prop="supplierId" label="供应商编号">
-        </el-table-column>
-        <el-table-column prop="supplierName" label="供应商名称">
         </el-table-column>
         <el-table-column prop="remark" label="备注">
         </el-table-column>

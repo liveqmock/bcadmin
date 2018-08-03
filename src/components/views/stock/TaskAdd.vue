@@ -125,7 +125,8 @@
       },
       fetchOldTask () {
         axios.post(URL.api_name + 'merchandiseapi/task/search.do', {
-          storeId: JSON.parse(sessionStorage.getItem('store')).k
+          storeId: JSON.parse(sessionStorage.getItem('store')).k,
+          taskStatus: '已完成'
         }).then(res => {
           if (res.data.status === 'success') {
             this.oldTaskList = res.data.data.list

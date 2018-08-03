@@ -47,7 +47,7 @@
             <el-button class="cell-btn" type="text" icon="minus" @click="minusStockItem(scope.row)"></el-button>
           </template>
         </el-table-column>
-        <el-table-column label="商品条码">
+        <el-table-column label="商品条码" width="200">
           <template scope="scope">
             <el-input v-model="scope.row.productCode"
                       @keyup.enter.native="querySerach(scope.row.productCode, scope.row)"

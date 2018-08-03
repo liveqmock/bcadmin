@@ -14,7 +14,7 @@
             <el-form-item label="出库单号：">{{data.id}}</el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="进项税率：">{{data.inputRate}}</el-form-item>
+            <el-form-item label="进项税率：">{{data.inputRate}}%</el-form-item>
           </el-col>
         </el-row>
         <el-row>
@@ -102,7 +102,7 @@
             <el-form-item label="二级类型：">{{data.childName}}</el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="销项税率：">{{data.taxRate}}</el-form-item>
+            <el-form-item label="销项税率：">{{data.taxRate}}%</el-form-item>
           </el-col>
         </el-row>
         <el-row>

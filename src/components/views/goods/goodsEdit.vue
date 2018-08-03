@@ -113,7 +113,7 @@
         </el-form-item>
         <el-form-item label="进项税率" prop="inputRate">
           <el-col :span="16">
-            <el-input v-model.number="standard.inputRate" auto-complete="off" :disabled="standard.flag === true"></el-input>
+            <el-input v-model="standard.inputRate" auto-complete="off" :disabled="standard.flag === true"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="建议零售价" prop="sellingPrice">
@@ -275,6 +275,9 @@
             ]
           },
           standardRules: {
+            inputRate: [
+              { required: true, message: '进项税率不能为空', trigger: 'blur' }
+            ],
             taxRate: [
               { validator: checkRate, trigger: 'blur' }
             ],
@@ -407,6 +410,19 @@
           this.$refs[name].validate((valid) => {
             if (valid) {
               // 校验成功
+              if (this.standard.useType === 2) {
+                this.standard.price = ''
+                if (this.standard.discount === '') {
+                  this.$errMsg('请填写折扣')
+                  return
+                }
+              } else if (this.standard.useType === 1) {
+                this.standard.discount = ''
+                if (this.standard.price === '') {
+                  this.$errMsg('请填写实售价')
+                  return
+                }
+              }
               if (this.updateType === 0) {
                 this.productDetailList.push(this.standard)
               } else if (this.updateType === 1) {
@@ -445,12 +461,6 @@
                   message: '类型的子节点不能为空'
                 })
                 return
-              }
-              // 判断是否提交折扣
-              for (let p of this.productDetailList) {
-                if (p.useType !== 2) {
-                  p.discount = ''
-                }
               }
               that.loading = true
               axios.post(URL.api_name + 'merchandiseapi/product/update.do', {

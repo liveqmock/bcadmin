@@ -15,6 +15,7 @@
             <el-option label="报废出库" :value="4"></el-option>
             <el-option label="其他出库" :value="5"></el-option>
             <el-option label="部门领用" :value="6"></el-option>
+            <el-option label="退货出库" :value="7"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="出库单号">
@@ -44,7 +45,7 @@
         </el-table-column>
          <el-table-column label="出库方式">
            <template scope="scope">
-             {{ scope.row.stockType | formatStockType }}
+             {{ scope.row.type | formatStockType }}
            </template>
         </el-table-column>
         <el-table-column label="领用部门" prop="useDepartment"></el-table-column>

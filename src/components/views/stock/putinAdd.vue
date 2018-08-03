@@ -44,7 +44,7 @@
             <el-button class="cell-btn" type="text" icon="minus" @click="minusStockItem(scope.row)"></el-button>
           </template>
         </el-table-column>
-        <el-table-column label="商品编码">
+        <el-table-column label="商品编码" width="200">
           <template scope="scope">
             <el-input v-model="scope.row.productCode"
                       @keyup.enter.native="querySerach(scope.row.productCode, scope.row)"
@@ -89,7 +89,7 @@
         </el-table-column>
         <el-table-column label="进项税率">
           <template scope="scope">
-            {{scope.row.productDetail.inputRate}}
+            {{scope.row.productDetail.inputRate}}%
           </template>
         </el-table-column>
         <el-table-column prop="" label="进货价">
