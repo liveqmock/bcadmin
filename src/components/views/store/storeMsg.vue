@@ -161,7 +161,7 @@
     },
     data () {
       var checkPhone = (rule, value, callback) => {
-        let patten = /^\d{3,4}-\d{4}\s{1}\d{4}$/
+        let patten = /^\d{3,4}-\d{4}\s{1}\d{3,4}$/
         if (!patten.test(value)) {
           return callback(new Error('请输入正确的号码'))
         } else {

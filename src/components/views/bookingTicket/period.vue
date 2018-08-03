@@ -133,12 +133,15 @@
           validity: that.ticketList[that.tIndex].validity,
           quantity: that.quantity
         }
-        let cParams = {
-          itemDefId: that.companyTicket.id,
-          itemDefName: that.companyTicket.name,
-          itemType: '陪同票实例',
-          price: that.companyTicket.price,
-          quantity: that.cQuantity
+        let cParams
+        if (this.companyTicket) {
+          cParams = {
+            itemDefId: that.companyTicket.id,
+            itemDefName: that.companyTicket.name,
+            itemType: '陪同票实例',
+            price: that.companyTicket.price,
+            quantity: that.cQuantity
+          }
         }
         if (that.bugCompany) {
           if (that.cQuantity > that.quantity) {
