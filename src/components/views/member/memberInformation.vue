@@ -120,15 +120,13 @@
     import moment from 'moment'
     export default {
       created () {
-        this.getListData(this.currentPage)
-        this.getMemberGrade()
-      },
-      mounted () {
-        if (this.isAdmin) {
+        if (JSON.parse(sessionStorage.getItem('userInfo')).isAdmin) {
           this.formInline.storeId = 0
         } else {
-          this.formInline.storeId = this.storeArr[0].k
+          this.formInline.storeId = JSON.parse(sessionStorage.getItem('userInfo')).stores[0].k
         }
+        this.getListData(this.currentPage)
+        this.getMemberGrade()
       },
       data () {
         return {
