@@ -35,11 +35,50 @@
           </el-select>
         </el-form-item>
         <el-form-item label="入库单号" v-show="stockRecord.type === 7">
-          <el-input v-model="stockRecord.orderNumber"></el-input>
+          <el-input v-model="stockRecord.orderNumber" @keyup.enter.native="fetchOrderData"></el-input>
         </el-form-item>
       </el-form>
     </div>
-    <div class="table-data">
+    <div class="table-data" v-show="stockRecord.type === 7">
+      <el-table :data="putinList" border style="width: 100%">
+        <el-table-column label="商品条码" width="200" prop="productCode">
+        </el-table-column>
+        <el-table-column label="商品规格名称" prop="standard">
+        </el-table-column>
+        <el-table-column label="商品名称" prop="name">
+        </el-table-column>
+        <el-table-column label="单位" prop="unit">
+        </el-table-column>
+        <el-table-column label="数量" prop="number">
+        </el-table-column>
+        <el-table-column label="二级类型" prop="childName">
+        </el-table-column>
+        <el-table-column prop="parentName" label="一级类型">
+        </el-table-column>
+        <el-table-column label="进项税率" prop="inputRate">
+        </el-table-column>
+        <el-table-column prop="buyingPrice" label="进货单价">
+        </el-table-column>
+        <el-table-column prop="" label="进货总价">
+          <template scope="scope">
+            {{scope.row.buyingPrice * scope.row.number}}
+          </template>
+        </el-table-column>
+        <el-table-column label="销项税率" prop="taxRate">
+        </el-table-column>
+        <el-table-column label="出库总价">
+          <template scope="scope">
+            {{scope.row.treasuryPrice * scope.row.number}}
+          </template>
+        </el-table-column>
+        <el-table-column label="备注">
+          <template scope="scope">
+            <el-input v-model="scope.row.remark"></el-input>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <div class="table-data" v-show="stockRecord.type !== 7">
       <el-table :data="initList" border style="width: 100%">
         <el-table-column label="操作" width="80">
           <template scope="scope">
@@ -177,6 +216,7 @@
         imgUploadUrl: URL.api_name + 'merchandiseapi/stock/upload.do',
         fileList: [],
         departmentList: [],
+        putinList: [],
         initList: [
           {
             number: 0,
@@ -218,6 +258,17 @@
       }
     },
     methods: {
+      fetchOrderData () {
+        axios.get(URL.api_name + 'merchandiseapi/stock/product/stock/searchProductDetail.do', {
+          params: {
+            stockRecordId: this.stockRecord.orderNumber
+          }
+        }).then(res => {
+          if (res.data.status === 'success') {
+            this.putinList = res.data.data
+          }
+        })
+      },
       fetchDeparentment () {
         axios.get(URL.api_name + 'backofficeapi/system/rict/obtainChild.do', {
           params: {
@@ -430,3 +481,5 @@
     }
   }
 </style>
+                                                                                                           
+                                                                                                            
