@@ -369,7 +369,9 @@
           createTimeBegin: this.createTimeBegin,
           createTimeEnd: this.createTimeEnd,
           queryType: 'abnormal',
-          memberIds: this.memberIds
+          memberIds: this.memberIds,
+          consultantId: this.formInline.consultantId,
+          salesId: this.formInline.salesId
         }).then(function (respose) {
           let data = respose.data
           that.tableData = data.data.list
