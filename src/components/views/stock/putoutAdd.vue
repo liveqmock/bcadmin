@@ -37,19 +37,31 @@
         <el-form-item label="入库单号" v-show="stockRecord.type === 7">
           <el-input v-model="stockRecord.orderNumber" @keyup.enter.native="fetchOrderData"></el-input>
         </el-form-item>
+        <el-form-item v-show="stockRecord.type === 7">
+          <el-button @click="fetchOrderData" type="primary">查询</el-button>
+        </el-form-item>
       </el-form>
     </div>
     <div class="table-data" v-show="stockRecord.type === 7">
-      <el-table :data="putinList" border style="width: 100%">
-        <el-table-column label="商品条码" width="200" prop="productCode">
+      <el-table :data="putinList"
+                @selection-change="handleSelectionChange"
+                border style="width: 100%">
+        <el-table-column type="selection" width="35"></el-table-column>
+        <el-table-column label="商品条码" width="200">
+          <template scope="scope">
+            <el-input v-model="scope.row.productCode"></el-input>
+          </template>
         </el-table-column>
         <el-table-column label="商品规格名称" prop="standard">
         </el-table-column>
-        <el-table-column label="商品名称" prop="name">
+        <el-table-column label="商品名称" prop="productName">
         </el-table-column>
         <el-table-column label="单位" prop="unit">
         </el-table-column>
-        <el-table-column label="数量" prop="number">
+        <el-table-column label="数量" width="80">
+          <template scope="scope">
+            <el-input v-model="scope.row.number"></el-input>
+          </template>
         </el-table-column>
         <el-table-column label="二级类型" prop="childName">
         </el-table-column>
@@ -71,7 +83,7 @@
             {{scope.row.treasuryPrice * scope.row.number}}
           </template>
         </el-table-column>
-        <el-table-column label="备注">
+        <el-table-column label="备注" width="100">
           <template scope="scope">
             <el-input v-model="scope.row.remark"></el-input>
           </template>
@@ -217,6 +229,7 @@
         fileList: [],
         departmentList: [],
         putinList: [],
+        selectData: [],
         initList: [
           {
             number: 0,
@@ -258,6 +271,9 @@
       }
     },
     methods: {
+      handleSelectionChange (val) {
+        this.selectData = val
+      },
       fetchOrderData () {
         axios.get(URL.api_name + 'merchandiseapi/stock/product/stock/searchProductDetail.do', {
           params: {
@@ -361,23 +377,27 @@
               }
             }
             // 组装提交的数据
-            const submitList = []
-            for (let p of this.initList) {
-              submitList.push({
-                buyingPrice: p.productDetail.buyingPrice,
-                childName: p.productDetail.childName,
-                expirationDate: p.productDetail.expirationDate,
-                number: p.number,
-                parentName: p.productDetail.parentName,
-                productDetailId: p.productDetail.id,
-                remark: p.remark,
-                totalBuyingPrice: p.productDetail.buyingPrice * p.number,
-                storeId: JSON.parse(sessionStorage.getItem('store')).k,
-                inputRate: p.productDetail.inputRate.split('%')[0],
-                taxRate: p.productDetail.taxRate.split('%')[0],
-                treasuryPrice: p.productDetail.treasuryPrice,
-                supplierId: p.productDetail.supplierId
-              })
+            var submitList = []
+            if (this.stockRecord.type === 7) {
+              submitList = this.selectData
+            } else {
+              for (let p of this.initList) {
+                submitList.push({
+                  buyingPrice: p.productDetail.buyingPrice,
+                  childName: p.productDetail.childName,
+                  expirationDate: p.productDetail.expirationDate,
+                  number: p.number,
+                  parentName: p.productDetail.parentName,
+                  productDetailId: p.productDetail.id,
+                  remark: p.remark,
+                  totalBuyingPrice: p.productDetail.buyingPrice * p.number,
+                  storeId: JSON.parse(sessionStorage.getItem('store')).k,
+                  inputRate: p.productDetail.inputRate.split('%')[0],
+                  taxRate: p.productDetail.taxRate.split('%')[0],
+                  treasuryPrice: p.productDetail.treasuryPrice,
+                  supplierId: p.productDetail.supplierId
+                })
+              }
             }
             that.loading = true
             axios.post(URL.api_name + 'merchandiseapi/stock/create.do', {
