@@ -42,7 +42,7 @@
         </el-form-item>-->
         <el-form-item prop="address">
           <el-col :span="12">
-            <el-input disabled v-model="formData.address" placeholder="详细地址"></el-input>
+            <el-input disabled v-model="formData.address"></el-input>
           </el-col>
         </el-form-item>
       </el-form-item>

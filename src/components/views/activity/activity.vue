@@ -46,6 +46,7 @@
          v-loading="loading"
          element-loading-text="拼命加载中">
       <el-table :data="tableData" border style="width: 100%">
+        <el-table-column prop="id" lable="活动ID"></el-table-column>
         <el-table-column prop="title" label="活动标题">
         </el-table-column>
         <el-table-column prop="content" label="活动描述">
@@ -68,13 +69,15 @@
         </el-table-column>
         <el-table-column prop="endTime" label="结束时间">
         </el-table-column>
+        <el-table-column prop="signupEndTime" label="报名截止时间">
+        </el-table-column>
         <el-table-column prop="inputerTime" label="发布时间">
         </el-table-column>
         <!-- <el-table-column prop="newsDetail" label="操作人">
         </el-table-column> -->
         <el-table-column label="操作" width="200">
           <template scope="scope">
-            <el-button type="info" size="small" @click="detial(scope.row.id)">报名详情</el-button>
+            <el-button type="info" size="small" @click="detial(scope.row.id)">报名情况</el-button>
             <el-button type="info" size="small" @click="goDetail(scope.row.id)">查看</el-button>
             <el-button type="info" size="small" @click="update(scope.row.id)">编辑</el-button>
             <el-button type="info" size="small" v-show="scope.row.status != 2" @click="submit(scope.row.id)">上架</el-button>

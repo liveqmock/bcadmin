@@ -154,6 +154,8 @@ import ExperienceCourseOrder from '@/components/views/order/experienceCourseOrde
 import TradeDetail from '@/components/views/order/tradeDetail'
 import RenewOrder from '@/components/views/order/renewOrder'
 import PaymentOrder from '@/components/views/order/paymentOrder'
+import ActivityOrder from '@/components/views/order/activityOrder'
+import ActivityOrderDetail from '@/components/views/order/activityOrderDetail'
 // 退款
 import Refund from '@/components/views/refund/refund'
 import RefundDetail from '@/components/views/refund/refundDetail'
@@ -846,6 +848,16 @@ export default new Router({
       path: '/paymentOrderList',
       name: 'PaymentOrderList',
       component: PaymentOrderList
+    },
+    {
+      path: '/activityOrder',
+      name: 'ActivityOrder',
+      component: ActivityOrder
+    },
+    {
+      path: '/activityOrderDetail/:oid',
+      name: 'ActivityOrderDetail',
+      component: ActivityOrderDetail
     },
     {
       path: '/ticketOrder',
