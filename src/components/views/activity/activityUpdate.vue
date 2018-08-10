@@ -115,6 +115,11 @@
           <quill-editor ref="myTextEditor" v-model="formData.imageTextIntroduction"></quill-editor>
         </el-col>
       </el-form-item>
+      <el-form-item label="购买须知：">
+        <el-col :span="12">
+          <el-input type="textarea" :rows="6" v-model="formData.purchaseNotice"></el-input>
+        </el-col>
+      </el-form-item>
       <el-form-item label="支付类型：" required>
         <el-checkbox-group v-model="signTypes" @change="checkTypes">
           <el-row>
@@ -513,7 +518,8 @@ export default {
               imageTextIntroduction: that.formData.imageTextIntroduction,
               signMoney: that.formData.signMoney,
               signPoint: that.formData.signPoint,
-              signCourse: that.formData.signCourse
+              signCourse: that.formData.signCourse,
+              purchaseNotice: that.formData.purchaseNotice
             }).then((res) => {
               if (res.data.status === 'success') {
                 that.$message({

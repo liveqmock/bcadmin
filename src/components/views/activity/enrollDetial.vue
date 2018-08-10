@@ -25,6 +25,7 @@
         </el-form-item>
         <el-form-item label="用户状态">
           <el-select v-model="formInline.status">
+            <el-option label="全部" value=""></el-option>
             <el-option label="已报名" value="已报名"></el-option>
             <el-option label="已完成" value="已完成"></el-option>
             <el-option label="已取消" value="已取消"></el-option>
@@ -32,7 +33,7 @@
         </el-form-item>
         <el-form-item label="报名时间">
           <el-date-picker
-            v-model="formInline.begenTime"
+            v-model="formInline.beginTime"
             type="date"
             :editable='false'
             @change="beginTimeRules"
@@ -49,6 +50,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="search">查询</el-button>
+          <a href="javascript:void(0)" @click="downloadExcel" class="btn-link">导出到EXCEL</a>
           <el-button type="info" @click="$router.go('-1')">返回</el-button>
         </el-form-item>
       </el-form>
@@ -63,10 +65,11 @@
         </el-table-column>
         <el-table-column prop="signUpTime" label="报名时间">
         </el-table-column>
-        <el-table-column prop="signType" label="报名方式">
+        <el-table-column prop="signTypeName" label="报名方式">
         </el-table-column>
          <el-table-column prop="voucher" label="活动凭证">
         </el-table-column>
+        <el-table-column prop="eventNo" label="活动凭证值"></el-table-column>
         <el-table-column prop="signCondition" label="报名条件">
         </el-table-column>
         <el-table-column prop="signMoney" label="报名总价">
@@ -160,7 +163,6 @@
     },
     data () {
       return {
-        database: 'data:image/jpeg;base64,' + 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAIAAAAiOjnJAAAD5ElEQVR42u3dUW7jMAwFwPT+h+6eYIEG4iNpax76VSSOY08Amrakz69IIB+HQMASsAQsEbAELAFLBCwBS8ASAUvAErBEwBKwBCwRsAQsAUsELAFLwBIBS8ASsEQWwfp8fsr/vt3+/15/sv9/2ea3+5zYz6rjDBZYYIEFFlhg7YWV2E4nrG+3k/7uU58FFlhggQUWWGDthVUF4mT7ic+quiBIXEAkfnhggQUWWGCBBdY7YU1dKJzsW1UTGCywwAILLLDAAmtjYzN987jzRwIWWGCBBRZYYIE1CTSRk31IN0inzhdYYIEFFlhggdUHKz2Ywv+N0gELLLDAAsv/b4HVWTifFL9VFxDphudzAxZYYIEFFlhgdYNIP8iWKFrTFxnp5vBri3ewwAILLLDAugRW56CJKiiJRmWigZy+gAALLLDAAgsssJ5RvE9N2JoohLc1MNODRMACCyywwAILrGfASjTo0geu871Tg0fAAgsssMACC6x7i/cqrImb0CffPXHzeMOAXrDAAgsssMAC63dkMEVnE3Jq8rQnLtgJFlhggQUWWGC9p3jftuhSJ8SqCwUNUrDAAgsssMC6C1biy2x4byemzoccwQILLLDAAgus9zdIpxYA37ZoVAIZWGCBBRZYYIH1/nGFVWg2TIxW1aTt/AEHzz5YYIEFFlhggTVYpFcVmBtQJor65052AhZYYIEFFlhgdTdF083MqRO84cHAqiYtWGCBBRZYYIG1C1bi5mjnokXbIG44VmCBBRZYYIEF1i5YUyc1cZI2TKSWLurBAgsssMACC6znFe9V7+1c/PIEUPpCJ3E8wQILLLDAAgusZxfvUwVvZyNxaqGDq68KwQILLLDAAuvCPlbngNINr99wg3kWGVhggQUWWGCB1d0g7fzynROgpfe56jWvvQkNFlhggQUWWBc2SKcmh+08YSc/tqrX70EGFlhggQUWWGBthHVy4DoX4Ox8IDHxAwMLLLDAAgsssN4Dq3NRpA1wp/76m6JggQUWWGCBBVYKVnx3h4rWdFN0w3vBAgsssMACC6xnFO+JIjTR5EycsM4m58k2rxilAxZYYIEFFlgvvleY3s7U5P1PvGi4YrYZsMACCyywwLoE1rZJQRIDLtIDRjZMsgIWWGCBBRZYYN0Fa0Nhnoa+c8FLsMACCyywwALrFljpz90wcUhVAa54BwsssMACCyzPY1W+d8Ni44liHyywwAILLLDAej+s9GCKRFHcOQlH5wVEf+MULLDAAgsssMASqQ9YApaAJWCJgCVgCVgiYAlYApYIWAKWgCUCloAlYImAJWAJWCJgCVgClghYApaAJXKUf56liK2Fs4dKAAAAAElFTkSuQmCC',
         verifyDialog: false,
         orderDialog: false,
         ticketCode: '',
@@ -168,7 +170,7 @@
         verifyData: {},
         lookMoreData: {},
         formInline: {
-          begenTime: '',
+          beginTime: '',
           endTime: '',
           mobile: '',
           signType: '',
@@ -194,6 +196,10 @@
       Pager: Pager
     },
     methods: {
+      downloadExcel () {
+        // location.href = this.exportLink
+        window.open(this.exportLink, '_blank')
+      },
       lookMore (item) {
         this.lookMoreData = item
         this.orderDialog = true
@@ -248,18 +254,18 @@
       beginTimeRules (val) {
         let date1 = moment(val)
         let date2 = moment(this.formInline.endTime)
-        this.formInline.begenTime = val
+        this.formInline.beginTime = val
         // console.log(date2)
         if (date2 !== 'NaN' && date1.diff(date2) >= 0) {
           this.$message({
             message: '开始时间不能大于结束时间',
             type: 'error'
           })
-          this.formInline.begenTime = ''
+          this.formInline.beginTime = ''
         }
       },
       endTimeRules (val) {
-        let date1 = moment(this.formInline.begenTime)
+        let date1 = moment(this.formInline.beginTime)
         let date2 = moment(val)
         this.formInline.endTime = val
         // console.log(date2)
@@ -279,11 +285,13 @@
           params: {
             storeId: that.storeId,
             id: that.$route.params.eid,
-            signBeginTime: '',
-            signEndTime: '',
+            signBeginTime: this.formInline.beginTime,
+            signEndTime: this.formInline.endTime,
             pageSize: that.pageSize,
             pageNum: num,
-            mobile: this.formInline.mobile
+            mobile: this.formInline.mobile,
+            signType: this.formInline.signType,
+            status: this.formInline.status
           }
         }).then(function (respose) {
           let data = respose.data
@@ -314,6 +322,16 @@
     computed: {
       options () {
         return JSON.parse(sessionStorage.getItem('data')).options
+      },
+      exportLink () {
+        return URL.api_name + 'backofficeapi/information/event/signup/list/export.do' + '?mobile=' + this.formInline.mobile +
+          '&id=' + this.$route.params.eid +
+          '&signBeginTime=' + this.formInline.beginTime +
+          '&signEndTime=' + this.formInline.endTime +
+          '&storeId=' + JSON.parse(sessionStorage.getItem('store')).k +
+          '&signType=' + this.formInline.signType +
+          '&status=' + this.formInline.status +
+          '&authtoken=' + JSON.parse(sessionStorage.getItem('userInfo')).sessionId
       }
     }
   }

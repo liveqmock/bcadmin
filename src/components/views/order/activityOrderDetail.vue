@@ -1,14 +1,9 @@
 <template>
   <div class="renew-detail">
     <div class="crumbs">
-      <el-breadcrumb separator="/" v-show="$route.params.from === 'ticket'">
+      <el-breadcrumb>
         <el-breadcrumb-item><i class="el-icon-date"></i> 订单管理</el-breadcrumb-item>
-        <el-breadcrumb-item>售票订单</el-breadcrumb-item>
-        <el-breadcrumb-item>查看</el-breadcrumb-item>
-      </el-breadcrumb>
-      <el-breadcrumb separator="/" v-show="$route.params.from === 'renew'">
-        <el-breadcrumb-item><i class="el-icon-date"></i> 订单管理</el-breadcrumb-item>
-        <el-breadcrumb-item>续场费订单</el-breadcrumb-item>
+        <el-breadcrumb-item>活动订单</el-breadcrumb-item>
         <el-breadcrumb-item>查看</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
@@ -24,13 +19,13 @@
           {{ order.order.type }}
         </el-form-item>
         <el-form-item label="活动编号：">
-          {{}}
+          {{order.event.eventId}}
         </el-form-item>
         <el-form-item label="活动名称：">
-          {{}}
+          {{order.event.title}}
         </el-form-item>
         <el-form-item label="活动起止时间：">
-          {{}}
+          {{order.event.beginTime}} 至 {{order.event.endTime}}
         </el-form-item>
         <div class="list-item">
           <el-row v-for="(o, i) in order.items" :key="i">
@@ -82,22 +77,7 @@
           {{ order.memberMobile }}
         </el-form-item>
         <el-form-item label="二维票码(活动凭证)：">
-          <div class="code-list" v-for="(o, i) in order.ticketInstanceOnce">
-            <qr-code :text="o.code"></qr-code>
-            <span class="code-name">{{ o.ticketDefName }}</span>
-          </div>
-          <div class="code-list" v-for="(o, i) in order.ticketInstanceCompany">
-            <qr-code :text="o.code"></qr-code>
-            <span class="code-name">{{ o.ticketDefName }}</span>
-          </div>
-          <div class="code-list" v-for="(o, i) in order.ticketInstanceExercise">
-            <qr-code :text="o.code"></qr-code>
-            <span class="code-name">{{ o.ticketDefName }}</span>
-          </div>
-          <div class="code-list" v-for="(o, i) in order.ticketInstancePeriod">
-            <qr-code :text="o.code"></qr-code>
-            <span class="code-name">{{ o.ticketDefName }}</span>
-          </div>
+          <qr-code :text="order.event.eventNo"></qr-code>
         </el-form-item>
         <el-form-item label="支付方式：">
           <el-row v-for="(p, i) in order.payments" :key="i">

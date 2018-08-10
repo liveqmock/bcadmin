@@ -68,9 +68,9 @@
         </el-table-column>
         <el-table-column prop="createTime" label="订单日期">
         </el-table-column>
-        <el-table-column prop="createTime" label="活动编号">
+        <el-table-column prop="eventNo" label="活动编号">
         </el-table-column>
-        <el-table-column prop="createTime" label="活动凭证">
+        <el-table-column prop="voucher" label="活动凭证">
         </el-table-column>
         <el-table-column prop="employeeNo" label="员工工号">
           <template scope="scope">
@@ -167,7 +167,7 @@
           '&endDate=' + this.endDate +
           '&startDate=' + this.startDate +
           '&storeId=' + JSON.parse(sessionStorage.getItem('store')).k +
-          '&type=' + '票' +
+          '&type=' + '活动' +
           '&saleSource=' + this.formInline.saleSource +
           '&mobile=' + this.formInline.mobile +
           '&ticketCode=' + this.formInline.ticketCode +
