@@ -120,10 +120,11 @@
     <el-dialog title="核销"
                :visible.sync="verifyDialog"
                :show-close="false"
+               @close="closeVerifyDialog"
                :close-on-click-modal="false">
         <el-form label-width=""></el-form>
       <el-row>
-        <el-col :span="4" style="height: 36px;line-height: 36px;">二维码凭证：</el-col>
+        <el-col style="height: 36px;line-height: 36px; width: 140px; text-align: right; padding-right: 10px;">二维码凭证：</el-col>
         <el-col :span="16">
           <el-input placeholder="回车查询二维码凭证..."
                     type="text"
@@ -132,7 +133,7 @@
                     @keyup.enter.native="fetchVerifyData"></el-input>
         </el-col>
       </el-row>
-      <el-form label-width="100px">
+      <el-form label-width="140px">
         <el-form-item label="订单编号：">{{verifyData.orderId}}</el-form-item>
         <el-form-item label="订单时间：">{{verifyData.orderTime}}</el-form-item>
         <el-form-item label="活动凭证：">{{verifyData.voucher}}</el-form-item>
@@ -168,6 +169,7 @@
         ticketCode: '',
         confirmLoading: false,
         verifyData: {},
+        orderNumber: '',
         lookMoreData: {},
         formInline: {
           beginTime: '',
@@ -204,9 +206,13 @@
         this.lookMoreData = item
         this.orderDialog = true
       },
+      closeVerifyDialog () {
+        this.ticketCode = ''
+        this.verifyData = {}
+        this.orderNumber = ''
+      },
       cancelVerify () {
         this.verifyDialog = false
-        this.ticketCode = ''
       },
       verifyConfirm () {
         this.confirmLoading = true
@@ -233,7 +239,8 @@
       fetchVerifyData () {
         axios.get(URL.api_name + 'backofficeapi/information/event/search/verification.do', {
           params: {
-            ticketCode: this.ticketCode
+            ticketCode: this.ticketCode,
+            orderNumber: this.orderNumber
           }
         }).then(res => {
           if (res.data.status === 'success') {
@@ -241,8 +248,9 @@
           }
         })
       },
-      verify (id) {
+      verify (item) {
         this.verifyDialog = true
+        this.orderNumber = item.orderNumber
       },
       search () {
         if (this.currentPage > 1) {

@@ -72,6 +72,7 @@
         </el-table-column>
         <el-table-column prop="voucher" label="活动凭证">
         </el-table-column>
+        <el-table-column prop="euStatus" label="核销状态"></el-table-column>
         <el-table-column prop="employeeNo" label="员工工号">
           <template scope="scope">
             {{ scope.row.employeeNo ? scope.row.employeeNo : '系统' }}
@@ -170,7 +171,7 @@
           '&type=' + '活动' +
           '&saleSource=' + this.formInline.saleSource +
           '&mobile=' + this.formInline.mobile +
-          '&ticketCode=' + this.formInline.ticketCode +
+          '&eventNo=' + this.formInline.ticketCode +
           '&authtoken=' + JSON.parse(sessionStorage.getItem('userInfo')).sessionId
       },
       startDate () {
