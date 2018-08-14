@@ -23,6 +23,12 @@
             <el-option label="公众号" value="6"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="报名编号">
+          <el-input type="text" placeholder="请输入报名编号..." v-model="formInline.euId"></el-input>
+        </el-form-item>
+        <el-form-item label="活动凭证值">
+          <el-input type="text" placeholder="请输入活动凭证值..." v-model="formInline.eventNo"></el-input>
+        </el-form-item>
         <el-form-item label="用户状态">
           <el-select v-model="formInline.status">
             <el-option label="全部" value=""></el-option>
@@ -59,6 +65,7 @@
          v-loading="loading"
          element-loading-text="拼命加载中">
       <el-table :data="tableData" border style="width: 100%">
+        <el-table-column prop="euId" label="报名编号"></el-table-column>
         <el-table-column prop="userId" label="会员编号">
         </el-table-column>
         <el-table-column prop="mobile" label="会员手机号">
@@ -119,7 +126,6 @@
     <!-- 核销弹窗 -->
     <el-dialog title="核销"
                :visible.sync="verifyDialog"
-               :show-close="false"
                @close="closeVerifyDialog"
                :close-on-click-modal="false">
         <el-form label-width=""></el-form>
@@ -176,7 +182,9 @@
           endTime: '',
           mobile: '',
           signType: '',
-          status: ''
+          status: '',
+          euId: '',
+          eventNo: ''
         },
         searchTypes: [{
           value: '1',
@@ -245,6 +253,8 @@
         }).then(res => {
           if (res.data.status === 'success') {
             this.verifyData = res.data.data
+          } else {
+            this.$errMsg(res.data.message)
           }
         })
       },
@@ -299,7 +309,9 @@
             pageNum: num,
             mobile: this.formInline.mobile,
             signType: this.formInline.signType,
-            status: this.formInline.status
+            status: this.formInline.status,
+            euId: this.formInline.euId,
+            eventNo: this.formInline.eventNo
           }
         }).then(function (respose) {
           let data = respose.data
