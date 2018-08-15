@@ -21,6 +21,7 @@
             <el-option label="网页" value="4"></el-option>
             <el-option label="APP" value="5"></el-option>
             <el-option label="公众号" value="6"></el-option>
+            <el-option label="微信内嵌浏览器" value="7"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="报名编号">

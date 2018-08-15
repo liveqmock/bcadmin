@@ -305,6 +305,8 @@ import MemberMobileChange from '@/components/views/member/memberMobileChange'
 import SMS from '@/components/views/system/sms'
 // 脱机预警
 import Offline from '@/components/views/system/offline'
+// 添加百度编辑器
+import UEditor from '@/components/views/common/ueditor/ueditor'
 Vue.use(Router)
 
 export default new Router({
@@ -1478,6 +1480,11 @@ export default new Router({
       path: '/offline',
       name: 'Offline',
       component: Offline
+    },
+    {
+      path: '/ueditor',
+      name: 'UEditor',
+      component: UEditor
     }
   ]
 })
