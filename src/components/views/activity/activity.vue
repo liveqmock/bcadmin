@@ -46,7 +46,7 @@
          v-loading="loading"
          element-loading-text="拼命加载中">
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column prop="id" lable="活动ID"></el-table-column>
+        <el-table-column prop="id" label="活动ID"></el-table-column>
         <el-table-column prop="title" label="活动标题">
         </el-table-column>
         <el-table-column prop="content" label="活动描述">

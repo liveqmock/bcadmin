@@ -104,7 +104,7 @@
               :headers="uploadHeader"
               list-type="picture">
               <el-button size="small" type="primary">点击上传</el-button>
-              <div slot="tip" class="el-upload__tip">仅支持jpeg/jpg/png文件，且不超过2MB(推荐尺寸W1053 x H489px)</div>
+              <div slot="tip" class="el-upload__tip">仅支持jpeg/jpg/png文件，且不超过2MB(推荐尺寸W1053 x H489px)  上传一张图片时，内页详情图与首页列表图共用。上传两张图片时，图1为内页详情图，图2为首页列表图</div>
             </el-upload>
           </el-col>
       </el-form-item>
@@ -204,7 +204,6 @@ export default {
       areas: [],
       rinkImages: [],
       nowDate: '',
-      filelist: [],
       rules: {
         address: [
           { required: true, message: '地址不能为空', trigger: 'blur' }
@@ -322,6 +321,10 @@ export default {
           type: 'error',
           message: '图片不能大于2M'
         })
+        return false
+      }
+      if (this.rinkImages.length >= 2) {
+        this.$errMsg('最多上传2张图片')
         return false
       }
     },
