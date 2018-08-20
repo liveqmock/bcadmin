@@ -44,22 +44,49 @@
          element-loading-text="拼命加载中">
       <el-table :data="tableData.stockDetailDtoList" border style="width: 100%">
         <el-table-column prop="productCode" label="商品条码">
+          <template scope="scope">
+            <span :class="{red: scope.row.isClosing}">{{scope.row.productCode}}</span>
+          </template>
         </el-table-column>
         <el-table-column prop="standard" label="商品规格名称">
+          <template scope="scope">
+            <span :class="{red: scope.row.isClosing}">{{scope.row.standard}}</span>
+          </template>
         </el-table-column>
         <el-table-column prop="productName" label="商品名称">
+          <template scope="scope">
+            <span :class="{red: scope.row.isClosing}">{{scope.row.productName}}</span>
+          </template>
         </el-table-column>
         <el-table-column prop="childName" label="二级类型">
+          <template scope="scope">
+            <span :class="{red: scope.row.isClosing}">{{scope.row.childName}}</span>
+          </template>
         </el-table-column>
         <el-table-column prop="parentName" label="一级类型">
+          <template scope="scope">
+            <span :class="{red: scope.row.isClosing}">{{scope.row.parentName}}</span>
+          </template>
         </el-table-column>
         <el-table-column prop="unit" label="单位">
+          <template scope="scope">
+            <span :class="{red: scope.row.isClosing}">{{scope.row.unit}}</span>
+          </template>
         </el-table-column>
         <el-table-column prop="number" label="数量">
+          <template scope="scope">
+            <span :class="{red: scope.row.isClosing}">{{scope.row.number}}</span>
+          </template>
         </el-table-column>
         <el-table-column prop="werehouse" label="仓库">
+          <template scope="scope">
+            <span :class="{red: scope.row.isClosing}">{{scope.row.werehouse}}</span>
+          </template>
         </el-table-column>
         <el-table-column prop="remark" label="备注">
+          <template scope="scope">
+            <span :class="{red: scope.row.isClosing}">{{scope.row.remark}}</span>
+          </template>
         </el-table-column>
         <el-table-column label="操作">
           <template scope="scope">

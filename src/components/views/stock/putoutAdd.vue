@@ -60,7 +60,7 @@
         </el-table-column>
         <el-table-column label="数量" width="80">
           <template scope="scope">
-            <el-input v-model="scope.row.number"></el-input>
+            <el-input v-model="scope.row.stock"></el-input>
           </template>
         </el-table-column>
         <el-table-column label="二级类型" prop="childName">
@@ -73,7 +73,7 @@
         </el-table-column>
         <el-table-column prop="" label="进货总价">
           <template scope="scope">
-            {{scope.row.buyingPrice * scope.row.number}}
+            {{scope.row.buyingPrice * scope.row.stock}}
           </template>
         </el-table-column>
         <el-table-column label="销项税率" prop="taxRate">
@@ -369,17 +369,35 @@
               return
             }
             // 循环获取填写的数据单
-            for (let i = 0; i < this.initList.length; i++) {
-              if (this.initList[i].productCode !== '' && this.initList[i].number !== 0) {
-              } else {
-                this.$errMsg('出库数量必须大于0')
-                return
+            if (this.stockRecord.type !== 7) {
+              for (let i = 0; i < this.initList.length; i++) {
+                if (this.initList[i].productCode !== '' && this.initList[i].number !== 0) {
+                } else {
+                  this.$errMsg('出库数量必须大于0')
+                  return
+                }
               }
             }
             // 组装提交的数据
             var submitList = []
             if (this.stockRecord.type === 7) {
-              submitList = this.selectData
+              for (let p of this.selectData) {
+                submitList.push({
+                  buyingPrice: p.buyingPrice,
+                  childName: p.childName,
+                  expirationDate: p.expirationDate,
+                  number: p.stock,
+                  parentName: p.parentName,
+                  productDetailId: p.id,
+                  remark: p.remark,
+                  totalBuyingPrice: p.buyingPrice * p.number,
+                  storeId: JSON.parse(sessionStorage.getItem('store')).k,
+                  inputRate: p.inputRate.split('%')[0],
+                  taxRate: p.taxRate.split('%')[0],
+                  treasuryPrice: p.treasuryPrice,
+                  supplierId: p.supplierId
+                })
+              }
             } else {
               for (let p of this.initList) {
                 submitList.push({
