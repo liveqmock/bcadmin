@@ -4,17 +4,21 @@
       <el-breadcrumb separator="/">
         <el-breadcrumb-item><i class="el-icon-date"></i> 库存管理</el-breadcrumb-item>
         <el-breadcrumb-item>出库</el-breadcrumb-item>
+        <el-breadcrumb-item>新增出库</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="putin-wrapper">
       <el-form :inline="true" :model="stockRecord" :rules="rules" ref="stockRecord"
                label-width="100px"
                class="demo-form-inline">
-        <el-form-item label="入库日期" prop="time">
+        <el-form-item label="仓库">
+          {{house}}
+        </el-form-item>
+        <el-form-item label="出库日期" prop="time">
           <el-date-picker v-model="stockRecord.time" type="date" disabled placeholder="入库日期"></el-date-picker>
         </el-form-item>
         <el-form-item label="经办人" required>
-          <el-input v-model="operator" disabled type="text"></el-input>
+          {{operator}}
         </el-form-item>
         <el-form-item label="出库类型" prop="type">
           <el-select v-model="stockRecord.type">
@@ -22,14 +26,71 @@
             <el-option label="报废出库" :value="4"></el-option>
             <el-option label="其他出库" :value="5"></el-option>
             <el-option label="部门领用" :value="6"></el-option>
+            <el-option label="退货出库" :value="7"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="领用部门" prop="useDepartment" v-show="stockRecord.type === 6">
-          <el-input placeholder="请输入领用部门名称..." v-model="stockRecord.useDepartment"></el-input>
+          <el-select v-model="stockRecord.useDepartment">
+            <el-option v-for="d in departmentList" :key="d.id" :label="d.systemName" :value="d.systemCode"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="入库单号" v-show="stockRecord.type === 7">
+          <el-input v-model="stockRecord.orderNumber" @keyup.enter.native="fetchOrderData"></el-input>
+        </el-form-item>
+        <el-form-item v-show="stockRecord.type === 7">
+          <el-button @click="fetchOrderData" type="primary">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
-    <div class="table-data">
+    <div class="table-data" v-show="stockRecord.type === 7">
+      <el-table :data="putinList"
+                @selection-change="handleSelectionChange"
+                border style="width: 100%">
+        <el-table-column type="selection" width="35"></el-table-column>
+        <el-table-column label="商品条码" width="200">
+          <template scope="scope">
+            <el-input v-model="scope.row.productCode"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="商品规格名称" prop="standard">
+        </el-table-column>
+        <el-table-column label="商品名称" prop="productName">
+        </el-table-column>
+        <el-table-column label="单位" prop="unit">
+        </el-table-column>
+        <el-table-column label="数量" width="80">
+          <template scope="scope">
+            <el-input v-model="scope.row.stock"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="二级类型" prop="childName">
+        </el-table-column>
+        <el-table-column prop="parentName" label="一级类型">
+        </el-table-column>
+        <el-table-column label="进项税率" prop="inputRate">
+        </el-table-column>
+        <el-table-column prop="buyingPrice" label="进货单价">
+        </el-table-column>
+        <el-table-column prop="" label="进货总价">
+          <template scope="scope">
+            {{scope.row.buyingPrice * scope.row.stock}}
+          </template>
+        </el-table-column>
+        <el-table-column label="销项税率" prop="taxRate">
+        </el-table-column>
+        <el-table-column label="出库总价">
+          <template scope="scope">
+            {{scope.row.treasuryPrice * scope.row.number}}
+          </template>
+        </el-table-column>
+        <el-table-column label="备注" width="100">
+          <template scope="scope">
+            <el-input v-model="scope.row.remark"></el-input>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <div class="table-data" v-show="stockRecord.type !== 7">
       <el-table :data="initList" border style="width: 100%">
         <el-table-column label="操作" width="80">
           <template scope="scope">
@@ -37,7 +98,7 @@
             <el-button class="cell-btn" type="text" icon="minus" @click="minusStockItem(scope.row)"></el-button>
           </template>
         </el-table-column>
-        <el-table-column label="商品编码">
+        <el-table-column label="商品条码" width="200">
           <template scope="scope">
             <el-input v-model="scope.row.productCode"
                       @keyup.enter.native="querySerach(scope.row.productCode, scope.row)"
@@ -45,33 +106,84 @@
             ></el-input>
           </template>
         </el-table-column>
-        <el-table-column label="商品名称" width="88">
+        <el-table-column label="商品规格名称">
           <template scope="scope">
-            {{ scope.row.productDetail.pName }}
+            {{ scope.row.productDetail.standard }}
           </template>
         </el-table-column>
-        <el-table-column label="单位" width="88">
+        <el-table-column label="商品名称">
           <template scope="scope">
-            {{ scope.row.productDetail.pUnit }}
+            {{ scope.row.productDetail.name }}
           </template>
         </el-table-column>
-        <el-table-column prop="" label="进货价" width="150">
+        <el-table-column label="单位">
           <template scope="scope">
-            {{ scope.row.productDetail.pBuyingPrice }}
+            {{ scope.row.productDetail.unit }}
           </template>
         </el-table-column>
-        <el-table-column label="备注">
-          <template scope="scope">
-            <el-input v-model="scope.row.remark"></el-input>
-          </template>
-        </el-table-column>
-        <el-table-column prop="" label="出库数量" width="100">
+        <el-table-column label="数量">
           <template scope="scope">
             <el-input v-model.number="scope.row.number"></el-input>
           </template>
         </el-table-column>
+        <el-table-column prop="" label="二级类型">
+          <template scope="scope">
+            {{scope.row.productDetail.childName}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="" label="一级类型">
+          <template scope="scope">
+            {{scope.row.productDetail.parentName}}
+          </template>
+        </el-table-column>
+        <el-table-column label="进项税率">
+          <template scope="scope">
+            {{scope.row.productDetail.inputRate}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="" label="进货单价">
+          <template scope="scope">
+            {{ scope.row.productDetail.buyingPrice }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="" label="进货总价">
+          <template scope="scope">
+            {{scope.row.productDetail.buyingPrice * scope.row.number}}
+          </template>
+        </el-table-column>
+        <el-table-column width="150" label="销项税率">
+          <template scope="scope">
+            {{ scope.row.productDetail.taxRate }}
+          </template>
+        </el-table-column>
+        <el-table-column width="150" label="出库总价">
+          <template scope="scope">
+            {{scope.row.productDetail.treasuryPrice * scope.row.number}}
+          </template>
+        </el-table-column>
+        <el-table-column width="150" label="备注">
+          <template scope="scope">
+            <el-input v-model="scope.row.remark"></el-input>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
+    <el-row class="putin-footer">
+      <el-col :span="6">
+        <el-upload
+          class="upload-demo"
+          :action="imgUploadUrl"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :before-upload="beforeUpload"
+          :on-success="handleSuccess"
+          :on-error="uporr"
+          :headers="uploadHeader"
+          :file-list="fileList">
+          <el-button size="small" type="primary">添加附件</el-button>
+        </el-upload>
+      </el-col>
+    </el-row>
     <el-row class="putin-footer">
       <el-col :span="2" class="label">填写备注:</el-col>
       <el-col :span="10">
@@ -92,6 +204,9 @@
   import moment from 'moment'
 
   export default {
+    created () {
+      this.fetchDeparentment()
+    },
     data () {
       var checkType = (rule, value, callback) => {
         if (!value) {
@@ -109,11 +224,19 @@
       }
       return {
         operator: JSON.parse(sessionStorage.getItem('userInfo')).userName,
+        house: JSON.parse(sessionStorage.getItem('store')).v + '仓库',
+        imgUploadUrl: URL.api_name + 'merchandiseapi/stock/upload.do',
+        fileList: [],
+        departmentList: [],
+        putinList: [],
+        selectData: [],
         initList: [
           {
             number: 0,
             remark: '',
-            productDetail: {}
+            productDetail: {},
+            supplierId: '',
+            productCode: ''
           }
         ],
         stockRecord: {
@@ -121,7 +244,12 @@
           time: moment().format('YYYY-MM-DD'),
           type: '',
           useDepartment: '',
-          storeId: JSON.parse(sessionStorage.getItem('store')).k
+          stockType: 2,
+          fileName: '',
+          fileUrl: '',
+          storeId: JSON.parse(sessionStorage.getItem('store')).k,
+          orderNumber: '',
+          operator: JSON.parse(sessionStorage.getItem('userInfo')).userName
         },
         tableData: [],
         loading: false,
@@ -135,11 +263,73 @@
         }
       }
     },
+    computed: {
+      uploadHeader () {
+        return {
+          authtoken: JSON.parse(sessionStorage.getItem('userInfo')).sessionId
+        }
+      }
+    },
     methods: {
+      handleSelectionChange (val) {
+        this.selectData = val
+      },
+      fetchOrderData () {
+        axios.get(URL.api_name + 'merchandiseapi/stock/product/stock/searchProductDetail.do', {
+          params: {
+            stockRecordId: this.stockRecord.orderNumber
+          }
+        }).then(res => {
+          if (res.data.status === 'success') {
+            this.putinList = res.data.data
+          }
+        })
+      },
+      fetchDeparentment () {
+        axios.get(URL.api_name + 'backofficeapi/system/rict/obtainChild.do', {
+          params: {
+            systemCode: 'departmentName'
+          }
+        }).then(res => {
+          if (res.data.status === 'success') {
+            this.departmentList = res.data.data
+          }
+        })
+      },
+      beforeUpload (file) {
+        if (this.fileList.length > 0) {
+          this.$errMsg('最多上传一个附件')
+          return false
+        }
+      },
+      handleRemove (file, fileList) {
+        this.fileList = fileList
+      },
+      handlePreview (file) {
+      },
+      handleSuccess (response, file, fileList) {
+        this.fileList = fileList
+        this.stockRecord.fileName = this.fileList[0].response.data.fileName
+        this.stockRecord.fileUrl = this.fileList[0].response.data.fileUrl
+      },
+      uporr (err, file, fileList) {
+        if (err.status === 'failed') {
+          this.$message({
+            message: err.message,
+            type: 'error'
+          })
+        } else {
+          this.$message({
+            message: '上传失败',
+            type: 'error'
+          })
+        }
+      },
       querySerach (prodCode, item) {
         let index = this.initList.indexOf(item)
         axios.get(URL.api_name + 'merchandiseapi/product/findByProductCode.do', {
           params: {
+            type: 2,
             productCode: prodCode,
             storeId: JSON.parse(sessionStorage.getItem('store')).k
           }
@@ -179,23 +369,53 @@
               return
             }
             // 循环获取填写的数据单
-            for (let i = 0; i < this.initList.length; i++) {
-              if (this.initList[i].productCode !== '' && this.initList[i].number !== 0) {
-              } else {
-                this.$errMsg('出库数量必须大于0')
-                return
+            if (this.stockRecord.type !== 7) {
+              for (let i = 0; i < this.initList.length; i++) {
+                if (this.initList[i].productCode !== '' && this.initList[i].number !== 0) {
+                } else {
+                  this.$errMsg('出库数量必须大于0')
+                  return
+                }
               }
             }
             // 组装提交的数据
-            const submitList = []
-            for (let p of this.initList) {
-              submitList.push({
-                buyingPrice: p.productDetail.pBuyingPrice,
-                number: p.number,
-                productDetailId: p.productDetail.pId,
-                remark: p.remark,
-                storeId: JSON.parse(sessionStorage.getItem('store')).k
-              })
+            var submitList = []
+            if (this.stockRecord.type === 7) {
+              for (let p of this.selectData) {
+                submitList.push({
+                  buyingPrice: p.buyingPrice,
+                  childName: p.childName,
+                  expirationDate: p.expirationDate,
+                  number: p.stock,
+                  parentName: p.parentName,
+                  productDetailId: p.id,
+                  remark: p.remark,
+                  totalBuyingPrice: p.buyingPrice * p.number,
+                  storeId: JSON.parse(sessionStorage.getItem('store')).k,
+                  inputRate: p.inputRate.split('%')[0],
+                  taxRate: p.taxRate.split('%')[0],
+                  treasuryPrice: p.treasuryPrice,
+                  supplierId: p.supplierId
+                })
+              }
+            } else {
+              for (let p of this.initList) {
+                submitList.push({
+                  buyingPrice: p.productDetail.buyingPrice,
+                  childName: p.productDetail.childName,
+                  expirationDate: p.productDetail.expirationDate,
+                  number: p.number,
+                  parentName: p.productDetail.parentName,
+                  productDetailId: p.productDetail.id,
+                  remark: p.remark,
+                  totalBuyingPrice: p.productDetail.buyingPrice * p.number,
+                  storeId: JSON.parse(sessionStorage.getItem('store')).k,
+                  inputRate: p.productDetail.inputRate.split('%')[0],
+                  taxRate: p.productDetail.taxRate.split('%')[0],
+                  treasuryPrice: p.productDetail.treasuryPrice,
+                  supplierId: p.productDetail.supplierId
+                })
+              }
             }
             that.loading = true
             axios.post(URL.api_name + 'merchandiseapi/stock/create.do', {
@@ -226,7 +446,7 @@
     }
   }
 </script>
-<style lang="less">
+<style lang="less" scoped>
   .el-select-dropdown__item{
     height: auto;
   }
@@ -299,3 +519,5 @@
     }
   }
 </style>
+                                                                                                           
+                                                                                                            

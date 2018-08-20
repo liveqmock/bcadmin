@@ -47,17 +47,23 @@
                       <el-form-item label="进货价：">
                         <span>{{props.row.buyingPrice}}</span>
                       </el-form-item>
-                      <el-form-item label="出售价：">
+                      <el-form-item label="进项税率：">
+                        <span>{{props.row.inputRate}}</span>
+                      </el-form-item>
+                      <el-form-item label="建议零售价：">
                         <span>{{props.row.sellingPrice}}</span>
+                      </el-form-item>
+                      <el-form-item label="实售价：">
+                        <span>{{props.row.price}}</span>
                       </el-form-item>
                       <el-form-item label="折扣：">
                         <span>{{props.row.discount}}</span>
                       </el-form-item>
-                      <el-form-item label="税率：">
+                      <el-form-item label="商品税率：">
                         <span>{{props.row.taxRate}}</span>
                       </el-form-item>
                       <el-form-item label="描述：">
-                        <el-col :span="16">
+                        <el-col>
                           <span>{{props.row.describes}}</span>
                         </el-col>
                       </el-form-item>
@@ -66,7 +72,7 @@
                 </el-table-column>
                 <el-table-column label="编码" prop="productCode">
                 </el-table-column>
-                <el-table-column label="名称" prop="standard">
+                <el-table-column label="商品规格名称" prop="standard">
                 </el-table-column>
                 <el-table-column label="描述" prop="describes">
                 </el-table-column>

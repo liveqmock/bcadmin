@@ -14,6 +14,9 @@
         <el-form-item label="商品编码">
           <el-input @keyup.enter.native="searchCode(formInline.productCode)" v-model="formInline.productCode" placeholder="请输入商品编码"></el-input>
         </el-form-item>
+        <el-form-item label="规格名称">
+          <el-input v-model="formInline.standard" placeholder="请输入规格名称..."></el-input>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="search">查询</el-button>
         </el-form-item>
@@ -67,7 +70,7 @@
             <div class="check-box">
               <el-checkbox v-model="c.check"></el-checkbox>
             </div>
-            <p class="name">{{ c.name }}</p>
+            <p class="name">{{ c.standard }}</p>
             <div class="item">
               <span class="price">¥{{ c.nowPrice }}</span>
               <el-button @click="minus(c)" icon="minus" size="mini"></el-button>
@@ -314,7 +317,8 @@
             pageNum: num,
             name: this.formInline.name,
             productCode: this.formInline.productCode,
-            storeId: JSON.parse(sessionStorage.getItem('store')).k
+            storeId: JSON.parse(sessionStorage.getItem('store')).k,
+            standard: this.formInline.standard
           }
         }).then(function (respose) {
           let data = respose.data

@@ -260,6 +260,16 @@ import PutOutAddDetail from '@/components/views/stock/putoutAddDetail'
 import Stock from '@/components/views/stock/stock'
 import Inventory from '@/components/views/stock/inventory'
 import InventoryDetail from '@/components/views/stock/inventoryDetail'
+import TaskAdd from '@/components/views/stock/taskAdd'
+import TaskEdit from '@/components/views/stock/taskEdit'
+// 查看总库存
+import CheckAddStock from '@/components/views/stock/checkAddStock'
+// 目标商品
+import TargetGoods from '@/components/views/stock/targetGoods'
+import TargetGoodsDetail from '@/components/views/stock/targetGoodsDetail'
+// 盘点
+import InventoryAdd from '@/components/views/stock/inventoryAdd'
+import GoodsDetailStock from '@/components/views/stock/goodsDetail'
 // 交接单
 import Delivery from '@/components/views/goods/delivery'
 import DeliveryList from '@/components/views/goods/deliveryList'
@@ -1485,6 +1495,41 @@ export default new Router({
       path: '/ueditor',
       name: 'UEditor',
       component: UEditor
+    },
+    {
+      path: '/taskAdd',
+      name: 'TaskAdd',
+      component: TaskAdd
+    },
+    {
+      path: '/taskEdit/:taskId',
+      name: 'TaskEdit',
+      component: TaskEdit
+    },
+    {
+      path: '/checkAddStock/:taskId',
+      name: 'CheckAddStock',
+      component: CheckAddStock
+    },
+    {
+      path: '/targetGoods/:taskId',
+      name: 'TargetGoods',
+      component: TargetGoods
+    },
+    {
+      path: '/targetGoodsDetail/:taskId',
+      name: 'TargetGoodsDetail',
+      component: TargetGoodsDetail
+    },
+    {
+      path: '/inventoryAdd',
+      name: 'InventoryAdd',
+      component: InventoryAdd
+    },
+    {
+      path: '/goodsDetailStock/:gid',
+      name: 'GoodsDetailStock',
+      component: GoodsDetailStock
     }
   ]
 })

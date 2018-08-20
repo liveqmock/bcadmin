@@ -136,7 +136,7 @@
             mobile: '',
             registerTimeBegin: '',
             registerTimeEnd: '',
-            storeId: 0
+            storeId: ''
           },
           gradeList: [],
           tableData: [],

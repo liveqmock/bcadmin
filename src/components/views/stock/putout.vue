@@ -8,16 +8,23 @@
     </div>
     <div class="search-wrapper">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
-        <el-form-item label="类型">
+        <el-form-item label="出库方式">
           <el-select v-model="formInline.type">
             <el-option label="全部出库" :value="-2"></el-option>
             <el-option label="销售出库" :value="3"></el-option>
             <el-option label="报废出库" :value="4"></el-option>
             <el-option label="其他出库" :value="5"></el-option>
             <el-option label="部门领用" :value="6"></el-option>
+            <el-option label="退货出库" :value="7"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item>
+        <el-form-item label="出库单号">
+          <el-input v-model="formInline.orderNumber"></el-input>
+        </el-form-item>
+        <el-form-item label="经办人">
+          <el-input v-model="formInline.operator"></el-input>
+        </el-form-item>
+        <el-form-item label="时间">
           <el-date-picker v-model="formInline.startTime" type="date" placeholder="开始时间"></el-date-picker>
           至
           <el-date-picker v-model="formInline.endTime" type="date" placeholder="结束时间"></el-date-picker>
@@ -32,31 +39,44 @@
          v-loading="loading"
          element-loading-text="拼命加载中">
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column label="编号" width="100">
+        <el-table-column label="编号" width="100" prop="id">
           <template scope="scope">
-            {{ (scope.$index + 1) + (currentPage - 1) * 15 }}
+            <span :class="{red: scope.row.closing}">{{scope.row.id}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="orderNumber" label="单号">
+        <el-table-column prop="orderNumber" label="出库单号">
+          <template scope="scope">
+            <span :class="{red: scope.row.closing}">{{scope.row.orderNumber}}</span>
+          </template>
         </el-table-column>
-         <el-table-column label="类型">
+         <el-table-column label="出库方式">
            <template scope="scope">
-             {{ scope.row.type | formatStockType }}
+             <span :class="{red: scope.row.closing}">{{scope.row.orderNumber | formatStockType}}</span>
            </template>
         </el-table-column>
-        <el-table-column label="领用部门" prop="useDepartment"></el-table-column>
-        <el-table-column label="仓库">
+        <el-table-column label="领用部门" prop="useDepartment">
           <template scope="scope">
-            默认仓库
+            <span :class="{red: scope.row.closing}">{{scope.row.useDepartment}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="仓库" prop="warehouse">
+          <template scope="scope">
+            <span :class="{red: scope.row.closing}">{{scope.row.warehouse}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="time" label="出库日期">
+          <template scope="scope">
+            <span :class="{red: scope.row.closing}">{{scope.row.time}}</span>
+          </template>
         </el-table-column>
         <el-table-column prop="operator" label="经办人">
+          <template scope="scope">
+            <span :class="{red: scope.row.closing}">{{scope.row.operator}}</span>
+          </template>
         </el-table-column>
         <el-table-column label="操作" width="120">
           <template scope="scope">
-            <el-button type="info" size="small" @click="goDetail(scope.row.id)">查看明细</el-button>
+            <el-button type="info" size="small" @click="goDetail(scope.row.id)">出库明细</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -78,7 +98,9 @@
         formInline: {
           startTime: '',
           endTime: '',
-          type: -2
+          type: -2,
+          operator: '',
+          orderNumber: ''
         },
         storeId: JSON.parse(sessionStorage.getItem('store')).k,
         tableData: [],
@@ -131,7 +153,9 @@
             pageSize: 15,
             pageNum: num,
             startTime: this.startTimeA,
-            endTime: this.endTimeA
+            endTime: this.endTimeA,
+            operator: this.formInline.operator,
+            orderNumber: this.formInline.orderNumber
           }
         }).then(function (respose) {
           let data = respose.data
@@ -166,5 +190,8 @@
     width: 80px;
     height: 60px;
     vertical-align: bottom;
+  }
+  .red{
+    color: red;
   }
 </style>

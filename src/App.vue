@@ -52,14 +52,13 @@
   ::-webkit-scrollbar-track
   {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
-    border-radius: 10px;
     background-color: #fff;
   }
 
   /*定义滑块 内阴影+圆角*/
   ::-webkit-scrollbar-thumb
   {
-    border-radius: 10px;
+    border-radius: 5px;
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
     background-color: #F2F6FC;
   }
@@ -131,10 +130,6 @@
   }
   .el-button+.el-button{
     margin-left: 0;
-  }
-  .el-table__row .cell{
-    max-height: 100px;
-    overflow: auto;
   }
   .el-table__row .el-table__expand-column .cell {
     overflow: hidden;

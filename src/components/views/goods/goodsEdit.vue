@@ -11,7 +11,7 @@
       <el-form label-width="120px" :model="formData" :rules="rules" ref="formData">
         <el-form-item label="商品名称:" prop="name">
           <el-col :span="12">
-            <el-input type="text" v-model="formData.name"></el-input>
+            <el-input type="text" v-model="formData.name" :disabled="formData.isStock === true"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="类 别:" prop="typeId">
@@ -52,7 +52,7 @@
                 </el-table-column>
                 <el-table-column label="销售价" width="150">
                   <template scope="scope">
-                    <span>{{ scope.row.sellingPrice }}</span>
+                    {{scope.row.sellingPrice}}
                   </template>
                 </el-table-column>
                 <el-table-column label="操作" width="130">
@@ -98,35 +98,51 @@
                :rules="standardRules">
         <el-form-item label="条码" prop="productCode">
           <el-col :span="16">
-            <el-input v-model="standard.productCode"></el-input>
+            <el-input v-model="standard.productCode" :disabled="standard.flag === true"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="规格名称" prop="standard">
           <el-col :span="16">
-            <el-input v-model="standard.standard"></el-input>
+            <el-input v-model="standard.standard" :disabled="standard.flag === true"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="进货价" prop="buyingPrice">
           <el-col :span="16">
-            <el-input v-model.number="standard.buyingPrice" auto-complete="off"></el-input>
+            <el-input v-model.number="standard.buyingPrice" auto-complete="off" :disabled="standard.flag === true"></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item label="出售价" prop="sellingPrice">
+        <el-form-item label="进项税率" prop="inputRate">
           <el-col :span="16">
-            <el-input v-model.number="standard.sellingPrice"></el-input>
+            <el-input v-model="standard.inputRate" auto-complete="off" :disabled="standard.flag === true"></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item label="折扣" prop="discount">
+        <el-form-item label="建议零售价" prop="sellingPrice">
           <el-col :span="16">
-            <el-input v-model.number="standard.discount"></el-input>
+            <el-input v-model.number="standard.sellingPrice" auto-complete="off"></el-input>
           </el-col>
         </el-form-item>
+        <el-row>
+          <el-radio v-model="standard.useType" :label="1" class="before-label">&nbsp;</el-radio>
+          <el-form-item label="实售价">
+            <el-col :span="16">
+              <el-input v-model.number="standard.price" :disabled="standard.useType !== 1"></el-input>
+            </el-col>
+          </el-form-item>
+        </el-row>
+        <el-row>
+          <el-radio v-model="standard.useType" :label="2" class="before-label">&nbsp;</el-radio>
+          <el-form-item label="折扣" prop="discount">
+            <el-col :span="16">
+              <el-input v-model.number="standard.discount" :disabled="standard.useType !== 2"></el-input>
+            </el-col>
+          </el-form-item>
+        </el-row>
         <el-form-item label="商品税率" prop="taxRate">
           <el-col :span="16">
             <el-input v-model.number="standard.taxRate"></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item label="商品图片:" prop="picture">
+        <el-form-item label="商品图片:">
           <el-col :span="16">
             <el-upload
               class="upload-demo"
@@ -215,6 +231,9 @@
             sellingPrice: '',
             standard: '',
             taxRate: '',
+            inputRate: '',
+            price: '',
+            useType: 1,
             storeId: JSON.parse(sessionStorage.getItem('store')).k
           },
           formData: {
@@ -256,6 +275,9 @@
             ]
           },
           standardRules: {
+            inputRate: [
+              { required: true, message: '进项税率不能为空', trigger: 'blur' }
+            ],
             taxRate: [
               { validator: checkRate, trigger: 'blur' }
             ],
@@ -318,9 +340,11 @@
         updateStandard (item) {
           tempStandardIndex = this.productDetailList.indexOf(item)
           this.standard = item
-          this.fileList.push({
-            url: item.picture
-          })
+          if (item.picture) {
+            this.fileList.push({
+              url: item.picture
+            })
+          }
           this.dialogFormVisible = true
           this.updateType = 1
         },
@@ -345,6 +369,7 @@
           }).then(res => {
             if (res.data.status === 'success') {
               that.formData = res.data.data.product
+              this.$set(this.formData, 'isStock', res.data.data.stock)
               that.productDetailList = res.data.data.productDetailList
             }
           })
@@ -374,6 +399,9 @@
             sellingPrice: '',
             standard: '',
             taxRate: '',
+            inputRate: '',
+            price: '',
+            useType: 1,
             storeId: JSON.parse(sessionStorage.getItem('store')).k
           }
           this.fileList = []
@@ -382,6 +410,19 @@
           this.$refs[name].validate((valid) => {
             if (valid) {
               // 校验成功
+              if (this.standard.useType === 2) {
+                this.standard.price = ''
+                if (this.standard.discount === '') {
+                  this.$errMsg('请填写折扣')
+                  return
+                }
+              } else if (this.standard.useType === 1) {
+                this.standard.discount = ''
+                if (this.standard.price === '') {
+                  this.$errMsg('请填写实售价')
+                  return
+                }
+              }
               if (this.updateType === 0) {
                 this.productDetailList.push(this.standard)
               } else if (this.updateType === 1) {
@@ -413,23 +454,6 @@
                   return
                 }
               }
-              // 商品规格所有字段不能为空
-              let reg = /^(\d+\.?\d+)|\d$/
-              for (let p of this.productDetailList) {
-                if (p.sellingPrice === '' || p.standard === '') {
-                  this.$message({
-                    type: 'error',
-                    message: '所有规格字段不能为空'
-                  })
-                  return
-                } else if (!reg.test(p.sellingPrice) || p.sellingPrice < 0) {
-                  this.$message({
-                    type: 'error',
-                    message: '销售价格输入有误'
-                  })
-                  return
-                }
-              }
               // 如果选择了一级节点，二级节点不能为空
               if (this.childTypeList.length > 0 && !this.formData.childTypeId) {
                 this.$message({
@@ -438,7 +462,6 @@
                 })
                 return
               }
-              // 商品规格字段名称不能重复
               that.loading = true
               axios.post(URL.api_name + 'merchandiseapi/product/update.do', {
                 product: that.formData,
@@ -540,4 +563,9 @@
     text-align: center;
   }
   .color-gry{ color:#999; font-size:12px; margin-left:10px;}
+  .before-label{
+    position: absolute;
+    top: 15%;
+    left: 3%;
+  }
 </style>

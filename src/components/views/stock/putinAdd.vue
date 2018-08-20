@@ -10,14 +10,19 @@
       <el-form :inline="true" :model="stockRecord" :rules="rules" ref="stockRecord"
                label-width="100px"
                class="demo-form-inline">
-        <el-form-item label="经办人" required>
-          <el-input v-model="operator" disabled type="text"></el-input>
+        <el-form-item label="仓库">
+          {{house}}
         </el-form-item>
-        <el-form-item label="入库类型" prop="type">
+
+        <el-form-item label="入库方式" prop="type">
           <el-select v-model="stockRecord.type">
             <el-option label="商品入库" :value="1"></el-option>
+            <el-option label="赠品入库" :value="8"></el-option>
             <el-option label="其他入库" :value="2"></el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="经办人" required>
+          <el-input v-model="operator" disabled type="text"></el-input>
         </el-form-item>
         <!--<el-form-item label="供应商:" prop="supplierId">
           <el-select v-model="stockRecord.supplierId">
@@ -39,7 +44,7 @@
             <el-button class="cell-btn" type="text" icon="minus" @click="minusStockItem(scope.row)"></el-button>
           </template>
         </el-table-column>
-        <el-table-column label="商品编码">
+        <el-table-column label="商品编码" width="200">
           <template scope="scope">
             <el-input v-model="scope.row.productCode"
                       @keyup.enter.native="querySerach(scope.row.productCode, scope.row)"
@@ -47,32 +52,57 @@
             ></el-input>
           </template>
         </el-table-column>
-        <el-table-column label="商品名称" width="88">
+        <el-table-column label="商品规格名称">
           <template scope="scope">
-            {{ scope.row.productDetail.pName }}
+            {{ scope.row.productDetail.standard }}
           </template>
         </el-table-column>
-        <el-table-column label="单位" width="88">
+        <el-table-column label="商品名称">
           <template scope="scope">
-            {{ scope.row.productDetail.pUnit }}
+            {{ scope.row.productDetail.name }}
           </template>
         </el-table-column>
-        <el-table-column prop="" label="进货价">
+        <el-table-column label="单位">
           <template scope="scope">
-            {{ scope.row.productDetail.pBuyingPrice }}
+            {{ scope.row.productDetail.unit }}
           </template>
         </el-table-column>
-        <el-table-column label="备注">
-          <template scope="scope">
-            <el-input v-model="scope.row.remark"></el-input>
-          </template>
-        </el-table-column>
-        <el-table-column prop="" label="入库数量">
+        <el-table-column label="数量">
           <template scope="scope">
             <el-input v-model.number="scope.row.number"></el-input>
           </template>
         </el-table-column>
-        <el-table-column prop="" label="供应商">
+        <el-table-column prop="" label="二级类型">
+          <template scope="scope">
+            {{scope.row.productDetail.childName}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="" label="一级类型">
+          <template scope="scope">
+            {{scope.row.productDetail.parentName}}
+          </template>
+        </el-table-column>
+        <el-table-column width="200" label="过期日期">
+          <template scope="scope">
+            <el-date-picker :picker-options="pickerOptions" type="date" v-model="scope.row.expirationDate"></el-date-picker>
+          </template>
+        </el-table-column>
+        <el-table-column label="进项税率">
+          <template scope="scope">
+            {{scope.row.productDetail.inputRate}}%
+          </template>
+        </el-table-column>
+        <el-table-column prop="" label="进货价">
+          <template scope="scope">
+            {{ scope.row.productDetail.buyingPrice }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="" label="进货总价">
+          <template scope="scope">
+            {{scope.row.productDetail.buyingPrice * scope.row.number}}
+          </template>
+        </el-table-column>
+        <el-table-column width="150" label="供应商">
           <template scope="scope">
             <el-select v-model="scope.row.supplierId">
               <el-option v-for="(t, i) in supplyList" :key="i"
@@ -81,12 +111,33 @@
             </el-select>
           </template>
         </el-table-column>
+        <el-table-column label="备注">
+          <template scope="scope">
+            <el-input v-model="scope.row.remark"></el-input>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
     <el-row class="putin-footer">
       <el-col :span="2" class="label">填写备注:</el-col>
       <el-col :span="10">
         <el-input v-model="stockRecord.remarks" type="text"></el-input>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="6">
+        <el-upload
+          class="upload-demo"
+          :action="imgUploadUrl"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :before-upload="beforeUpload"
+          :on-success="handleSuccess"
+          :on-error="uporr"
+          :headers="uploadHeader"
+          :file-list="fileList">
+          <el-button size="small" type="primary">添加附件</el-button>
+       </el-upload>
       </el-col>
     </el-row>
     <div class="putin-btns">
@@ -121,21 +172,35 @@
         }
       }
       return {
+        pickerOptions: {
+          disabledDate (time) {
+            return time.getTime() < Date.now() - 8.64e7
+          }
+        },
         operator: JSON.parse(sessionStorage.getItem('userInfo')).userName,
+        house: JSON.parse(sessionStorage.getItem('store')).v + '仓库',
+        imgUploadUrl: URL.api_name + 'merchandiseapi/stock/upload.do',
+        fileList: [],
         initList: [
           {
             number: 0,
             remark: '',
             productDetail: {},
-            supplierId: ''
+            supplierId: '',
+            expirationDate: '',
+            productCode: ''
           }
         ],
         stockRecord: {
           remarks: '',
           time: moment().format('YYYY-MM-DD'),
+          stockType: 1,
+          storeId: JSON.parse(sessionStorage.getItem('store')).k,
+          fileName: '',
+          fileUrl: '',
           type: 1,
-          supplierId: '',
-          storeId: JSON.parse(sessionStorage.getItem('store')).k
+          orderNumber: '',
+          operator: JSON.parse(sessionStorage.getItem('userInfo')).userName
         },
         tableData: [],
         loading: false,
@@ -150,7 +215,43 @@
         supplyList: []
       }
     },
+    computed: {
+      uploadHeader () {
+        return {
+          authtoken: JSON.parse(sessionStorage.getItem('userInfo')).sessionId
+        }
+      }
+    },
     methods: {
+      beforeUpload (file) {
+        if (this.fileList.length > 0) {
+          this.$errMsg('最多上传一个附件')
+          return false
+        }
+      },
+      handleRemove (file, fileList) {
+        this.fileList = fileList
+      },
+      handlePreview (file) {
+      },
+      handleSuccess (response, file, fileList) {
+        this.fileList = fileList
+        this.stockRecord.fileName = this.fileList[0].response.data.fileName
+        this.stockRecord.fileUrl = this.fileList[0].response.data.fileUrl
+      },
+      uporr (err, file, fileList) {
+        if (err.status === 'failed') {
+          this.$message({
+            message: err.message,
+            type: 'error'
+          })
+        } else {
+          this.$message({
+            message: '上传失败',
+            type: 'error'
+          })
+        }
+      },
       getSupplierList () {
         let that = this
         axios.get(URL.api_name + 'merchandiseapi/product/findSupplierByStoreId.do', {
@@ -168,6 +269,7 @@
         axios.get(URL.api_name + 'merchandiseapi/product/findByProductCode.do', {
           params: {
             productCode: prodCode,
+            type: 1,
             storeId: JSON.parse(sessionStorage.getItem('store')).k
           }
         }).then(res => {
@@ -185,11 +287,11 @@
       addStockItem () {
         this.initList.push({
           number: 0,
-          buyingPrice: '',
           remark: '',
-          productCode: '',
+          productDetail: {},
           supplierId: '',
-          productDetail: {}
+          expirationDate: '',
+          productCode: ''
         })
       },
       minusStockItem (item) {
@@ -216,12 +318,19 @@
             const submitList = []
             for (let p of this.initList) {
               submitList.push({
-                buyingPrice: p.productDetail.pBuyingPrice,
+                buyingPrice: p.productDetail.buyingPrice,
+                childName: p.productDetail.childName,
+                expirationDate: p.expirationDate,
                 number: p.number,
-                productDetailId: p.productDetail.pId,
+                parentName: p.productDetail.parentName,
+                productDetailId: p.productDetail.id,
                 remark: p.remark,
                 supplierId: p.supplierId,
-                storeId: JSON.parse(sessionStorage.getItem('store')).k
+                totalBuyingPrice: p.productDetail.buyingPrice * p.number,
+                storeId: JSON.parse(sessionStorage.getItem('store')).k,
+                inputRate: p.productDetail.inputRate.split('%')[0],
+                taxRate: p.productDetail.taxRate.split('%')[0],
+                treasuryPrice: p.productDetail.treasuryPrice
               })
             }
             that.loading = true

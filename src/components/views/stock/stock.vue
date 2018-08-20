@@ -16,6 +16,12 @@
         <el-form-item label="商品编码">
           <el-input v-model="formInline.productCode" type="text" placeholder="请输入商品编码"></el-input>
         </el-form-item>
+        <el-form-item label="商品名称">
+          <el-input v-model="formInline.productName" type="text" placeholder="请输入商品名称"></el-input>
+        </el-form-item>
+        <el-form-item label="商品规格名称">
+          <el-input v-model="formInline.productStandardsName" type="text" placeholder="请输入商品规格名称"></el-input>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="search">查询</el-button>
           <a :href="exportLink" class="btn-link">导出到EXCEL</a>
@@ -26,20 +32,27 @@
          v-loading="loading"
          element-loading-text="拼命加载中">
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column prop="productCode" label="商品编码">
+        <el-table-column prop="productCode" label="商品条码">
         </el-table-column>
-        <el-table-column prop="name" label="商品名称">
+        <el-table-column prop="standard" label="商品规格名称">
         </el-table-column>
-        <el-table-column prop="standard" label="规格名称">
+        <el-table-column prop="id" label="商品编码">
         </el-table-column>
-         <el-table-column prop="stock" label="库存数量">
+         <el-table-column prop="name" label="商品名称">
         </el-table-column>
+        <el-table-column prop="warehouse" label="仓库"></el-table-column>
+        <el-table-column prop="childName" label="二级类型"></el-table-column>
+        <el-table-column prop="parentName" label="一级类型"></el-table-column>
         <el-table-column prop="unit" label="单位">
         </el-table-column>
+        <el-table-column prop="stock" label="数量"></el-table-column>
+        <el-table-column prop="inputRate" label="进项税率"></el-table-column>
         <el-table-column prop="buyingPrice" label="进货价">
         </el-table-column>
+        <el-table-column prop="totalBuyingPrice" label="进货总价"></el-table-column>
         <el-table-column prop="sellingPrice" label="销售价">
         </el-table-column>
+
       </el-table>
     </div>
     <pager :current-page="currentPage" :total-count="totalCount" v-on:handleCurrentChange="getListData"></pager>
@@ -52,13 +65,15 @@
   export default {
     created () {
       this.getListData(this.currentPage)
-      this.getTypes()
+      // this.getTypes()
     },
     data () {
       return {
         formInline: {
           typeId: '',
-          productCode: ''
+          productCode: '',
+          productStandardsName: '',
+          productName: ''
         },
         storeId: JSON.parse(sessionStorage.getItem('store')).k,
         tableData: [],

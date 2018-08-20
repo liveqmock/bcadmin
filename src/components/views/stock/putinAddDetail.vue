@@ -9,9 +9,14 @@
     </div>
     <div class="search-wrapper">
       <el-form :inline="true" class="demo-form-inline">
-        <el-form-item label="单号:">
+        <el-form-item label="入库单号:">
           <p class="text" v-if="tableData.stockRecord">
             {{ tableData.stockRecord.orderNumber }}
+          </p>
+        </el-form-item>
+        <el-form-item label="入库方式:">
+          <p class="text" v-if="tableData.stockRecord">
+            {{ tableData.stockRecord.type }}
           </p>
         </el-form-item>
         <el-form-item label="入库日期:">
@@ -19,8 +24,18 @@
             {{ tableData.stockRecord.time }}
           </p>
         </el-form-item>
+        <el-form-item label="经办人:">
+          <p class="text" v-if="tableData.stockRecord">
+            {{ tableData.stockRecord.orderNumber }}
+          </p>
+        </el-form-item>
+        <el-form-item label="仓库名称:">
+          <p class="text" v-if="tableData.stockRecord">
+            {{ tableData.stockRecord.werehouses }}
+          </p>
+        </el-form-item>
         <el-form-item>
-          <a :href="exportLink" class="btn-link">导出到EXCEL</a>
+          <a :href="exportLink" class="btn-link">导出入库验收单</a>
         </el-form-item>
       </el-form>
     </div>
@@ -28,38 +43,66 @@
          v-loading="loading"
          element-loading-text="拼命加载中">
       <el-table :data="tableData.stockDetailDtoList" border style="width: 100%">
+        <el-table-column prop="id" label="商品编号">
+        </el-table-column>
         <el-table-column prop="productCode" label="商品编码">
+        </el-table-column>
+        <el-table-column prop="standard" label="商品规格名称">
         </el-table-column>
         <el-table-column prop="productName" label="商品名称">
         </el-table-column>
-        <el-table-column prop="standard" label="商品规格">
+        <el-table-column prop="childName" label="二级类型">
         </el-table-column>
-        <el-table-column prop="typeName" label="类型">
-        </el-table-column>
-        <el-table-column prop="number" label="数量">
+        <el-table-column prop="parentName" label="一级类型">
         </el-table-column>
         <el-table-column prop="unit" label="单位">
         </el-table-column>
+        <el-table-column prop="number" label="数量">
+        </el-table-column>
+        <el-table-column prop="expirationDate" label="过期日期">
+        </el-table-column>
+
+        <el-table-column prop="werehouse" label="仓库">
+        </el-table-column>
+        <el-table-column prop="buyingPrice" label="进货价">
+        </el-table-column>
+        <el-table-column prop="inputRate" label="进项税率">
+        </el-table-column>
+        <el-table-column prop="totalBuyingPrice" label="进价小计">
+        </el-table-column>
+        <el-table-column prop="ratePrice" label="税费单价">
+        </el-table-column>
+        <el-table-column prop="totalRatePrice" label="税费总价">
+        </el-table-column>
+        <el-table-column prop="withoutRatePrice" label="不含税单价">
+        </el-table-column>
+        <el-table-column prop="totalWithoutRatePrice" label="不含税总价">
+        </el-table-column>
+        <el-table-column prop="supplierId" label="供应商编号">
+        </el-table-column>
         <el-table-column prop="supplierName" label="供应商名称">
+        </el-table-column>
+        <el-table-column prop="remark" label="备注">
         </el-table-column>
       </el-table>
     </div>
     <!-- 分页 -->
     <!--<pager :current-page="currentPage" :total-count="totalCount" v-on:handleCurrentChange="getListData"></pager>-->
     <el-row class="putin-footer" v-if="tableData.stockRecord">
-      <el-col :span="2" class="label">填写备注:</el-col>
-      <el-col :span="10" class="text">
-        {{ tableData.stockRecord.remarks }}
+      <el-col class="text">
+        备注：{{ tableData.stockRecord.remarks }}
       </el-col>
     </el-row>
     <el-row class="putin-footer" v-if="tableData.stockRecord">
-      <el-col :span="2" class="label">经办人:</el-col>
-      <el-col :span="10" class="text">
-        {{ tableData.stockRecord.operator }}
+      <el-col style="width: 300px; white-space: nowrap; overflow: hidden;text-overflow: ellipsis" class="text">
+        附件：{{ tableData.stockRecord.fileName ? tableData.stockRecord.fileName : '无' }}
+      </el-col>
+      <el-col :span="2" class="label" v-show="tableData.stockRecord.fileName">
+        <el-button tableData.stockRecord.fileName size="small" type="primary" @click="download(tableData.stockRecord.fileUrl)">下载附件</el-button>
       </el-col>
     </el-row>
     <div class="putin-btns">
-      <el-button @click="$router.go('-1')">确 定</el-button>
+      <el-button @click="$router.go('-1')">返 回</el-button>
     </div>
   </div>
 </template>
@@ -94,6 +137,9 @@
       Pager: Pager
     },
     methods: {
+      download (url) {
+        window.open(url, '_blank')
+      },
       search () {
         if (this.currentPage > 1) {
           this.currentPage = 1
@@ -137,7 +183,7 @@
   }
   .text{
     line-height: 36px;
-    color: #666;
+    color: #333;
   }
   .btn-link{
     display: inline-block;

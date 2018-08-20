@@ -8,13 +8,33 @@
     </div>
     <div class="search-wrapper">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
-        <el-form-item>
-          <el-date-picker v-model="formInline.startTime" type="date" placeholder="开始时间"></el-date-picker>
+        <el-form-item label="盘点任务编码">
+          <el-input v-model="formInline.taskCode"></el-input>
+        </el-form-item>
+        <el-form-item label="盘点任务名称">
+          <el-input v-model="formInline.taskName"></el-input>
+        </el-form-item>
+        <el-form-item label="时间">
+          <el-date-picker v-model="formInline.startTime" type="date" placeholder="请输入盘点开始日期"></el-date-picker>
           至
-          <el-date-picker v-model="formInline.endTime" type="date" placeholder="结束时间"></el-date-picker>
+          <el-date-picker v-model="formInline.endTime" type="date" placeholder="请输入盘点结束日期"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="经办人">
+          <el-input v-model="formInline.personLiable"></el-input>
+        </el-form-item>
+        <el-form-item label="仓库">
+          <el-input v-model="formInline.wareHouse"></el-input>
+        </el-form-item>
+        <el-form-item label="状态">
+          <el-select v-model="formInline.taskStatus">
+            <el-option label="草稿" value="草稿"></el-option>
+            <el-option label="已启动" value="已启动"></el-option>
+            <el-option label="已完成" value="已完成"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="search">查询</el-button>
+          <el-button type="primary" @click="createTask">新建盘点任务</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -22,31 +42,42 @@
          v-loading="loading"
          element-loading-text="拼命加载中">
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column label="编号" prop="productDetailId">
+        <el-table-column label="任务创建日期" prop="createTime">
         </el-table-column>
-        <el-table-column label="商品名称" prop="productName">
+        <el-table-column label="盘点任务编码" prop="taskCode">
         </el-table-column>
-        <el-table-column label="商品规格" prop="standard">
+        <el-table-column label="盘点任务名称" prop="taskName">
         </el-table-column>
-        <el-table-column label="入库数" prop="storage">
+        <el-table-column label="盘点分店" prop="storeName">
         </el-table-column>
-        <el-table-column label="入库单价" prop="storagePrice" >
+        <el-table-column label="仓库" prop="warehouse" >
         </el-table-column>
-        <el-table-column label="出库数" prop="library">
+        <el-table-column label="经办人" prop="personLiable">
         </el-table-column>
-        <el-table-column label="出库单价" prop="libraryPrice">
+        <el-table-column label="盘点开始时间" prop="startTime">
         </el-table-column>
-        <el-table-column label="现存数量" prop="stock">
+        <el-table-column label="盘点结束时间" prop="endTime">
         </el-table-column>
-        <!--<el-table-column label="销量" prop="sale">
+        <el-table-column label="状态" prop="taskStatus">
         </el-table-column>
-        <el-table-column label="备注" prop="note">
+        <el-table-column label="完成日期" prop="finishTime">
         </el-table-column>
-        <el-table-column label="操作" width="100">
+        <el-table-column label="操作" width="180">
           <template scope="scope">
-            <el-button type="info" size="small" @click="goDetail(scope.row.id)">查看明细</el-button>
+            <div class="s-line">
+              <el-button :disabled="scope.row.taskStatus !== '草稿'" type="info" size="small" @click="taskEdit(scope.row.id)">修改</el-button>
+              <el-button type="info" size="small" @click="delTask(scope.row.id)">删除</el-button>
+            </div>
+            <div class="s-line">
+              <el-button type="info" size="small" @click="checkTask(scope.row.id)">查看总库存</el-button>
+              <el-button :disabled="scope.row.taskStatus === '草稿'" type="info" size="small" @click="targetGoods(scope.row.id)">目标商品</el-button>
+            </div>
+            <div class="s-line">
+              <el-button :disabled="scope.row.taskStatus !== '已启用'" type="info" size="small" @click="inventoryAdd(scope.row)">盘点</el-button>
+              <el-button :disabled="scope.row.taskStatus !== '已完成'" type="info" size="small" @click="exportReport(scope.row.id)">盘点报告</el-button>
+            </div>
           </template>
-        </el-table-column>-->
+        </el-table-column>
       </el-table>
     </div>
     <pager :current-page="currentPage" :total-count="totalCount" v-on:handleCurrentChange="getListData"></pager>
@@ -66,7 +97,11 @@
         formInline: {
           startTime: '',
           endTime: '',
-          type: ''
+          personLiable: '',
+          taskCode: '',
+          taskName: '',
+          taskStatus: '',
+          wareHouse: ''
         },
         storeId: JSON.parse(sessionStorage.getItem('store')).k,
         tableData: [],
@@ -97,6 +132,59 @@
       Pager: Pager
     },
     methods: {
+      exportReport (id) {
+        let url = URL.api_name + 'merchandiseapi/taskInventory/search/export.do?taskId=' + id +
+          '&authtoken=' + JSON.parse(sessionStorage.getItem('userInfo')).sessionId
+        window.open(url, '_blank')
+      },
+      inventoryAdd (item) {
+        this.$router.push({
+          path: '/inventoryAdd',
+          query: {
+            startTime: item.startTime,
+            endTime: item.endTime,
+            taskId: item.id
+          }
+        })
+      },
+      taskEdit (taskId) {
+        this.$router.push({
+          path: '/taskEdit/' + taskId
+        })
+      },
+      checkTask (taskId) {
+        this.$router.push({
+          path: '/checkAddStock/' + taskId
+        })
+      },
+      targetGoods (taskId) {
+        this.$router.push({
+          path: '/targetGoodsDetail/' + taskId
+        })
+      },
+      delTask (id) {
+        this.$confirm('确定删除此盘点任务？', '提示', {
+          confirmButton: '确定',
+          cancelButton: '取消',
+          type: 'warning'
+        }).then(() => {
+          axios.post(URL.api_name + 'merchandiseapi/task/delete.do', {
+            id: id
+          }).then(res => {
+            if (res.data.status === 'success') {
+              this.$succssMsg(res.data.message)
+              this.getListData(this.currentPage)
+            } else {
+              this.$errMsg(res.data.message)
+            }
+          })
+        }).catch(() => {})
+      },
+      createTask () {
+        this.$router.push({
+          path: '/taskAdd'
+        })
+      },
       search () {
         if (this.currentPage > 1) {
           this.currentPage = 1
@@ -112,14 +200,17 @@
       getListData (num) {
         var that = this
         that.loading = true
-        axios.get(URL.api_name + 'merchandiseapi/stock/product/stock/inventory.do', {
-          params: {
-            storeId: that.storeId,
-            pageSize: 15,
-            pageNum: num,
-            startTime: this.startTimeA,
-            endTime: this.endTimeA
-          }
+        axios.post(URL.api_name + 'merchandiseapi/task/search.do', {
+          storeId: that.storeId,
+          pageSize: 15,
+          pageNum: num,
+          startTime: this.startTimeA,
+          endTime: this.endTimeA,
+          personLiable: this.formInline.personLiable,
+          taskCode: this.formInline.taskCode,
+          taskName: this.formInline.taskName,
+          taskStatus: this.formInline.taskStatus,
+          wareHouse: this.formInline.wareHouse
         }).then(function (respose) {
           let data = respose.data
           that.tableData = data.data.list
@@ -149,4 +240,10 @@
   }
 </script>
 <style lang="less" scoped>
+  .s-line{
+    display: flex;
+    justify-content: space-between;
+    height: 40px;
+    align-items: center;
+  }
 </style>

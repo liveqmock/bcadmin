@@ -53,7 +53,7 @@
                 </el-table-column>
                 <el-table-column label="销售价">
                   <template scope="scope">
-                    <span>{{ scope.row.sellingPrice }}</span>
+                    {{scope.row.sellingPrice}}
                   </template>
                 </el-table-column>
                 <el-table-column label="操作">
@@ -96,39 +96,56 @@
       <el-form :model="standard"
                label-width="100px"
                ref="standard"
+               :close-on-click-modal="false"
                :rules="standardRules">
         <el-form-item label="条码" prop="productCode">
-          <el-col :span="16">
+          <el-col>
             <el-input v-model="standard.productCode"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="规格名称" prop="standard">
-          <el-col :span="16">
+          <el-col>
             <el-input v-model="standard.standard"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="进货价" prop="buyingPrice">
-          <el-col :span="16">
+          <el-col>
             <el-input v-model.number="standard.buyingPrice" auto-complete="off"></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item label="出售价" prop="sellingPrice">
-          <el-col :span="16">
-            <el-input v-model.number="standard.sellingPrice"></el-input>
+        <el-form-item label="进项税率" prop="inputRate">
+          <el-col>
+            <el-input auto-complete="off" v-model="standard.inputRate"></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item label="折扣" prop="discount">
-          <el-col :span="16">
-            <el-input v-model.number="standard.discount"></el-input>
+        <el-form-item label="建议零售价" prop="sellingPrice">
+          <el-col>
+            <el-input v-model.number="standard.sellingPrice" auto-complete="off"></el-input>
           </el-col>
         </el-form-item>
+        <el-row>
+          <el-radio v-model="standard.useType" :label="1" class="before-label">&nbsp;</el-radio>
+          <el-form-item label="实售价">
+            <el-col>
+              <el-input v-model.number="standard.price" :disabled="standard.useType !== 1"></el-input>
+            </el-col>
+          </el-form-item>
+        </el-row>
+        <el-row>
+          <el-radio v-model="standard.useType" :label="2" class="before-label">&nbsp;</el-radio>
+          <el-form-item label="折扣" prop="discount">
+            <el-col>
+              <el-input v-model.number="standard.discount" :disabled="standard.useType !== 2"></el-input>
+            </el-col>
+          </el-form-item>
+        </el-row>
         <el-form-item label="商品税率" prop="taxRate">
-          <el-col :span="16">
+          <el-col>
             <el-input v-model.number="standard.taxRate"></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item label="商品图片:" prop="picture">
-          <el-col :span="16">
+        <el-form-item label="商品图片:">
+          <el-col>
             <el-upload
               class="upload-demo"
               :action="imgUploadUrl"
@@ -146,7 +163,7 @@
           </el-col>
         </el-form-item>
         <el-form-item label="描述" prop="describes">
-          <el-col :span="16">
+          <el-col>
             <el-input v-model="standard.describes" type="textarea"></el-input>
           </el-col>
         </el-form-item>
@@ -210,11 +227,14 @@
             picture: '',
             buyingPrice: '',
             describes: '',
-            discount: 10,
+            discount: '',
             productCode: '',
             sellingPrice: '',
             standard: '',
             taxRate: '',
+            inputRate: '',
+            price: '',
+            useType: 1,
             storeId: JSON.parse(sessionStorage.getItem('store')).k
           },
           formData: {
@@ -255,6 +275,9 @@
           },
           updateType: 0, // 判断添加还是修改规格 0是添加， 1是修改
           standardRules: {
+            inputRate: [
+              { required: true, message: '进项税率不能为空', trigger: 'blur' }
+            ],
             taxRate: [
               { validator: checkRate, trigger: 'blur' }
             ],
@@ -338,6 +361,9 @@
             sellingPrice: '',
             standard: '',
             taxRate: '',
+            inputRate: '',
+            price: '',
+            useType: 1,
             storeId: JSON.parse(sessionStorage.getItem('store')).k
           }
           this.fileList = []
@@ -346,6 +372,20 @@
           this.$refs[name].validate((valid) => {
             if (valid) {
               // 校验成功
+              // 判断是否提交折扣
+              if (this.standard.useType === 2) {
+                this.standard.price = ''
+                if (this.standard.discount === '') {
+                  this.$errMsg('请填写折扣')
+                  return
+                }
+              } else if (this.standard.useType === 1) {
+                this.standard.discount = ''
+                if (this.standard.price === '') {
+                  this.$errMsg('请填写实售价')
+                  return
+                }
+              }
               if (this.updateType === 0) {
                 this.productDetailList.push(this.standard)
               } else if (this.updateType === 1) {
@@ -373,23 +413,6 @@
                   that.$message({
                     type: 'error',
                     message: '兑换积分不能空'
-                  })
-                  return
-                }
-              }
-              // 商品规格所有字段不能为空
-              let reg = /^(\d+\.?\d+)|\d$/
-              for (let p of this.productDetailList) {
-                if (p.sellingPrice === '' || p.standard === '') {
-                  this.$message({
-                    type: 'error',
-                    message: '所有规格字段不能为空'
-                  })
-                  return
-                } else if (!reg.test(p.sellingPrice) || p.sellingPrice < 0) {
-                  this.$message({
-                    type: 'error',
-                    message: '销售价格输入有误'
                   })
                   return
                 }
@@ -507,4 +530,9 @@
     text-align: center;
   }
   .color-gry{ color:#999; font-size:12px; margin-left:10px;}
+  .before-label{
+    position: absolute;
+    top: 15%;
+    left: 3%;
+  }
 </style>
