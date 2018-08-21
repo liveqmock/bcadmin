@@ -68,6 +68,8 @@
             <el-input :min="0" v-model.number="scope.row.realNumber" @change="textChange"></el-input>
           </template>
         </el-table-column>
+        <el-table-column label="实盘金额" prop="realPrice">
+        </el-table-column>
         <el-table-column label="盘盈数量" prop="amountProfit">
         </el-table-column>
         <el-table-column label="盘盈金额" prop="amountPrice">
@@ -131,13 +133,18 @@
           //   sum += obj.realNumber
           // }
           // 计算盘盈盘亏金额与数量
+          obj.realPrice = obj.realNumber * obj.buyingPrice
           if (obj.realNumber > obj.accountsNumber) {
+            // 盘盈
             obj.amountProfit = obj.realNumber - obj.accountsNumber
             obj.deficitNumber = 0
+            obj.deficitPrice = 0
             obj.amountPrice = obj.buyingPrice * obj.amountProfit
           } else {
+            // 盘亏
             obj.deficitNumber = obj.accountsNumber - obj.realNumber
             obj.amountProfit = 0
+            obj.amountPrice = 0
             obj.deficitPrice = obj.buyingPrice * obj.deficitNumber
           }
         }

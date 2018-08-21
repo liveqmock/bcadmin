@@ -185,6 +185,9 @@
   }
 </script>
 <style lang="less" scoped>
+  .red{
+    color: red;
+  }
   .coupon-logo{
     display: inline-block;
     width: 80px;
