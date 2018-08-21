@@ -51,7 +51,7 @@
         </el-table-column>
          <el-table-column label="出库方式">
            <template scope="scope">
-             <span :class="{red: scope.row.closing}">{{scope.row.orderNumber | formatStockType}}</span>
+             <span :class="{red: scope.row.closing}">{{scope.row.type | formatStockType}}</span>
            </template>
         </el-table-column>
         <el-table-column label="领用部门" prop="useDepartment">

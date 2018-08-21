@@ -596,8 +596,8 @@
         for (let i = 0; i < that.checkedData.length; i++) {
           submitList.push({
             itemDefId: that.checkedData[i].id,
-            itemDefName: that.checkedData[i].name,
-            itemType: that.checkedData[i].standard,
+            itemDefName: that.checkedData[i].standard,
+            itemType: that.checkedData[i].type,
             price: that.checkedData[i].nowPrice,
             quantity: that.checkedData[i].number
           })

@@ -185,6 +185,17 @@
         this.getTypeList()
       },
       data () {
+        var checkInputRate = (rule, value, callback) => {
+          if (value !== '' && value !== null) {
+            if (typeof value === 'number' && value >= 0 && value <= 100) {
+              return callback()
+            } else {
+              return callback(new Error('请输入0-100的数字'))
+            }
+          } else {
+            return callback(new Error('进项税率不能为空'))
+          }
+        }
         var checkType = (rule, value, callback) => {
           if (value === '') {
             return callback(new Error('类别不能为空'))
@@ -276,7 +287,7 @@
           updateType: 0, // 判断添加还是修改规格 0是添加， 1是修改
           standardRules: {
             inputRate: [
-              { required: true, message: '进项税率不能为空', trigger: 'blur' }
+              { required: true, validator: checkInputRate, trigger: 'blur' }
             ],
             taxRate: [
               { validator: checkRate, trigger: 'blur' }

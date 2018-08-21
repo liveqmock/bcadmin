@@ -26,7 +26,7 @@
         </el-form-item>
         <el-form-item label="经办人:">
           <p class="text" v-if="tableData.stockRecord">
-            {{ tableData.stockRecord.orderNumber }}
+            {{ tableData.stockRecord.operator }}
           </p>
         </el-form-item>
         <el-form-item label="仓库名称:">

@@ -157,6 +157,7 @@
     color: #fff;
   }
   .el-table .cell{
+    min-height: 30px;
     max-height: 100px;
     overflow-y: auto;
   }

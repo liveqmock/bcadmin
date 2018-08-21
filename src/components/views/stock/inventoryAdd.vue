@@ -37,12 +37,12 @@
                 border style="width: 100%">
         <el-table-column label="商品条码" prop="productCode">
         </el-table-column>
-        <el-table-column label="商品规格名称" prop="standardName">
+        <el-table-column label="商品规格名称" prop="standard">
         </el-table-column>
         <el-table-column label="商品名称" prop="productName">
         </el-table-column>
-        <el-table-column label="商品规格" prop="standard">
-        </el-table-column>
+        <!--<el-table-column label="商品规格" prop="standard">-->
+        <!--</el-table-column>-->
         <el-table-column label="单位" prop="unit">
         </el-table-column>
         <el-table-column label="进项税率" prop="inclusiveTaxRate">

@@ -113,7 +113,7 @@
         </el-form-item>
         <el-form-item label="进项税率" prop="inputRate">
           <el-col :span="16">
-            <el-input v-model="standard.inputRate" auto-complete="off" :disabled="standard.flag === true"></el-input>
+            <el-input v-model.number="standard.inputRate" auto-complete="off" :disabled="standard.flag === true"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="建议零售价" prop="sellingPrice">
@@ -220,6 +220,17 @@
             return callback()
           }
         }
+        var checkInputRate = (rule, value, callback) => {
+          if (value !== '' && value !== null) {
+            if (typeof value === 'number' && value >= 0 && value <= 100) {
+              return callback()
+            } else {
+              return callback(new Error('请输入0-100的数字'))
+            }
+          } else {
+            return callback(new Error('进项税率不能为空'))
+          }
+        }
         return {
           dialogFormVisible: false,
           standard: {
@@ -276,7 +287,7 @@
           },
           standardRules: {
             inputRate: [
-              { required: true, message: '进项税率不能为空', trigger: 'blur' }
+              { required: true, validator: checkInputRate, trigger: 'blur' }
             ],
             taxRate: [
               { validator: checkRate, trigger: 'blur' }
