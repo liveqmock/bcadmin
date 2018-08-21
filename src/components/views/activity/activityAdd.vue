@@ -104,7 +104,7 @@
               :headers="uploadHeader"
               list-type="picture">
               <el-button size="small" type="primary">点击上传</el-button>
-              <div slot="tip" class="el-upload__tip">仅支持jpeg/jpg/png文件，且不超过2MB(推荐尺寸W1053 x H489px)  上传一张图片时，内页详情图与首页列表图共用。上传两张图片时，图1为内页详情图，图2为首页列表图</div>
+              <div slot="tip" class="el-upload__tip">上传一张图片时，内页详情图与首页列表图共用。上传两张图片时，图1为首页列表横图（推荐尺寸706x220px），图2为内页详情竖图 （推荐尺寸416x568px）</div>
             </el-upload>
           </el-col>
       </el-form-item>
