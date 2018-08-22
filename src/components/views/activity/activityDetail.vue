@@ -17,6 +17,7 @@
           {{ formData.content }}
         </el-col>
       </el-form-item>
+      <el-form-item lable="活动类型："></el-form-item>
       <el-form-item label="活动人数：">
         <el-col :span="9">
           {{ formData.countLimit }}
@@ -61,12 +62,27 @@
           {{ formData.isOccupy === 1 ? '占用' : '不占用' }}
         </el-col>
       </el-form-item>
+      <el-form-item label="过闸次数：">
+        <el-col :span="12">
+
+        </el-col>
+      </el-form-item>
+      <el-form-item label="过闸描述：">
+        <el-col :span="12">
+
+        </el-col>
+      </el-form-item>
       <el-form-item label="活动图片：" >
         <el-col :span="12">
           <div class="img-list" v-for="(img, i) in formData.eventPictures">
             <img :src="img.pictureUrl">
           </div>
           </el-col>
+      </el-form-item>
+      <el-form-item label="活动报名凭证：">
+        <el-col :span="12">
+          {{formData.voucher}}
+        </el-col>
       </el-form-item>
       <el-form-item label="活动图文详情：">
         <el-col :span="12">
@@ -97,6 +113,25 @@
             </el-col>
           </el-row>
         </el-checkbox-group>
+      </el-form-item>
+      <el-form-item label="其他配置:">
+        <el-row>
+          <el-col :span="20">
+            <el-table
+              :data="formData.eventCategories"
+              border>
+              <el-table-column label="品类名称" prop="categoryName"></el-table-column>
+              <el-table-column label="原价" prop="originalPrice">
+              </el-table-column>
+              <el-table-column label="出售价" prop="categoryPrice">
+              </el-table-column>
+              <el-table-column label="数量" prop="categoryNumber">
+              </el-table-column>
+              <el-table-column label="描述" prop="categoryRemarks">
+              </el-table-column>
+            </el-table>
+          </el-col>
+        </el-row>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" :loading="isLoading" @click="updateActivity()">

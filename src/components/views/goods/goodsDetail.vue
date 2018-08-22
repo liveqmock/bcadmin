@@ -41,7 +41,7 @@
                       <el-form-item label="规格名称：">
                         <span>{{props.row.standard}}</span>
                       </el-form-item>
-                      <el-form-item label="规格编码：">
+                      <el-form-item label="商品条码：">
                         <span>{{props.row.productCode}}</span>
                       </el-form-item>
                       <el-form-item label="进货价：">
@@ -70,7 +70,7 @@
                     </el-form>
                   </template>
                 </el-table-column>
-                <el-table-column label="编码" prop="productCode">
+                <el-table-column label="商品条码" prop="productCode">
                 </el-table-column>
                 <el-table-column label="商品规格名称" prop="standard">
                 </el-table-column>

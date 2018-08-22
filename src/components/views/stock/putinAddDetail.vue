@@ -43,9 +43,9 @@
          v-loading="loading"
          element-loading-text="拼命加载中">
       <el-table :data="tableData.stockDetailDtoList" border style="width: 100%">
-        <el-table-column prop="id" label="商品编号">
+        <el-table-column prop="productId" label="商品编号">
         </el-table-column>
-        <el-table-column prop="productCode" label="商品编码">
+        <el-table-column prop="productCode" label="规格编码">
         </el-table-column>
         <el-table-column prop="standard" label="商品规格名称">
         </el-table-column>

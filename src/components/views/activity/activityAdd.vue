@@ -17,6 +17,7 @@
           <el-input type="textarea" v-model="formData.content"></el-input>
         </el-col>
       </el-form-item>
+      <el-form-item lable="活动类型："></el-form-item>
       <el-form-item label="活动人数：" required prop="countLimit">
         <el-col :span="9">
           <el-input type="number" v-model.number="formData.countLimit"></el-input>
@@ -90,6 +91,16 @@
           </el-radio-group>
         </el-col>
       </el-form-item>
+      <el-form-item label="过闸次数：">
+        <el-col :span="12">
+          <el-input type="text"></el-input>
+        </el-col>
+      </el-form-item>
+      <el-form-item label="过闸描述：">
+        <el-col :span="12">
+          <el-input type="textarea" :row="4"></el-input>
+        </el-col>
+      </el-form-item>
       <el-form-item label="活动图片：" required>
         <el-col :span="12">
           <el-upload
@@ -108,13 +119,18 @@
             </el-upload>
           </el-col>
       </el-form-item>
+      <el-form-item label="活动报名凭证：">
+        <el-col :span="12">
+          <el-input type="text" v-model="formData.voucher"></el-input>
+        </el-col>
+      </el-form-item>
       <el-form-item label="活动图文详情：">
         <el-col :span="18">
           <p class="tips">图片推荐尺寸(W1053 x H489px)</p>
           <quill-editor ref="myTextEditor" v-model="formData.imageTextIntroduction"></quill-editor>
         </el-col>
       </el-form-item>
-      <el-form-item label="购买须知：">
+      <el-form-item label="活动须知：">
         <el-col :span="12">
           <el-input type="textarea" :rows="6" v-model="formData.purchaseNotice"></el-input>
         </el-col>
@@ -135,14 +151,44 @@
               </el-checkbox>
             </el-col>
           </el-row>
-          <!--<el-row>
+          <el-row>
             <el-col :span="3">
               <el-checkbox label="3">抵消课程
                 <el-input v-model.number="formData.signCourse"></el-input>　节
               </el-checkbox>
             </el-col>
-          </el-row>-->
+          </el-row>
         </el-checkbox-group>
+      </el-form-item>
+      <el-form-item label="其他配置:">
+        <el-row>
+          <el-col :span="12">
+            <el-button type="info" icon="plus" size="small" @click="addStandard"></el-button>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="20">
+            <el-table
+              :data="productDetailList"
+              border>
+              <el-table-column label="品类名称" prop="categoryName"></el-table-column>
+              <el-table-column label="原价" prop="originalPrice">
+              </el-table-column>
+              <el-table-column label="出售价" prop="categoryPrice">
+              </el-table-column>
+              <el-table-column label="数量" prop="categoryNumber">
+              </el-table-column>
+              <el-table-column label="描述" prop="categoryRemarks">
+              </el-table-column>
+              <el-table-column label="操作">
+                <template scope="scope">
+                  <el-button size="small" type="primary" @click="updateStandard(scope.row)">修改</el-button>
+                  <el-button size="small" type="danger" @click="delStandard(scope.row)">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-col>
+        </el-row>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" :loading="isLoading" @click="addActivity('formData')">
@@ -151,6 +197,42 @@
         <el-button @click="$router.go('-1')">取消</el-button>
       </el-form-item>
     </el-form>
+    <el-dialog title="添加规格" :visible.sync="dialogFormVisible" @close="clearStandard">
+      <el-form :model="standard"
+               label-width="100px"
+               ref="standard"
+               :close-on-click-modal="false">
+        <el-form-item label="品类名称：" prop="categoryName">
+          <el-col>
+            <el-input v-model="standard.categoryName"></el-input>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="原价：" prop="originalPrice">
+          <el-col>
+            <el-input v-model.number="standard.originalPrice"></el-input>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="出售价：" prop="categoryPrice">
+          <el-col>
+            <el-input v-model.number="standard.categoryPrice" auto-complete="off"></el-input>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="数量：" prop="categoryNumber">
+          <el-col>
+            <el-input auto-complete="off" v-model.number="standard.categoryNumber"></el-input>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="描述：" prop="categoryRemarks">
+          <el-col>
+            <el-input v-model.number="standard.categoryRemarks" auto-complete="off"></el-input>
+          </el-col>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="saveStandard('standard')">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -158,6 +240,7 @@ import axios from 'axios'
 import URL from '@/common/js/URL.js'
 import { quillEditor } from 'vue-quill-editor'
 import moment from 'moment'
+let tempStandardIndex
 export default {
   created () {
     this.getProvince()
@@ -177,6 +260,16 @@ export default {
           return time.getTime() <= Date.now()
         }
       },
+      productDetailList: [],
+      updateType: 0, // 判断添加还是修改规格 0是添加， 1是修改
+      dialogFormVisible: false,
+      standard: {
+        categoryName: '',
+        originalPrice: '',
+        categoryPrice: '',
+        categoryNumber: '',
+        categoryRemarks: ''
+      },
       isLoading: false,
       formData: {
         province: '',
@@ -194,7 +287,9 @@ export default {
         imageTextIntroduction: '',
         signMoney: 0,
         signPoint: 0,
-        signCourse: 0
+        signCourse: 0,
+        voucher: '',
+        purchaseNotice: ''
       },
       signTypes: ['1'],
       storeId: JSON.parse(sessionStorage.getItem('store')).k,
@@ -242,6 +337,45 @@ export default {
     }
   },
   methods: {
+    clearStandard () {
+      this.dialogFormVisible = false
+      // 初始化规格表单数据
+      this.standard = {
+        categoryName: '',
+        originalPrice: '',
+        categoryPrice: '',
+        categoryNumber: '',
+        categoryRemarks: ''
+      }
+    },
+    saveStandard (name) {
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          // 校验成功
+          if (this.updateType === 0) {
+            this.productDetailList.push(this.standard)
+          } else if (this.updateType === 1) {
+            this.productDetailList.splice(tempStandardIndex, 1, this.standard)
+          }
+          this.clearStandard()
+        }
+      })
+    },
+    updateStandard (item) {
+      tempStandardIndex = this.productDetailList.indexOf(item)
+      this.standard = item
+      this.dialogFormVisible = true
+      this.updateType = 1
+    },
+    addStandard () {
+      this.dialogFormVisible = true
+      this.updateType = 0
+    },
+    delStandard (item) {
+      if (this.productDetailList.indexOf(item) > -1) {
+        this.productDetailList.splice(this.productDetailList.indexOf(item), 1)
+      }
+    },
     getProvince () {
       let that = this
       axios.get(URL.api_name + '/backofficeapi/store/initialPosition.do', {
@@ -462,7 +596,9 @@ export default {
             imageTextIntroduction: that.formData.imageTextIntroduction,
             signMoney: that.formData.signMoney,
             signPoint: that.formData.signPoint,
-            signCourse: that.formData.signCourse
+            signCourse: that.formData.signCourse,
+            eventCategories: that.productDetailList,
+            voucher: that.formData.voucher
           }).then((res) => {
             if (res.data.status === 'success') {
               that.$message({

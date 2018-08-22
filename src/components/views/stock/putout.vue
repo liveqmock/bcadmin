@@ -39,7 +39,7 @@
          v-loading="loading"
          element-loading-text="拼命加载中">
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column label="编号" width="100" prop="id">
+        <el-table-column label="商品编号" width="100" prop="id">
           <template scope="scope">
             <span :class="{red: scope.row.closing}">{{scope.row.id}}</span>
           </template>

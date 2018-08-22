@@ -160,7 +160,7 @@
             </el-upload>
           </el-col>
         </el-form-item>
-        <el-form-item label="描述" prop="describes">
+        <el-form-item label="描述">
           <el-col :span="16">
             <el-input v-model="standard.describes" type="textarea"></el-input>
           </el-col>

@@ -37,7 +37,7 @@
          v-loading="loading"
          element-loading-text="拼命加载中">
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column label="编号" width="100" prop="id">
+        <el-table-column label="商品编号" width="100" prop="id">
         </el-table-column>
         <el-table-column prop="orderNumber" label="入库单号">
         </el-table-column>
