@@ -5,13 +5,14 @@
         <el-breadcrumb-item><i class="el-icon-date"></i> 库存管理</el-breadcrumb-item>
         <el-breadcrumb-item>出库</el-breadcrumb-item>
         <el-breadcrumb-item>出库明细</el-breadcrumb-item>
+        <el-breadcrumb-item>查看明细</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="formData">
       <el-form label-width="150px">
         <el-row>
           <el-col :span="10">
-            <el-form-item label="出库单号：">{{data.id}}</el-form-item>
+            <el-form-item label="出库单号：">{{data.orderNumber}}</el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="进项税率：">{{data.inputRate}}%</el-form-item>
@@ -67,7 +68,7 @@
         </el-row>
         <el-row>
           <el-col :span="10">
-            <el-form-item label="商品编码：">{{data.productId}}</el-form-item>
+            <el-form-item label="商品编号：">{{data.productId}}</el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="进项税费合计：">{{data.totalInputRatePrice}}</el-form-item>
@@ -82,21 +83,24 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="10">
-            <el-form-item label="供应商编号：">{{data.supplierId}}</el-form-item>
-          </el-col>
+          <!--<el-col :span="10">-->
+            <!--<el-form-item label="供应商编号：">{{data.supplierId}}</el-form-item>-->
+          <!--</el-col>-->
           <el-col :span="10">
             <el-form-item label="实付金额：">{{data.totalPaid}}</el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="10">
-            <el-form-item label="供应商名称：">{{data.supplierName}}</el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="不含税收入：">{{data.withoutRateProfit}}</el-form-item>
           </el-col>
         </el-row>
+        <!--<el-row>-->
+          <!--<el-col :span="10">-->
+            <!--<el-form-item label="供应商名称：">{{data.supplierName}}</el-form-item>-->
+          <!--</el-col>-->
+          <!--<el-col :span="10">-->
+            <!--<el-form-item label="不含税收入：">{{data.withoutRateProfit}}</el-form-item>-->
+          <!--</el-col>-->
+        <!--</el-row>-->
         <el-row>
           <el-col :span="10">
             <el-form-item label="二级类型：">{{data.childName}}</el-form-item>

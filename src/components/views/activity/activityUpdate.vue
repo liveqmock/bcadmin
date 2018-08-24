@@ -256,6 +256,7 @@ export default {
       }
     }
     return {
+      delType: [],
       productDetailList: [],
       updateType: 0, // 判断添加还是修改规格 0是添加， 1是修改
       dialogFormVisible: false,
@@ -375,6 +376,10 @@ export default {
       this.updateType = 0
     },
     delStandard (item) {
+      if (item.isdetel !== undefined) {
+        item.isdetel = true
+        this.delType.push(item)
+      }
       if (this.productDetailList.indexOf(item) > -1) {
         this.productDetailList.splice(this.productDetailList.indexOf(item), 1)
       }
@@ -653,7 +658,7 @@ export default {
               signPoint: that.formData.signPoint,
               signCourse: that.formData.signCourse,
               purchaseNotice: that.formData.purchaseNotice,
-              eventCategories: that.productDetailList,
+              eventCategories: that.productDetailList.concat(this.delType),
               voucher: that.formData.voucher
             }).then((res) => {
               if (res.data.status === 'success') {

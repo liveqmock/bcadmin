@@ -33,6 +33,7 @@
          v-loading="loading"
          element-loading-text="拼命加载中">
       <el-table :data="data.inventories"
+                :summary-method="getSummaries"
                 show-summary
                 border style="width: 100%">
         <el-table-column label="商品条码" prop="productCode">
@@ -104,6 +105,7 @@
   import axios from 'axios'
   import URL from '@/common/js/URL.js'
   const _ = require('lodash')
+  const noCalPer = ['inclusiveTaxRate', 'buyingPrice', 'exclusiveTaxPrice', 'lastBalanceAmount', 'inputAmount', 'outputAmount']
   export default {
     name: 'CheckAddStock',
     created () {
@@ -120,6 +122,37 @@
       }
     },
     methods: {
+      getSummaries (params) {
+        const {columns, data} = params
+        const sums = []
+        columns.forEach((column, index) => {
+          if (index === 0) {
+            sums[index] = '总价'
+            return
+          }
+          const values = data.map(item => {
+            if (noCalPer.indexOf(column.property) > -1) {
+              return String(item[column.property]) + 'x'
+            } else {
+              return Number(item[column.property])
+            }
+          })
+          if (!values.every(value => isNaN(value))) {
+            sums[index] = values.reduce((prev, curr) => {
+              const value = Number(curr)
+              if (!isNaN(value)) {
+                return prev + curr
+              } else {
+                return prev
+              }
+            }, 0)
+          } else {
+            sums[index] = ''
+          }
+        })
+
+        return sums
+      },
       textChange () {
         this.deBounceCal()
       },

@@ -222,14 +222,10 @@
           }
         }
         var checkRate = (rule, value, callback) => {
-          if (value !== '') {
-            if (typeof value === 'number' && value >= 0 && value <= 100) {
-              return callback()
-            } else {
-              return callback(new Error('请输入0-100的数字'))
-            }
-          } else {
+          if (typeof value === 'number' && value >= 0 && value <= 100) {
             return callback()
+          } else {
+            return callback(new Error('请输入0-100的数字'))
           }
         }
         return {
@@ -290,7 +286,7 @@
               { required: true, validator: checkInputRate, trigger: 'blur' }
             ],
             taxRate: [
-              { validator: checkRate, trigger: 'blur' }
+              { required: true, validator: checkRate, trigger: 'blur' }
             ],
             discount: [
               { validator: checkDiscount, trigger: 'blur' }

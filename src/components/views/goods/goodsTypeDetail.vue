@@ -27,7 +27,7 @@
             {{ formData.represent }}
           </el-col>
         </el-form-item>
-        <el-form-item label="描述:">
+        <el-form-item label="备注:">
           <el-col :span="12">
             {{ formData.remarks }}
           </el-col>

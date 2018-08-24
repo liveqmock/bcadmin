@@ -11,8 +11,8 @@
         <el-form-item label="商品名称">
           <el-input v-model="formInline.name" placeholder="请输入商品名称"></el-input>
         </el-form-item>
-        <el-form-item label="商品编码">
-          <el-input @keyup.enter.native="searchCode(formInline.productCode)" v-model="formInline.productCode" placeholder="请输入商品编码"></el-input>
+        <el-form-item label="商品条码">
+          <el-input @keyup.enter.native="searchCode(formInline.productCode)" v-model="formInline.productCode" placeholder="请输入商品条码"></el-input>
         </el-form-item>
         <el-form-item label="规格名称">
           <el-input v-model="formInline.standard" placeholder="请输入规格名称..."></el-input>
@@ -26,7 +26,7 @@
          v-loading="loading"
          element-loading-text="拼命加载中">
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column prop="productCode" label="商品编号">
+        <el-table-column prop="productCode" label="商品条码">
         </el-table-column>
         <el-table-column prop="name" label="商品名称">
         </el-table-column>

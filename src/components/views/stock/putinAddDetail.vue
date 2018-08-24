@@ -60,8 +60,10 @@
         <el-table-column prop="number" label="数量">
         </el-table-column>
         <el-table-column prop="expirationDate" label="过期日期">
+          <template scope="scope">
+            <span :class="{red: scope.row.isClosing}">{{scope.row.expirationDate}}</span>
+          </template>
         </el-table-column>
-
         <el-table-column prop="werehouse" label="仓库">
         </el-table-column>
         <el-table-column prop="buyingPrice" label="进货价">
@@ -80,7 +82,7 @@
         </el-table-column>
         <el-table-column prop="supplierId" label="供应商编号">
         </el-table-column>
-        <el-table-column prop="supplierName" label="供应商名称">
+        <el-table-column prop="remark" label="供应商名称">
         </el-table-column>
         <el-table-column prop="remark" label="备注">
         </el-table-column>
@@ -174,6 +176,9 @@
   }
 </script>
 <style lang="less" scoped>
+  .red{
+    color: red;
+  }
   .coupon-logo{
     display: inline-block;
     width: 80px;

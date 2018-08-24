@@ -32,7 +32,7 @@
           </el-select>
         </el-form-item>-->
         <el-form-item label="入库日期" prop="time">
-          <el-date-picker v-model="stockRecord.time" type="date" disabled placeholder="入库日期"></el-date-picker>
+          <el-date-picker v-model="stockRecord.time" type="datetime" disabled placeholder="入库日期"></el-date-picker>
         </el-form-item>
       </el-form>
     </div>
@@ -193,7 +193,7 @@
         ],
         stockRecord: {
           remarks: '',
-          time: moment().format('YYYY-MM-DD'),
+          time: moment().format('YYYY-MM-DD HH:mm:ss'),
           stockType: 1,
           storeId: JSON.parse(sessionStorage.getItem('store')).k,
           fileName: '',

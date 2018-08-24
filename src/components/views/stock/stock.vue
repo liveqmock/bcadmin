@@ -13,8 +13,8 @@
             <el-option v-for="(t, i) in types" :key="i" :label="t.name" :value="t.id"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="商品编码">
-          <el-input v-model="formInline.productCode" type="text" placeholder="请输入商品编码"></el-input>
+        <el-form-item label="商品条码">
+          <el-input v-model="formInline.productCode" type="text" placeholder="请输入商品条码"></el-input>
         </el-form-item>
         <el-form-item label="商品名称">
           <el-input v-model="formInline.productName" type="text" placeholder="请输入商品名称"></el-input>
@@ -36,7 +36,7 @@
         </el-table-column>
         <el-table-column prop="standard" label="商品规格名称">
         </el-table-column>
-        <el-table-column prop="id" label="商品编码">
+        <el-table-column prop="productId" label="商品编号">
         </el-table-column>
          <el-table-column prop="name" label="商品名称">
         </el-table-column>
@@ -65,7 +65,7 @@
   export default {
     created () {
       this.getListData(this.currentPage)
-      // this.getTypes()
+      this.getTypes()
     },
     data () {
       return {
@@ -99,7 +99,7 @@
       // 获取商品类型
       getTypes () {
         let that = this
-        axios.get(URL.api_name + 'merchandiseapi/product/type/search.do', {
+        axios.get(URL.api_name + 'merchandiseapi/product/type/obtain/zero.do', {
           params: {
             pageNum: 1,
             pageSize: 1000,
@@ -107,7 +107,7 @@
           }
         }).then(res => {
           if (res.data.status === 'success') {
-            that.types = res.data.data.list
+            that.types = res.data.data
           }
         })
       },
@@ -127,7 +127,9 @@
             pageSize: 15,
             pageNum: num,
             productCode: this.formInline.productCode,
-            typeId: this.formInline.typeId
+            typeId: this.formInline.typeId,
+            productName: this.formInline.productName,
+            productStandardsName: this.formInline.productStandardsName
           }
         }).then(function (respose) {
           let data = respose.data

@@ -15,9 +15,9 @@
           <el-input v-model="formInline.taskName"></el-input>
         </el-form-item>
         <el-form-item label="时间">
-          <el-date-picker v-model="formInline.startTime" type="date" placeholder="请输入盘点开始日期"></el-date-picker>
+          <el-date-picker v-model="formInline.startTime" type="datetime" placeholder="请输入盘点开始时间"></el-date-picker>
           至
-          <el-date-picker v-model="formInline.endTime" type="date" placeholder="请输入盘点结束日期"></el-date-picker>
+          <el-date-picker v-model="formInline.endTime" type="datetime" placeholder="请输入盘点结束时间"></el-date-picker>
         </el-form-item>
         <el-form-item label="经办人">
           <el-input v-model="formInline.personLiable"></el-input>

@@ -15,7 +15,7 @@
           {{house}}
         </el-form-item>
         <el-form-item label="出库日期" prop="time">
-          <el-date-picker v-model="stockRecord.time" type="date" disabled placeholder="入库日期"></el-date-picker>
+          <el-date-picker v-model="stockRecord.time" type="datetime" disabled placeholder="入库日期"></el-date-picker>
         </el-form-item>
         <el-form-item label="经办人" required>
           {{operator}}
@@ -241,7 +241,7 @@
         ],
         stockRecord: {
           remarks: '',
-          time: moment().format('YYYY-MM-DD'),
+          time: moment().format('YYYY-MM-DD HH:mm:ss'),
           type: '',
           useDepartment: '',
           stockType: 2,

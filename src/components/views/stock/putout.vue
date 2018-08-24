@@ -39,10 +39,7 @@
          v-loading="loading"
          element-loading-text="拼命加载中">
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column label="商品编号" width="100" prop="id">
-          <template scope="scope">
-            <span :class="{red: scope.row.closing}">{{scope.row.id}}</span>
-          </template>
+        <el-table-column label="编号" width="100" prop="id">
         </el-table-column>
         <el-table-column prop="orderNumber" label="出库单号">
           <template scope="scope">
@@ -51,28 +48,16 @@
         </el-table-column>
          <el-table-column label="出库方式">
            <template scope="scope">
-             <span :class="{red: scope.row.closing}">{{scope.row.type | formatStockType}}</span>
+             {{scope.row.type | formatStockType}}
            </template>
         </el-table-column>
         <el-table-column label="领用部门" prop="useDepartment">
-          <template scope="scope">
-            <span :class="{red: scope.row.closing}">{{scope.row.useDepartment}}</span>
-          </template>
         </el-table-column>
         <el-table-column label="仓库" prop="warehouse">
-          <template scope="scope">
-            <span :class="{red: scope.row.closing}">{{scope.row.warehouse}}</span>
-          </template>
         </el-table-column>
         <el-table-column prop="time" label="出库日期">
-          <template scope="scope">
-            <span :class="{red: scope.row.closing}">{{scope.row.time}}</span>
-          </template>
         </el-table-column>
         <el-table-column prop="operator" label="经办人">
-          <template scope="scope">
-            <span :class="{red: scope.row.closing}">{{scope.row.operator}}</span>
-          </template>
         </el-table-column>
         <el-table-column label="操作" width="120">
           <template scope="scope">

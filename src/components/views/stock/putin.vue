@@ -37,13 +37,16 @@
          v-loading="loading"
          element-loading-text="拼命加载中">
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column label="商品编号" width="100" prop="id">
+        <el-table-column label="编号" width="100" prop="id">
         </el-table-column>
         <el-table-column prop="orderNumber" label="入库单号">
+          <template scope="scope">
+            <span :class="{red: scope.row.closing}">{{scope.row.orderNumber}}</span>
+          </template>
         </el-table-column>
          <el-table-column label="入库方式">
            <template scope="scope">
-             {{ scope.row.type | formatStockType }}
+             {{scope.row.type | formatStockType}}
            </template>
         </el-table-column>
         <el-table-column label="仓库" prop="warehouse">
@@ -76,7 +79,7 @@
         formInline: {
           startTime: '',
           endTime: '',
-          type: 1,
+          type: -1,
           person: '',
           number: ''
         },
@@ -164,6 +167,9 @@
   }
 </script>
 <style lang="less" scoped>
+  .red{
+    color: red;
+  }
   .banner-img{
     width: 80px;
     height: 60px;
