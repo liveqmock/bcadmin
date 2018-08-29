@@ -53,11 +53,6 @@
         </el-table-column>
         <el-table-column prop="parentName" label="一级类型">
         </el-table-column>
-        <el-table-column prop="expirationDate" label="过期日期">
-          <template scope="scope">
-            <span :class="{red: scope.row.isClosing}">{{scope.row.expirationDate}}</span>
-          </template>
-        </el-table-column>
         <el-table-column prop="unit" label="单位">
         </el-table-column>
         <el-table-column prop="number" label="数量">

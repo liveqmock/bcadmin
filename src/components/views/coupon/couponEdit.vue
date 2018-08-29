@@ -49,6 +49,7 @@
               :on-success="handleSuccess"
               :on-error="uporr"
               list-type="picture"
+              :data="{folderName: 'couponmark'}"
               :before-upload="beforeUpload"
               :headers="uploadHeader"
               :file-list="fileList">
@@ -128,7 +129,7 @@
               { validator: checkNumber }
             ]
           },
-          imgUploadUrl: URL.api_name + 'backofficeapi/coupon/mark/upload.do',
+          imgUploadUrl: URL.api_name + URL.fileUploadUrl,
           categoryList: [],
           storeId: JSON.parse(sessionStorage.getItem('store')).k
         }

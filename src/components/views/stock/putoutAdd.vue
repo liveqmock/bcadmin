@@ -178,6 +178,7 @@
           :before-upload="beforeUpload"
           :on-success="handleSuccess"
           :on-error="uporr"
+          :data="{folderName: 'stock'}"
           :headers="uploadHeader"
           :file-list="fileList">
           <el-button size="small" type="primary">添加附件</el-button>
@@ -225,7 +226,7 @@
       return {
         operator: JSON.parse(sessionStorage.getItem('userInfo')).userName,
         house: JSON.parse(sessionStorage.getItem('store')).v + '仓库',
-        imgUploadUrl: URL.api_name + 'merchandiseapi/stock/upload.do',
+        imgUploadUrl: URL.api_name + URL.fileUploadUrl,
         fileList: [],
         departmentList: [],
         putinList: [],

@@ -82,7 +82,7 @@
         </el-table-column>
         <el-table-column prop="supplierId" label="供应商编号">
         </el-table-column>
-        <el-table-column prop="remark" label="供应商名称">
+        <el-table-column prop="supplierName" label="供应商名称">
         </el-table-column>
         <el-table-column prop="remark" label="备注">
         </el-table-column>

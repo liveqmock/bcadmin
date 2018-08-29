@@ -152,6 +152,7 @@
               list-type="picture"
               :before-upload="beforeUpload"
               :on-error="uporr"
+              :data="{folderName: 'product'}"
               :on-success="handleSuccess"
               :headers="uploadHeader"
               :file-list="fileList">
@@ -262,7 +263,7 @@
           childTypeList: [],
           loading: false,
           fileList: [],
-          imgUploadUrl: URL.api_name + 'merchandiseapi/product/upload.do',
+          imgUploadUrl: URL.api_name + URL.fileUploadUrl,
           rules: {
             name: [
               { required: true, message: '商品名称不能为空', trigger: 'blur' },

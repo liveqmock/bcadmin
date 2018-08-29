@@ -106,6 +106,7 @@
               :on-success="handleSuccess"
               :headers="uploadHeader"
               :on-error="uporr"
+              :data="{folderName: 'employee'}"
               list-type="picture"
               :before-upload="beforeUpload"
               :file-list="fileList">
@@ -316,7 +317,7 @@
         employDuty: [],
         courseList: [],
         storeArrList: [],
-        imgUploadUrl: URL.api_name + 'backofficeapi/employee/upload.do'
+        imgUploadUrl: URL.api_name + URL.fileUploadUrl
       }
     },
     computed: {

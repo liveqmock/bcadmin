@@ -36,6 +36,7 @@
               :on-success="upImgSuccess"
               :on-remove="upImgremove"
               :on-error="uporr"
+              :data="{folderName: 'headlines'}"
               :headers="uploadHeader"
               list-type="picture">
               <el-button size="small" type="primary">点击上传</el-button>

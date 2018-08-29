@@ -8,8 +8,14 @@
     </div>
     <div class="search-wrapper">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
+        <el-form-item label="姓名：">
+          <el-input v-model="formInline.name" placeholder="请输入姓名..."></el-input>
+        </el-form-item>
         <el-form-item label="手机号:">
           <el-input type="text" v-model="formInline.mobile" placeholder="请输入会员手机号..."></el-input>
+        </el-form-item>
+        <el-form-item label="订单号：">
+          <el-input v-model="formInline.orderNumber" placeholder="请输入订单号..."></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="search">查询</el-button>
@@ -21,6 +27,14 @@
          v-loading="loading"
          element-loading-text="拼命加载中">
       <el-table :data="tableData" border style="width: 100%">
+        <el-table-column prop="" label="订单编号">
+        </el-table-column>
+        <el-table-column prop="" label="购买时间">
+        </el-table-column>
+        <el-table-column prop="" label="订单总金额">
+        </el-table-column>
+        <el-table-column prop="" label="实付金额">
+        </el-table-column>
         <el-table-column prop="name" label="时段票名称">
         </el-table-column>
         <el-table-column prop="status" label="票实例状态">
@@ -45,6 +59,7 @@
                        size="small"
                        v-show="scope.row.firstUseDate"
                        @click="seeEnterRecord(scope.row.id)">过闸记录</el-button>
+            <el-button type="primary" size="small" @click="$router.push({path: '/setDate/' + scope.row.recordId + '/' + scope.row.endDate})">有效期设定</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -65,7 +80,9 @@
     data () {
       return {
         formInline: {
-          mobile: ''
+          mobile: '',
+          name: '',
+          orderNumber: ''
         },
         tableData: [],
         currentPage: 1,
@@ -132,6 +149,8 @@
             pageSize: this.pageSize,
             pageNum: num,
             mobile: this.formInline.mobile,
+            name: this.formInline.name,
+            orderNumber: this.formInline.orderNumber,
             storeId: JSON.parse(sessionStorage.getItem('store')).k
           }
         }).then(function (respose) {

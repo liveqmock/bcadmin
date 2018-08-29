@@ -43,7 +43,7 @@
         </el-form-item>-->
         <el-form-item prop="address">
           <el-col :span="12">
-            <el-input disabled v-model="formData.address"></el-input>
+            <el-input type="textarea" :rows="3" disabled v-model="formData.address"></el-input>
           </el-col>
         </el-form-item>
       </el-form-item>
@@ -94,12 +94,12 @@
       </el-form-item>
       <el-form-item label="过闸次数：">
         <el-col :span="12">
-          <el-input type="text"></el-input>
+          <el-input v-model="formData.passTimes" type="text"></el-input>
         </el-col>
       </el-form-item>
       <el-form-item label="过闸描述：">
         <el-col :span="12">
-          <el-input type="textarea" :row="4"></el-input>
+          <el-input v-model="formData.description" type="textarea" :row="4"></el-input>
         </el-col>
       </el-form-item>
       <el-form-item label="活动图片：" >
@@ -112,6 +112,7 @@
               :multiple="true"
               :before-upload="beforeUpload"
               :on-error="uporr"
+              :data="{folderName: 'event'}"
               :on-remove="upImgremove"
               list-type="picture">
               <el-button size="small" type="primary">点击上传</el-button>
@@ -377,11 +378,26 @@ export default {
     },
     delStandard (item) {
       if (item.isdetel !== undefined) {
-        item.isdetel = true
-        this.delType.push(item)
-      }
-      if (this.productDetailList.indexOf(item) > -1) {
-        this.productDetailList.splice(this.productDetailList.indexOf(item), 1)
+        axios.get(URL.api_name + 'backofficeapi/information/event/category/delete.do', {
+          params: {
+            id: item.id
+          }
+        }).then(res => {
+          if (res.data.status === 'success') {
+            item.isdetel = true
+            this.delType.push(item)
+            if (this.productDetailList.indexOf(item) > -1) {
+              this.productDetailList.splice(this.productDetailList.indexOf(item), 1)
+            }
+          } else {
+            this.$errMsg(res.data.message)
+          }
+        })
+      } else {
+        // 编辑页面点击+号新添加的规格，删除时不需要进行验证
+        if (this.productDetailList.indexOf(item) > -1) {
+          this.productDetailList.splice(this.productDetailList.indexOf(item), 1)
+        }
       }
     },
     getDetail () {
@@ -659,7 +675,9 @@ export default {
               signCourse: that.formData.signCourse,
               purchaseNotice: that.formData.purchaseNotice,
               eventCategories: that.productDetailList.concat(this.delType),
-              voucher: that.formData.voucher
+              voucher: that.formData.voucher,
+              description: that.formData.description,
+              passTimes: that.formData.passTimes
             }).then((res) => {
               if (res.data.status === 'success') {
                 that.$message({

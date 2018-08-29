@@ -39,6 +39,16 @@
             {{ formData.status }}
           </el-col>
         </el-form-item>
+        <el-form-item label="每天赠送陪同票张数:">
+          <el-col :span="12">
+            {{ formData.freeCompTicket }} 张
+          </el-col>
+        </el-form-item>
+        <el-form-item label="过期提醒:">
+          <el-col :span="12">
+            过期前{{ formData.warningDays }}天
+          </el-col>
+        </el-form-item>
         <el-form-item label="规则:">
           <el-col :span="12">
             {{ formData.description }}

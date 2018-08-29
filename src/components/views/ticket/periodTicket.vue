@@ -41,6 +41,13 @@
           </el-col>
           <el-col :span="2" style="margin-left: 8px;">张</el-col>
         </el-form-item>
+        <el-form-item label="过期提醒：" prop="warningDays">
+          <el-col style="width: 50px;">过期前</el-col>
+          <el-col :span="3">
+            <el-input type="text" v-model.number="formData.warningDays"></el-input>
+          </el-col>
+          <el-col :span="1">天</el-col>
+        </el-form-item>
         <el-form-item label="规则:" prop="description">
           <el-col :span="12">
             <el-input v-model="formData.description" type="textarea" :rows="6"></el-input>
@@ -103,7 +110,8 @@
             storeId: JSON.parse(sessionStorage.getItem('store')).k,
             period: '',
             validity: '',
-            freeCompTicket: ''
+            freeCompTicket: '',
+            warningDays: ''
           },
           loading: false,
           rules: {
@@ -124,6 +132,9 @@
             ],
             freeCompTicket: [
               { validator: Validate.checkInputNumR, trigger: 'blur' }
+            ],
+            warningDays: [
+              { validator: Validate.checkInputNum, trigger: 'blur' }
             ]
           }
         }

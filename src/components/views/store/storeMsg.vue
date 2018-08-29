@@ -78,6 +78,7 @@
                     :on-success="upImgSuccess"
                     :on-remove="upImgremove"
                     :headers="uploadHeader"
+                    :data="{folderName: 'store'}"
                     :on-error="uporr"
                     list-type="picture">
                     <el-button size="small" type="primary">点击上传</el-button>
@@ -190,7 +191,7 @@
           ticketShopNotes: '',
           ticketShopTitle: ''
         },
-        imgUploadUrl: URL.api_name + 'backofficeapi/store/upload.do',
+        imgUploadUrl: URL.api_name + URL.fileUploadUrl,
         isSubmit: false,
         fileList: [],
         startBusinessTimes: [],

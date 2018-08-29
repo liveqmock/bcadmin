@@ -104,6 +104,7 @@
               list-type="picture"
               :on-success="handleSuccess"
               :headers="uploadHeader"
+              :data="{folderName: 'employee'}"
               :before-upload="beforeUpload"
               :file-list="fileList">
               <el-button size="small" type="primary">点击上传</el-button>
@@ -254,7 +255,7 @@
         trueList: [],
         showList: [],
         postList: [],
-        imgUploadUrl: URL.api_name + 'backofficeapi/employee/upload.do',
+        imgUploadUrl: URL.api_name + URL.api_name,
         roleList: [],
         comIds: [],
         coachLevel: [],

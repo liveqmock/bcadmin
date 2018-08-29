@@ -6,7 +6,7 @@ const validate = {
       if (typeof value === 'number' && value >= 0) {
         return callback()
       } else {
-        return callback(new Error('请输入正确的数值'))
+        return callback(new Error('请输入正确的数字'))
       }
     } else {
       return callback()

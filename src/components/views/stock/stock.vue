@@ -10,6 +10,7 @@
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="类型">
           <el-select v-model="formInline.typeId">
+            <el-option label="全部" value=""></el-option>
             <el-option v-for="(t, i) in types" :key="i" :label="t.name" :value="t.id"></el-option>
           </el-select>
         </el-form-item>
@@ -89,7 +90,7 @@
       exportLink () {
         return URL.api_name + 'merchandiseapi/stock/product/stock/export.do?' +
           'productCode=' + this.formInline.productCode + '&typeId=' + this.formInline.typeId +
-          '&storeId=' + this.storeId
+          '&storeId=' + this.storeId + '&productName=' + this.formInline.productName + '&productStandardsName=' + this.formInline.productStandardsName
       }
     },
     components: {

@@ -33,6 +33,7 @@
               list-type="picture"
               :before-upload="beforeUpload"
               :on-error="uporr"
+              :data="{folderName: 'banner'}"
               :on-success="handleSuccess"
               :file-list="fileList">
               <el-button size="small" type="primary">点击上传</el-button>
@@ -80,7 +81,7 @@
           },
           loading: false,
           fileList: [],
-          imgUploadUrl: URL.api_name + 'backofficeapi/information/banner/upload.do',
+          imgUploadUrl: URL.api_name + URL.fileUploadUrl,
           rules: {
             sort: [
               { required: true, validator: checkSort, trigger: 'blur' }

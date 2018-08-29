@@ -111,6 +111,7 @@
               :multiple="true"
               :on-remove="upImgremove"
               :before-upload="beforeUpload"
+              :data="{folderName: 'event'}"
               :on-error="uporr"
               :headers="uploadHeader"
               list-type="picture">
@@ -293,7 +294,7 @@ export default {
       },
       signTypes: ['1'],
       storeId: JSON.parse(sessionStorage.getItem('store')).k,
-      imgUplaodUrl: URL.api_name + 'backofficeapi/information/event/upload.do',
+      imgUplaodUrl: URL.api_name + URL.fileUploadUrl,
       provinces: [],
       citys: [],
       areas: [],

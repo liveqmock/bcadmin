@@ -22,6 +22,7 @@
               :on-remove="handleRemove"
               :on-success="handleSuccess"
               list-type="picture"
+              :data="{folderName: 'course'}"
               :on-error="uporr"
               :before-upload="beforeUpload"
               :headers="uploadHeader"
@@ -195,7 +196,7 @@
           label: '下架',
           id: 2
         }],
-        imgUploadUrl: URL.api_name + 'backofficeapi/course/upload.do',
+        imgUploadUrl: URL.api_name + URL.fileUploadUrl,
         checked: false,
         isLoading: false,
         rules: {

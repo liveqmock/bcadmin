@@ -317,6 +317,15 @@ import SMS from '@/components/views/system/sms'
 import Offline from '@/components/views/system/offline'
 // 添加百度编辑器
 import UEditor from '@/components/views/common/ueditor/ueditor'
+// 时间包有效期设定
+import SetDate from '@/components/views/report/setDate'
+// 缴费类别
+import PaymentType from '@/components/views/payment/paymentType'
+import PaymentTypeAdd from '@/components/views/payment/paymentTypeAdd'
+import PaymentTypeEdit from '@/components/views/payment/paymentTypeEdit'
+import PaymentTypeDetail from '@/components/views/payment/paymentTypeDetail'
+// 活动售卖情况
+import ActivitySellList from '@/components/views/activity/activitySellList'
 Vue.use(Router)
 
 export default new Router({
@@ -1530,6 +1539,36 @@ export default new Router({
       path: '/goodsDetailStock/:gid',
       name: 'GoodsDetailStock',
       component: GoodsDetailStock
+    },
+    {
+      path: '/setDate/:rid/:date',
+      name: 'SetDate',
+      component: SetDate
+    },
+    {
+      path: '/paymentType',
+      name: 'PaymentType',
+      component: PaymentType
+    },
+    {
+      path: '/paymentTypeAdd',
+      name: 'PaymentTypeAdd',
+      component: PaymentTypeAdd
+    },
+    {
+      path: '/paymentTypeEdit/:pid',
+      name: 'PaymentTypeEdit',
+      component: PaymentTypeEdit
+    },
+    {
+      path: '/paymentTypeDetail/:pid',
+      name: 'PaymentTypeDetail',
+      component: PaymentTypeDetail
+    },
+    {
+      path: '/activitySellList/:aid',
+      name: 'ActivitySellList',
+      component: ActivitySellList
     }
   ]
 })

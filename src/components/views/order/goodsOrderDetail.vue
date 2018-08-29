@@ -17,10 +17,10 @@
         </el-form-item>
         <div class="list-item">
           <el-row v-for="(o, i) in order.items" :key="i">
-            <el-form-item label="商品名称：">
+            <el-form-item label="规格名称：">
               {{ o.itemDefName }}
             </el-form-item>
-            <el-form-item label="商品规格：">
+            <el-form-item label="商品类型：">
               {{ o.itemType }}
             </el-form-item>
             <el-form-item label="单价：">

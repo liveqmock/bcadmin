@@ -82,6 +82,7 @@
             <el-button type="info" size="small" @click="update(scope.row.id)">编辑</el-button>
             <el-button type="info" size="small" v-show="scope.row.status != 2" @click="submit(scope.row.id)">上架</el-button>
             <el-button type="danger" size="small" v-show="scope.row.status == 2" @click="cancel(scope.row.id)">下架</el-button>
+            <el-button type="info" size="small" @click="$router.push({path: '/activitySellList/' + scope.row.id})">售卖情况</el-button>
           </template>
         </el-table-column>
       </el-table>

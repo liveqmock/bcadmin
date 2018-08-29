@@ -117,14 +117,14 @@
         if (this.formInline.startTime === '') {
           return ''
         } else {
-          return moment(this.formInline.startTime).format('YYYY-MM-DD')
+          return moment(this.formInline.startTime).format('YYYY-MM-DD HH:mm:ss')
         }
       },
       endTimeA () {
         if (this.formInline.endTime === '') {
           return ''
         } else {
-          return moment(this.formInline.endTime).format('YYYY-MM-DD')
+          return moment(this.formInline.endTime).format('YYYY-MM-DD HH:mm:ss')
         }
       }
     },

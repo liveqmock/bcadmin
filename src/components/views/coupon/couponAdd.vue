@@ -48,6 +48,7 @@
               :on-remove="handleRemove"
               :on-success="handleSuccess"
               list-type="picture"
+              :data="{folderName: 'couponmark'}"
               :before-upload="beforeUpload"
               :headers="uploadHeader"
               :file-list="fileList">
@@ -128,7 +129,7 @@
           },
           loading: false,
           fileList: [],
-          imgUploadUrl: URL.api_name + 'backofficeapi/coupon/mark/upload.do',
+          imgUploadUrl: URL.api_name + URL.fileUploadUrl,
           categoryList: []
         }
       },
